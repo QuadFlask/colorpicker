@@ -18,12 +18,12 @@ public class ColorPickerView extends View {
 	private static final float STROKE_WIDTH = 2f;
 	private static final float GAP_PERCENTAGE = 0.025f;
 
-	private float COLOR_CIRCLE_MIN_R = 10;
-	private float COLOR_CIRCLE_MAX_R = 20;
-
 	private Bitmap colorWheel;
 
 	private float value = 1;
+	private float wheelRadius = 0;
+	private Set<ColorCircle> colorCircleSet;
+	private ColorCircle currentColorCircle;
 
 	public ColorPickerView(Context context) {
 		super(context);
@@ -47,18 +47,22 @@ public class ColorPickerView extends View {
 		if (colorWheel == null)
 			colorWheel = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
 
-		float c = width / 2f;
 		Canvas canvas = new Canvas(colorWheel);
 		canvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
-		float x, y;
-		float[] hsv = new float[3];
 		Paint solidPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
+		colorCircleSet = new HashSet<>();
+
+		float x, y;
+		float c = width / 2f;
+		float[] hsv = new float[3];
 		int count = 10;
-		float maxRadius = c - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
 		float sizeJitter = 0.0f;
+		float maxRadius = c - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
 		float cSize = maxRadius / count / 2;
+		wheelRadius = maxRadius;
+
 		for (int i = 0; i < count; i++) {
 			float p = (float) i / count; // 0~1
 			float jitter = sizeJitter * (i - count / 2f) / count; // -0.5 ~ 0.5
@@ -75,6 +79,7 @@ public class ColorPickerView extends View {
 				solidPaint.setColor(Color.HSVToColor(hsv));
 
 				canvas.drawCircle(x, y, size - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE), solidPaint);
+				colorCircleSet.add(new ColorCircle(x, y, hsv));
 			}
 		}
 	}
@@ -99,5 +104,76 @@ public class ColorPickerView extends View {
 		super.onDraw(canvas);
 		canvas.drawColor(0xff000000);
 		canvas.drawBitmap(colorWheel, 0, 0, null);
+		if (currentColorCircle != null) {
+
+		}
+	}
+
+	private ColorCircle findNearestByPosition(float x, float y) {
+		ColorCircle near = null;
+		double minDist = Double.MAX_VALUE;
+
+		for (ColorCircle colorCircle : colorCircleSet) {
+			double dist = colorCircle.sqDist(x, y);
+			if (minDist > dist) {
+				minDist = dist;
+				near = colorCircle;
+			}
+		}
+
+		return near;
+	}
+
+	private ColorCircle findNearestByColor(int color) {
+		float[] hsv = new float[3];
+		Color.colorToHSV(color, hsv);
+		ColorCircle near = null;
+		float minDiff = Float.MAX_VALUE;
+
+		for (ColorCircle colorCircle : colorCircleSet) {
+			float[] hsv1 = colorCircle.getHsv();
+			float hueDiff = Math.abs(hsv[0] - hsv1[0]);
+			if (hueDiff > 180f) hueDiff = Math.abs(hueDiff - 360);
+			hueDiff /= 360f;
+			float satDiff = Math.abs(hsv[1] - hsv1[1]);
+			float diffSum = hueDiff + satDiff;
+			if (diffSum < minDiff) {
+				minDiff = diffSum;
+				near = colorCircle;
+			}
+		}
+
+		return near;
+	}
+}
+
+class ColorCircle {
+	private float x, y;
+	private float[] hsv = new float[3];
+
+	ColorCircle(float x, float y, float[] hsv) {
+		this.x = x;
+		this.y = y;
+		this.hsv[0] = hsv[0];
+		this.hsv[1] = hsv[1];
+		this.hsv[2] = hsv[2];
+	}
+
+	public double sqDist(float x, float y) {
+		double dx = this.x - x;
+		double dy = this.y - y;
+		return dx * dx + dy * dy;
+	}
+
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public float[] getHsv() {
+		return hsv;
 	}
 }
