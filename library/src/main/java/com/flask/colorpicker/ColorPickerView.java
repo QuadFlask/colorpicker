@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,9 +25,9 @@ public class ColorPickerView extends View {
 	private Set<ColorCircle> colorCircleSet;
 	private ColorCircle currentColorCircle;
 
-	private Paint stroke1 = new Paint(Paint.ANTI_ALIAS_FLAG);
-	private Paint stroke2 = new Paint(Paint.ANTI_ALIAS_FLAG);
-	private Paint solid = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
+	private Paint stroke2 = PaintBuilder.newPaint().color(0xff000000).build();
+	private Paint solid = PaintBuilder.newPaint().color(0).build();
 
 	private int count = 10;
 	private float half;
@@ -48,8 +49,6 @@ public class ColorPickerView extends View {
 	public void onWindowFocusChanged(boolean hasWindowFocus) {
 		super.onWindowFocusChanged(hasWindowFocus);
 		drawColorWheel(getWidth());
-		stroke1.setColor(0xffffffff);
-		stroke2.setColor(0xff000000);
 	}
 
 	private void drawColorWheel(int width) {
@@ -59,7 +58,7 @@ public class ColorPickerView extends View {
 		Canvas canvas = new Canvas(colorWheel);
 		canvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
-		Paint solidPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		Paint solidPaint = PaintBuilder.newPaint().build();
 
 		colorCircleSet = new HashSet<>();
 		half = width / 2f;
@@ -175,9 +174,18 @@ public class ColorPickerView extends View {
 
 	public void setInitialColor(int color) {
 		this.initialColor = color;
+		float[] hsv = new float[3];
+		Color.colorToHSV(color, hsv);
+		this.value = hsv[2];
 		if (colorCircleSet != null) {
 			currentColorCircle = findNearestByColor(initialColor);
 		}
+	}
+
+	public void setValue(float v) {
+		this.value = v;
+		drawColorWheel(getWidth());
+		invalidate();
 	}
 }
 
@@ -209,5 +217,48 @@ class ColorCircle {
 
 	public float[] getHsv() {
 		return hsv;
+	}
+}
+
+class PaintBuilder {
+	public static PaintHolder newPaint() {
+		return new PaintHolder();
+	}
+
+	public static class PaintHolder {
+		private Paint paint;
+
+		private PaintHolder() {
+			this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		}
+
+		public PaintHolder color(int color) {
+			this.paint.setColor(color);
+			return this;
+		}
+
+		public PaintHolder antiAlias(boolean flag) {
+			this.paint.setAntiAlias(flag);
+			return this;
+		}
+
+		public PaintHolder style(Paint.Style style) {
+			this.paint.setStyle(style);
+			return this;
+		}
+
+		public PaintHolder mode(PorterDuff.Mode mode) {
+			this.paint.setXfermode(new PorterDuffXfermode(mode));
+			return this;
+		}
+
+		public PaintHolder stroke(float width) {
+			this.paint.setStrokeWidth(width);
+			return this;
+		}
+
+		public Paint build() {
+			return this.paint;
+		}
 	}
 }
