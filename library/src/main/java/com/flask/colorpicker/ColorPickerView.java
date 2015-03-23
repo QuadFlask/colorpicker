@@ -21,7 +21,6 @@ public class ColorPickerView extends View {
 	private Bitmap colorWheel;
 
 	private float value = 1;
-	private float wheelRadius = 0;
 	private Set<ColorCircle> colorCircleSet;
 	private ColorCircle currentColorCircle;
 
@@ -31,6 +30,7 @@ public class ColorPickerView extends View {
 
 	private int count = 10;
 	private float half;
+	private Integer initialColor = null;
 
 	public ColorPickerView(Context context) {
 		super(context);
@@ -69,7 +69,6 @@ public class ColorPickerView extends View {
 		float sizeJitter = 0.0f;
 		float maxRadius = half - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
 		float cSize = maxRadius / count / 2;
-		wheelRadius = maxRadius;
 
 		for (int i = 0; i < count; i++) {
 			float p = (float) i / count; // 0~1
@@ -89,6 +88,10 @@ public class ColorPickerView extends View {
 				canvas.drawCircle(x, y, size - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE), solidPaint);
 				colorCircleSet.add(new ColorCircle(x, y, hsv));
 			}
+		}
+		if (initialColor != null) {
+			currentColorCircle = findNearestByColor(initialColor);
+			initialColor = null;
 		}
 	}
 
@@ -161,6 +164,20 @@ public class ColorPickerView extends View {
 		}
 
 		return near;
+	}
+
+	public int getSelectedColor() {
+		int color = 0;
+		if (currentColorCircle != null)
+			color = Color.HSVToColor(currentColorCircle.getHsv());
+		return color;
+	}
+
+	public void setInitialColor(int color) {
+		this.initialColor = color;
+		if (colorCircleSet != null) {
+			currentColorCircle = findNearestByColor(initialColor);
+		}
 	}
 }
 
