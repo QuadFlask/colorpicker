@@ -32,6 +32,8 @@ public class ColorPickerView extends View {
 	private int count = 10;
 	private float half;
 	private Integer initialColor = null;
+	private OnColorSelectedListener listener;
+	private int backgroundColor = 0xff000000;
 
 	public ColorPickerView(Context context) {
 		super(context);
@@ -101,6 +103,10 @@ public class ColorPickerView extends View {
 			case MotionEvent.ACTION_MOVE: {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				invalidate();
+				break;
+			}
+			case MotionEvent.ACTION_UP: {
+				if (listener != null) listener.onColorSelected(getSelectedColor());
 			}
 		}
 		return true;
@@ -113,7 +119,7 @@ public class ColorPickerView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		canvas.drawColor(0xffff0000);
+		canvas.drawColor(backgroundColor);
 		if (colorWheel != null)
 			canvas.drawBitmap(colorWheel, 0, 0, null);
 		if (currentColorCircle != null) {
@@ -186,6 +192,10 @@ public class ColorPickerView extends View {
 		this.value = v;
 		drawColorWheel(getWidth());
 		invalidate();
+	}
+
+	public void setOnColorSelectedListener(OnColorSelectedListener listener) {
+		this.listener = listener;
 	}
 }
 
