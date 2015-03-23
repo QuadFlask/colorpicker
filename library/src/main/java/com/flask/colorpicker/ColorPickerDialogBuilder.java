@@ -6,18 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-public class ColorPickerDialogBuilder extends AlertDialog.Builder {
+public class ColorPickerDialogBuilder {
 	private ColorPickerView colorPickerView;
 	private LinearLayout pickerContainer;
 	private LinearLayout currentColorIndicator;
 
-	public ColorPickerDialogBuilder(Context context) {
-		super(context);
+	public AlertDialog.Builder build(Context context) {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 
 		currentColorIndicator = new LinearLayout(context);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 48); // dp
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 80); // dp
 		currentColorIndicator.setLayoutParams(lp);
 
 		colorPickerView = new ColorPickerView(context);
@@ -27,16 +27,20 @@ public class ColorPickerDialogBuilder extends AlertDialog.Builder {
 				currentColorIndicator.setBackgroundColor(selectedColor);
 			}
 		});
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		colorPickerView.setLayoutParams(layoutParams);
 
 		pickerContainer.addView(currentColorIndicator);
 		pickerContainer.addView(colorPickerView);
 
-		setView(pickerContainer);
+		dialog.setView(pickerContainer);
+		colorPickerView.setInitialColor(0xffff0000);
+
+		return dialog;
 	}
 
 	public ColorPickerDialogBuilder setInitialColor(int color) {
 		colorPickerView.setInitialColor(color);
 		return this;
 	}
-
 }

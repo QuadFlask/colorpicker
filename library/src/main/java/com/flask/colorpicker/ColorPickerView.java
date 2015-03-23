@@ -97,6 +97,20 @@ public class ColorPickerView extends View {
 	}
 
 	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+		int width = 0;
+		if (widthMode == MeasureSpec.UNSPECIFIED)
+			width = widthMeasureSpec;
+		else if (widthMode == MeasureSpec.AT_MOST)
+			width = 400;
+		else if (widthMode == MeasureSpec.EXACTLY)
+			width = MeasureSpec.getSize(widthMeasureSpec);
+		setMeasuredDimension(width, width);
+	}
+
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
