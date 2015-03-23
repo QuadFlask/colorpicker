@@ -128,17 +128,19 @@ public class ColorPickerView extends View {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 		ColorCircle near = null;
-		float minDiff = Float.MAX_VALUE;
+		double minDiff = Double.MAX_VALUE;
+		double x = hsv[1] * Math.cos(hsv[0] / 180 * Math.PI);
+		double y = hsv[1] * Math.sin(hsv[0] / 180 * Math.PI);
 
 		for (ColorCircle colorCircle : colorCircleSet) {
 			float[] hsv1 = colorCircle.getHsv();
-			float hueDiff = Math.abs(hsv[0] - hsv1[0]);
-			if (hueDiff > 180f) hueDiff = Math.abs(hueDiff - 360);
-			hueDiff /= 360f;
-			float satDiff = Math.abs(hsv[1] - hsv1[1]);
-			float diffSum = hueDiff + satDiff;
-			if (diffSum < minDiff) {
-				minDiff = diffSum;
+			double x1 = hsv1[1] * Math.cos(hsv1[0] / 180 * Math.PI);
+			double y1 = hsv1[1] * Math.sin(hsv1[0] / 180 * Math.PI);
+			double dx = x - x1;
+			double dy = y - y1;
+			double dist = dx * dx + dy * dy;
+			if (dist < minDiff) {
+				minDiff = dist;
 				near = colorCircle;
 			}
 		}
