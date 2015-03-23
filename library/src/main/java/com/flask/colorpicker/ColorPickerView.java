@@ -25,6 +25,13 @@ public class ColorPickerView extends View {
 	private Set<ColorCircle> colorCircleSet;
 	private ColorCircle currentColorCircle;
 
+	private Paint stroke1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private Paint stroke2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private Paint solid = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+	private int count = 10;
+	private float half;
+
 	public ColorPickerView(Context context) {
 		super(context);
 	}
@@ -41,6 +48,8 @@ public class ColorPickerView extends View {
 	public void onWindowFocusChanged(boolean hasWindowFocus) {
 		super.onWindowFocusChanged(hasWindowFocus);
 		drawColorWheel(getWidth());
+		stroke1.setColor(0xffffffff);
+		stroke2.setColor(0xff000000);
 	}
 
 	private void drawColorWheel(int width) {
@@ -53,13 +62,12 @@ public class ColorPickerView extends View {
 		Paint solidPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
 		colorCircleSet = new HashSet<>();
+		half = width / 2f;
 
 		float x, y;
-		float c = width / 2f;
 		float[] hsv = new float[3];
-		int count = 10;
 		float sizeJitter = 0.0f;
-		float maxRadius = c - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
+		float maxRadius = half - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
 		float cSize = maxRadius / count / 2;
 		wheelRadius = maxRadius;
 
@@ -71,8 +79,8 @@ public class ColorPickerView extends View {
 			int total = calcTotalCount(radius, size);
 			for (int j = 0; j < total; j++) {
 				float angle = (float) (Math.PI * 2 * j / total + (Math.PI / total) * (i % 2));
-				x = c + (float) (radius * Math.cos(angle));
-				y = c + (float) (radius * Math.sin(angle));
+				x = half + (float) (radius * Math.cos(angle));
+				y = half + (float) (radius * Math.sin(angle));
 				hsv[0] = (float) (angle / Math.PI * 180);
 				hsv[1] = radius / maxRadius;
 				hsv[2] = value;
@@ -89,6 +97,7 @@ public class ColorPickerView extends View {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
+				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				invalidate();
 			}
 		}
@@ -102,10 +111,16 @@ public class ColorPickerView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		canvas.drawColor(0xff000000);
-		canvas.drawBitmap(colorWheel, 0, 0, null);
+		canvas.drawColor(0xffff0000);
+		if (colorWheel != null)
+			canvas.drawBitmap(colorWheel, 0, 0, null);
 		if (currentColorCircle != null) {
-
+			float maxRadius = half - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
+			float size = maxRadius / count / 2;
+			solid.setColor(Color.HSVToColor(currentColorCircle.getHsv()));
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * 1.6f, stroke1);
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * 1.3f, stroke2);
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, solid);
 		}
 	}
 
