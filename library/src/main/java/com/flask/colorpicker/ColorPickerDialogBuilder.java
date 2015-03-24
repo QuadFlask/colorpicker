@@ -43,8 +43,13 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
-	public ColorPickerDialogBuilder setPositiveButton(String text, DialogInterface.OnClickListener onClickListener) {
-		builder.setPositiveButton(text, onClickListener);
+	public ColorPickerDialogBuilder setPositiveButton(String text, final DialogInterface.OnClickListener onClickListener) {
+		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				onClickListener.onClick(dialog, colorPickerView.getSelectedColor());
+			}
+		});
 		return this;
 	}
 

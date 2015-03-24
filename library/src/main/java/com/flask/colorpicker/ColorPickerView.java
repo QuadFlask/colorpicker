@@ -33,7 +33,7 @@ public class ColorPickerView extends View {
 	private float half;
 	private Integer initialColor = null;
 	private OnColorSelectedListener listener;
-	private int backgroundColor = 0xff000000;
+	private int backgroundColor = 0x00000000;
 
 	public ColorPickerView(Context context) {
 		super(context);
