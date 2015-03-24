@@ -2,45 +2,58 @@ package com.flask.colorpicker;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.view.View;
+import android.content.DialogInterface;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public class ColorPickerDialogBuilder {
+	private AlertDialog.Builder builder;
 	private ColorPickerView colorPickerView;
 	private LinearLayout pickerContainer;
-	private LinearLayout currentColorIndicator;
 
-	public AlertDialog.Builder build(Context context) {
-		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+	private ColorPickerDialogBuilder(Context context) {
+		builder = new AlertDialog.Builder(context);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 
-		currentColorIndicator = new LinearLayout(context);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 80); // dp
-		currentColorIndicator.setLayoutParams(lp);
-
-		colorPickerView = new ColorPickerView(context);
-		colorPickerView.setOnColorSelectedListener(new OnColorSelectedListener() {
-			@Override
-			public void onColorSelected(int selectedColor) {
-				currentColorIndicator.setBackgroundColor(selectedColor);
-			}
-		});
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		colorPickerView.setLayoutParams(layoutParams);
+		colorPickerView = new ColorPickerView(context);
 
-		pickerContainer.addView(currentColorIndicator);
 		pickerContainer.addView(colorPickerView);
-
-		dialog.setView(pickerContainer);
-		colorPickerView.setInitialColor(0xffff0000);
-
-		return dialog;
+		builder.setView(pickerContainer);
 	}
 
-	public ColorPickerDialogBuilder setInitialColor(int color) {
-		colorPickerView.setInitialColor(color);
+	public static ColorPickerDialogBuilder newPicker(Context context) {
+		return new ColorPickerDialogBuilder(context);
+	}
+
+	public ColorPickerDialogBuilder setTitle(String title) {
+		builder.setTitle(title);
 		return this;
+	}
+
+	public ColorPickerDialogBuilder initialColor(int initialColor) {
+		colorPickerView.setInitialColor(initialColor);
+		return this;
+	}
+
+	public ColorPickerDialogBuilder setOnColorSelectedListener(OnColorSelectedListener onColorSelectedListener) {
+		colorPickerView.setOnColorSelectedListener(onColorSelectedListener);
+		return this;
+	}
+
+	public ColorPickerDialogBuilder setPositiveButton(String text, DialogInterface.OnClickListener onClickListener) {
+		builder.setPositiveButton(text, onClickListener);
+		return this;
+	}
+
+	public ColorPickerDialogBuilder setNegativeButton(String text, DialogInterface.OnClickListener onClickListener) {
+		builder.setNegativeButton(text, onClickListener);
+		return this;
+	}
+
+	public AlertDialog build() {
+		return builder.create();
 	}
 }
