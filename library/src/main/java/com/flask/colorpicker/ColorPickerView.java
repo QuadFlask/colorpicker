@@ -22,18 +22,18 @@ public class ColorPickerView extends View {
 	private Bitmap colorWheel;
 
 	private float value = 1;
-	private Set<ColorCircle> colorCircleSet;
-	private ColorCircle currentColorCircle;
+	private int count = 10;
+	private Integer initialColor = null;
+	private int backgroundColor = 0x00000000;
+	private float half;
 
 	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
 	private Paint stroke2 = PaintBuilder.newPaint().color(0xff000000).build();
 	private Paint solid = PaintBuilder.newPaint().color(0).build();
 
-	private int count = 10;
-	private float half;
-	private Integer initialColor = null;
+	private Set<ColorCircle> colorCircleSet;
+	private ColorCircle currentColorCircle;
 	private OnColorSelectedListener listener;
-	private int backgroundColor = 0x00000000;
 
 	public ColorPickerView(Context context) {
 		super(context);
