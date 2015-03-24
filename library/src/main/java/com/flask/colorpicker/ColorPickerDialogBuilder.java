@@ -17,8 +17,8 @@ public class ColorPickerDialogBuilder {
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		colorPickerView.setLayoutParams(layoutParams);
 		colorPickerView = new ColorPickerView(context);
+		colorPickerView.setLayoutParams(layoutParams);
 
 		pickerContainer.addView(colorPickerView);
 		builder.setView(pickerContainer);
