@@ -104,7 +104,7 @@ public class ColorPickerView extends View {
 		if (widthMode == MeasureSpec.UNSPECIFIED)
 			width = widthMeasureSpec;
 		else if (widthMode == MeasureSpec.AT_MOST)
-			width = 400;
+			width = MeasureSpec.getSize(widthMeasureSpec);
 		else if (widthMode == MeasureSpec.EXACTLY)
 			width = MeasureSpec.getSize(widthMeasureSpec);
 		setMeasuredDimension(width, width);
