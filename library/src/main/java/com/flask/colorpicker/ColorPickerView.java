@@ -11,8 +11,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ColorPickerView extends View {
 	public enum WHEEL_TYPE {
@@ -37,7 +37,7 @@ public class ColorPickerView extends View {
 	private Paint selectorStroke2 = PaintBuilder.newPaint().color(0xff000000).build();
 	private Paint selectorFill = PaintBuilder.newPaint().build();
 
-	private Set<ColorCircle> colorCircleSet = new HashSet<>();
+	private List<ColorCircle> colorCircleList = new ArrayList<>(128);
 	private ColorCircle currentColorCircle;
 	private OnColorSelectedListener listener;
 	private LightnessBar lightnessBar;
@@ -73,7 +73,6 @@ public class ColorPickerView extends View {
 		}
 
 		colorWheelCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-		colorCircleSet.clear();
 
 		half = width / 2f;
 
@@ -95,6 +94,9 @@ public class ColorPickerView extends View {
 		float x, y;
 		float[] hsv = new float[3];
 		float sizeJitter = 0.0f;
+		final int setSize = colorCircleList.size();
+		int currentCount = 0;
+
 		for (int i = 0; i < count; i++) {
 			float p = (float) i / (count - 1); // 0~1
 			float jitter = sizeJitter * (i - count / 2f) / count; // -0.5 ~ 0.5
@@ -111,7 +113,11 @@ public class ColorPickerView extends View {
 				selectorFill.setColor(Color.HSVToColor(hsv));
 
 				colorWheelCanvas.drawCircle(x, y, size - STROKE_RATIO * (1f + GAP_PERCENTAGE), selectorFill);
-				colorCircleSet.add(new ColorCircle(x, y, hsv));
+
+				if (currentCount >= setSize)
+					colorCircleList.add(new ColorCircle(x, y, hsv));
+				else colorCircleList.get(currentCount).set(x, y, hsv);
+				currentCount++;
 			}
 		}
 	}
@@ -120,6 +126,9 @@ public class ColorPickerView extends View {
 		float x, y;
 		float[] hsv = new float[3];
 		float sizeJitter = 1.f;
+		final int setSize = colorCircleList.size();
+		int currentCount = 0;
+
 		for (int i = 0; i < count; i++) {
 			float jitter = (i - count / 2f) / count; // -0.5 ~ 0.5
 			float p = (float) i / (count - 1); // 0~1
@@ -136,7 +145,11 @@ public class ColorPickerView extends View {
 				selectorFill.setColor(Color.HSVToColor(hsv));
 
 				colorWheelCanvas.drawCircle(x, y, size - STROKE_RATIO * (1f + GAP_PERCENTAGE), selectorFill);
-				colorCircleSet.add(new ColorCircle(x, y, hsv));
+
+				if (currentCount >= setSize)
+					colorCircleList.add(new ColorCircle(x, y, hsv));
+				else colorCircleList.get(currentCount).set(x, y, hsv);
+				currentCount++;
 			}
 		}
 	}
@@ -201,7 +214,7 @@ public class ColorPickerView extends View {
 		ColorCircle near = null;
 		double minDist = Double.MAX_VALUE;
 
-		for (ColorCircle colorCircle : colorCircleSet) {
+		for (ColorCircle colorCircle : colorCircleList) {
 			double dist = colorCircle.sqDist(x, y);
 			if (minDist > dist) {
 				minDist = dist;
@@ -220,7 +233,7 @@ public class ColorPickerView extends View {
 		double x = hsv[1] * Math.cos(hsv[0] / 180 * Math.PI);
 		double y = hsv[1] * Math.sin(hsv[0] / 180 * Math.PI);
 
-		for (ColorCircle colorCircle : colorCircleSet) {
+		for (ColorCircle colorCircle : colorCircleList) {
 			float[] hsv1 = colorCircle.getHsv();
 			double x1 = hsv1[1] * Math.cos(hsv1[0] / 180 * Math.PI);
 			double y1 = hsv1[1] * Math.sin(hsv1[0] / 180 * Math.PI);
@@ -248,7 +261,7 @@ public class ColorPickerView extends View {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 		this.value = hsv[2];
-		if (colorCircleSet != null)
+		if (colorCircleList != null)
 			currentColorCircle = findNearestByColor(initialColor);
 	}
 
@@ -278,11 +291,7 @@ class ColorCircle {
 	private float[] hsv = new float[3];
 
 	ColorCircle(float x, float y, float[] hsv) {
-		this.x = x;
-		this.y = y;
-		this.hsv[0] = hsv[0];
-		this.hsv[1] = hsv[1];
-		this.hsv[2] = hsv[2];
+		set(x, y, hsv);
 	}
 
 	public double sqDist(float x, float y) {
@@ -301,6 +310,14 @@ class ColorCircle {
 
 	public float[] getHsv() {
 		return hsv;
+	}
+
+	public void set(float x, float y, float[] hsv) {
+		this.x = x;
+		this.y = y;
+		this.hsv[0] = hsv[0];
+		this.hsv[1] = hsv[1];
+		this.hsv[2] = hsv[2];
 	}
 }
 
