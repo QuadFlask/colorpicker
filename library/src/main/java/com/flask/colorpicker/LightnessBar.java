@@ -114,10 +114,7 @@ public class LightnessBar extends View {
 		if (bar != null)
 			canvas.drawBitmap(bar, barOffsetX, (getHeight() - bar.getHeight()) / 2, null);
 
-		float[] hsv = new float[3];
-		Color.colorToHSV(color, hsv);
-		hsv[2] = lightness;
-		solid.setColor(Color.HSVToColor(hsv));
+		solid.setColor(colorAtLightness(color, lightness));
 		float x = handleRadius + lightness * (getWidth() - handleRadius * 2);
 		float y = getHeight() / 2f;
 
@@ -128,9 +125,7 @@ public class LightnessBar extends View {
 
 	public void setColor(int color) {
 		this.color = color;
-		float[] hsv = new float[3];
-		Color.colorToHSV(color, hsv);
-		lightness = hsv[2];
+		lightness = lightnessOfColor(color);
 		if (bar != null) {
 			updateBar();
 			invalidate();
@@ -143,5 +138,18 @@ public class LightnessBar extends View {
 
 	public void setColorPicker(ColorPickerView colorPicker) {
 		this.colorPicker = colorPicker;
+	}
+
+	private int colorAtLightness(int color, float lightness) {
+		float[] hsv = new float[3];
+		Color.colorToHSV(color, hsv);
+		hsv[2] = lightness;
+		return Color.HSVToColor(hsv);
+	}
+
+	private float lightnessOfColor(int color) {
+		float[] hsv = new float[3];
+		Color.colorToHSV(color, hsv);
+		return hsv[2];
 	}
 }

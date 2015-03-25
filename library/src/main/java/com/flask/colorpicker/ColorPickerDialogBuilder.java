@@ -17,16 +17,23 @@ public class ColorPickerDialogBuilder {
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		colorPickerView = new ColorPickerView(context);
-		colorPickerView.setLayoutParams(layoutParams);
+		colorPickerView.setLayoutParams(layoutParamsForColorPickerView);
 		lightnessBar = new LightnessBar(context);
-		lightnessBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 64));
+		LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.lightness_bar_height));
+		int margin = getDimensionAsPx(context, R.dimen.lightness_bar_margin);
+		layoutParamsForLightnessBar.setMargins(margin, margin, margin, margin);
+		lightnessBar.setLayoutParams(layoutParamsForLightnessBar);
 
 		pickerContainer.addView(colorPickerView);
 		pickerContainer.addView(lightnessBar);
 		colorPickerView.setLightnessBar(lightnessBar);
 		builder.setView(pickerContainer);
+	}
+
+	public static int getDimensionAsPx(Context context, int rid) {
+		return (int) (context.getResources().getDimension(rid) + .5f);
 	}
 
 	public static ColorPickerDialogBuilder newPicker(Context context) {

@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
@@ -20,6 +19,7 @@ public class ColorPickerView extends View {
 	private static final float GAP_PERCENTAGE = 0.025f;
 
 	private Bitmap colorWheel;
+	private Canvas colorWheelCanvas;
 
 	private int count = 8;
 	private float half;
@@ -27,14 +27,16 @@ public class ColorPickerView extends View {
 	private int backgroundColor = 0x00000000;
 	private Integer initialColor = null;
 
-	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
-	private Paint stroke2 = PaintBuilder.newPaint().color(0xff000000).build();
-	private Paint solid = PaintBuilder.newPaint().color(0).build();
+	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
+	private Paint selectorStroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
+	private Paint selectorStroke2 = PaintBuilder.newPaint().color(0xff000000).build();
+	private Paint selectorFill = PaintBuilder.newPaint().build();
 
-	private Set<ColorCircle> colorCircleSet;
+	private Set<ColorCircle> colorCircleSet = new HashSet<>();
 	private ColorCircle currentColorCircle;
 	private OnColorSelectedListener listener;
 	private LightnessBar lightnessBar;
+
 	private float lastMx, lastMy;
 
 	public ColorPickerView(Context context) {
@@ -60,15 +62,14 @@ public class ColorPickerView extends View {
 	}
 
 	private void drawColorWheel(int width) {
-		if (colorWheel == null)
+		if (colorWheel == null) {
 			colorWheel = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+			colorWheelCanvas = new Canvas(colorWheel);
+		}
 
-		Canvas canvas = new Canvas(colorWheel);
-		canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+		colorWheelCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+		colorCircleSet.clear();
 
-		Paint solidPaint = PaintBuilder.newPaint().build();
-
-		colorCircleSet = new HashSet<>();
 		half = width / 2f;
 
 		float x, y;
@@ -84,15 +85,15 @@ public class ColorPickerView extends View {
 			float size = cSize + cSize * jitter;
 			int total = calcTotalCount(radius, size);
 			for (int j = 0; j < total; j++) {
-				float angle = (float) (Math.PI * 2 * j / total + (Math.PI / total) * ((i + 1) % 2));
+				double angle = Math.PI * 2 * j / total + (Math.PI / total) * ((i + 1) % 2);
 				x = half + (float) (radius * Math.cos(angle));
 				y = half + (float) (radius * Math.sin(angle));
 				hsv[0] = (float) (angle / Math.PI * 180);
 				hsv[1] = radius / maxRadius;
 				hsv[2] = value;
-				solidPaint.setColor(Color.HSVToColor(hsv));
+				selectorFill.setColor(Color.HSVToColor(hsv));
 
-				canvas.drawCircle(x, y, size - STROKE_RATIO * (1f + GAP_PERCENTAGE), solidPaint);
+				colorWheelCanvas.drawCircle(x, y, size - STROKE_RATIO * (1f + GAP_PERCENTAGE), selectorFill);
 				colorCircleSet.add(new ColorCircle(x, y, hsv));
 			}
 		}
@@ -151,10 +152,10 @@ public class ColorPickerView extends View {
 		if (currentColorCircle != null) {
 			float maxRadius = half - STROKE_RATIO * (1f + GAP_PERCENTAGE);
 			float size = maxRadius / count / 2;
-			solid.setColor(Color.HSVToColor(currentColorCircle.getHsv()));
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * STROKE_RATIO, stroke1);
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * (1 + (STROKE_RATIO - 1) / 2), stroke2);
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, solid);
+			colorWheelFill.setColor(Color.HSVToColor(currentColorCircle.getHsv()));
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * STROKE_RATIO, selectorStroke1);
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * (1 + (STROKE_RATIO - 1) / 2), selectorStroke2);
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, colorWheelFill);
 		}
 	}
 
@@ -209,9 +210,8 @@ public class ColorPickerView extends View {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 		this.value = hsv[2];
-		if (colorCircleSet != null) {
+		if (colorCircleSet != null)
 			currentColorCircle = findNearestByColor(initialColor);
-		}
 	}
 
 	public void setValue(float v) {
@@ -219,11 +219,10 @@ public class ColorPickerView extends View {
 		updateColorWheel();
 		invalidate();
 		lightnessBar.setColor(getSelectedColor());
-		if (lastMx != 0) {
+		if (lastMx != 0)
 			currentColorCircle = findNearestByPosition(lastMx, lastMy);
-		} else {
+		else
 			currentColorCircle = findNearestByColor(getSelectedColor());
-		}
 	}
 
 	public void setOnColorSelectedListener(OnColorSelectedListener listener) {

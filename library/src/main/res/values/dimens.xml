@@ -1,0 +1,5 @@
+<resources>
+	<!-- Default screen margins, per the Android Design guidelines. -->
+	<dimen name="lightness_bar_height">24dp</dimen>
+	<dimen name="lightness_bar_margin">8dp</dimen>
+</resources>
