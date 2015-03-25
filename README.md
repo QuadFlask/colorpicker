@@ -13,7 +13,7 @@ simple android color picker with color wheel and lightness bar.
 ```java
 
 ColorPickerDialogBuilder
-	.newPicker(context)
+	.with(context)
 	.setTitle("Choose color")
 	.initialColor(0xffffffff)
 	.setOnColorSelectedListener(new OnColorSelectedListener() {
