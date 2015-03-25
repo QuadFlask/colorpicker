@@ -8,6 +8,10 @@ simple android color picker with color wheel and lightness bar.
 
 ## Screenshot
 
+### WHEEL_TYPE_FLOWER
+![screenshot2.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot2.png)
+
+### WHEEL_TYPE.CIRCLE
 ![screenshot.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot.png)
 
 ```java
@@ -16,6 +20,7 @@ ColorPickerDialogBuilder
 	.with(context)
 	.setTitle("Choose color")
 	.initialColor(0xffffffff)
+	.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 	.setOnColorSelectedListener(new OnColorSelectedListener() {
 		@Override
 		public void onColorSelected(int selectedColor) {
