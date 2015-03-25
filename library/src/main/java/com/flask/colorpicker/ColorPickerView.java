@@ -121,6 +121,7 @@ public class ColorPickerView extends View {
 			}
 			case MotionEvent.ACTION_UP: {
 				if (listener != null) listener.onColorSelected(getSelectedColor());
+				break;
 			}
 		}
 		return true;
