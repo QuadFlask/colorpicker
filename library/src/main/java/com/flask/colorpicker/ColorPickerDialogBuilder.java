@@ -24,6 +24,7 @@ public class ColorPickerDialogBuilder {
 
 		pickerContainer.addView(colorPickerView);
 		pickerContainer.addView(lightnessBar);
+		colorPickerView.setLightnessBar(lightnessBar);
 		builder.setView(pickerContainer);
 	}
 
