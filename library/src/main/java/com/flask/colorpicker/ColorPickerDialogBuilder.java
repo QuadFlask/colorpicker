@@ -19,8 +19,11 @@ public class ColorPickerDialogBuilder {
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		colorPickerView = new ColorPickerView(context);
 		colorPickerView.setLayoutParams(layoutParams);
+		LightnessBar lightnessBar = new LightnessBar(context);
+		lightnessBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 64));
 
 		pickerContainer.addView(colorPickerView);
+		pickerContainer.addView(lightnessBar);
 		builder.setView(pickerContainer);
 	}
 

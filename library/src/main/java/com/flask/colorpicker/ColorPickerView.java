@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ColorPickerView extends View {
-	private static final float STROKE_WIDTH = 2f;
+	private static final float STROKE_RATIO = 2f;
 	private static final float GAP_PERCENTAGE = 0.025f;
 
 	private Bitmap colorWheel;
@@ -68,7 +68,7 @@ public class ColorPickerView extends View {
 		float x, y;
 		float[] hsv = new float[3];
 		float sizeJitter = 0.0f;
-		float maxRadius = half - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE) - half / count;
+		float maxRadius = half - STROKE_RATIO * (1f + GAP_PERCENTAGE) - half / count;
 		float cSize = maxRadius / count / 2;
 
 		for (int i = 0; i < count; i++) {
@@ -86,7 +86,7 @@ public class ColorPickerView extends View {
 				hsv[2] = value;
 				solidPaint.setColor(Color.HSVToColor(hsv));
 
-				canvas.drawCircle(x, y, size - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE), solidPaint);
+				canvas.drawCircle(x, y, size - STROKE_RATIO * (1f + GAP_PERCENTAGE), solidPaint);
 				colorCircleSet.add(new ColorCircle(x, y, hsv));
 			}
 		}
@@ -138,11 +138,11 @@ public class ColorPickerView extends View {
 		if (colorWheel != null)
 			canvas.drawBitmap(colorWheel, 0, 0, null);
 		if (currentColorCircle != null) {
-			float maxRadius = half - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
+			float maxRadius = half - STROKE_RATIO * (1f + GAP_PERCENTAGE);
 			float size = maxRadius / count / 2;
 			solid.setColor(Color.HSVToColor(currentColorCircle.getHsv()));
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * 1.6f, stroke1);
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * 1.3f, stroke2);
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * STROKE_RATIO, stroke1);
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * (1 + (STROKE_RATIO - 1) / 2), stroke2);
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, solid);
 		}
 	}
