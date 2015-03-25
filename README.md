@@ -1,7 +1,7 @@
 Color Picker
 -------------
 
-![icon](https://github.com/QuadFlask/colorpicker/blob/master/app/src/main/res/drawable/ic_launcher.png)
+![icon](https://github.com/QuadFlask/colorpicker/blob/master/app/src/main/res/drawable-xxxhdpi/ic_launcher.png)
 
 simple android color picker with color wheel and lightness bar.
 
