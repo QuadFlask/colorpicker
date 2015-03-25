@@ -36,7 +36,7 @@ public class ColorPickerDialogBuilder {
 		return (int) (context.getResources().getDimension(rid) + .5f);
 	}
 
-	public static ColorPickerDialogBuilder newPicker(Context context) {
+	public static ColorPickerDialogBuilder with(Context context) {
 		return new ColorPickerDialogBuilder(context);
 	}
 

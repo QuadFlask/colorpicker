@@ -26,7 +26,7 @@ public class SampleActivity extends ActionBarActivity {
 				final Context context = SampleActivity.this;
 
 				ColorPickerDialogBuilder
-						.newPicker(context)
+						.with(context)
 						.setTitle("Choose color")
 						.initialColor(currentBackgroundColor)
 						.setOnColorSelectedListener(new OnColorSelectedListener() {
