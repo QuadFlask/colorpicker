@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ColorPickerView extends View {
 	public enum WHEEL_TYPE {
-		FIXED, AROUND
+		FLOWER, CIRCLE
 	}
 
 	private static final float STROKE_RATIO = 2f;
@@ -24,7 +24,7 @@ public class ColorPickerView extends View {
 
 	private Bitmap colorWheel;
 	private Canvas colorWheelCanvas;
-	private WHEEL_TYPE wheelType = WHEEL_TYPE.FIXED;
+	private WHEEL_TYPE wheelType = WHEEL_TYPE.FLOWER;
 
 	private int count = 10;
 	private float half;
@@ -41,7 +41,6 @@ public class ColorPickerView extends View {
 	private ColorCircle currentColorCircle;
 	private OnColorSelectedListener listener;
 	private LightnessBar lightnessBar;
-
 	private float lastMx, lastMy;
 
 	public ColorPickerView(Context context) {
@@ -79,10 +78,10 @@ public class ColorPickerView extends View {
 		float maxRadius = half - STROKE_RATIO * (1f + GAP_PERCENTAGE) - half / count;
 		float cSize = maxRadius / (count - 1) / 2;
 
-		if (wheelType == WHEEL_TYPE.AROUND)
-			drawAroundColorWheel(maxRadius, cSize);
-		else if (wheelType == WHEEL_TYPE.FIXED)
-			drawFixedColorWheel(maxRadius, cSize);
+		if (wheelType == WHEEL_TYPE.CIRCLE)
+			drawCircleColorWheel(maxRadius, cSize);
+		else if (wheelType == WHEEL_TYPE.FLOWER)
+			drawFlowerColorWheel(maxRadius, cSize);
 
 		if (initialColor != null) {
 			currentColorCircle = findNearestByColor(initialColor);
@@ -90,7 +89,7 @@ public class ColorPickerView extends View {
 		}
 	}
 
-	private void drawAroundColorWheel(float maxRadius, float cSize) {
+	private void drawCircleColorWheel(float maxRadius, float cSize) {
 		float x, y;
 		float[] hsv = new float[3];
 		float sizeJitter = 0.0f;
@@ -122,7 +121,7 @@ public class ColorPickerView extends View {
 		}
 	}
 
-	private void drawFixedColorWheel(float maxRadius, float cSize) {
+	private void drawFlowerColorWheel(float maxRadius, float cSize) {
 		float x, y;
 		float[] hsv = new float[3];
 		float sizeJitter = 1.f;
