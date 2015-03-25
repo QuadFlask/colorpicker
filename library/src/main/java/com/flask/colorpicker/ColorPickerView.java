@@ -68,11 +68,11 @@ public class ColorPickerView extends View {
 		float x, y;
 		float[] hsv = new float[3];
 		float sizeJitter = 0.0f;
-		float maxRadius = half - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE);
+		float maxRadius = half - STROKE_WIDTH * 2 * (1f + GAP_PERCENTAGE) - half / count;
 		float cSize = maxRadius / count / 2;
 
 		for (int i = 0; i < count; i++) {
-			float p = (float) i / count; // 0~1
+			float p = (float) i / (count - 1); // 0~1
 			float jitter = sizeJitter * (i - count / 2f) / count; // -0.5 ~ 0.5
 			float radius = maxRadius * p;
 			float size = cSize + cSize * jitter;
