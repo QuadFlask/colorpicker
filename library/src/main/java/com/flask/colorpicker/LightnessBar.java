@@ -14,13 +14,14 @@ public class LightnessBar extends View {
 	private int barOffsetX;
 	private int color;
 	private int backgroundColor = 0x00000000;
-	private float lightness = 1;
 	private int handleRadius = 20;
 	private int barHeight = 5;
+	private float lightness = 1;
 
 	private Paint solid = PaintBuilder.newPaint().build();
 	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
 	private Paint stroke2 = PaintBuilder.newPaint().color(0xff000000).build();
+	private ColorPickerView colorPicker;
 
 	public LightnessBar(Context context) {
 		super(context);
@@ -37,7 +38,10 @@ public class LightnessBar extends View {
 	@Override
 	public void onWindowFocusChanged(boolean hasWindowFocus) {
 		super.onWindowFocusChanged(hasWindowFocus);
+		updateBar();
+	}
 
+	private void updateBar() {
 		handleRadius = getHeight() / 2;
 		barHeight = getHeight() / 6;
 		barOffsetX = handleRadius;
@@ -91,11 +95,13 @@ public class LightnessBar extends View {
 			case MotionEvent.ACTION_MOVE: {
 				lightness = (event.getX() - barOffsetX) / bar.getWidth();
 				lightness = Math.max(0, Math.min(lightness, 1));
+				colorPicker.setValue(lightness);
 				invalidate();
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
-
+				colorPicker.setValue(lightness);
+				invalidate();
 			}
 		}
 		return true;
@@ -125,9 +131,17 @@ public class LightnessBar extends View {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 		lightness = hsv[2];
+		if (bar != null) {
+			updateBar();
+			invalidate();
+		}
 	}
 
 	public float getLightness() {
 		return lightness;
+	}
+
+	public void setColorPicker(ColorPickerView colorPicker) {
+		this.colorPicker = colorPicker;
 	}
 }

@@ -8,8 +8,9 @@ import android.widget.LinearLayout;
 
 public class ColorPickerDialogBuilder {
 	private AlertDialog.Builder builder;
-	private ColorPickerView colorPickerView;
 	private LinearLayout pickerContainer;
+	private ColorPickerView colorPickerView;
+	private LightnessBar lightnessBar;
 
 	private ColorPickerDialogBuilder(Context context) {
 		builder = new AlertDialog.Builder(context);
@@ -19,7 +20,7 @@ public class ColorPickerDialogBuilder {
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		colorPickerView = new ColorPickerView(context);
 		colorPickerView.setLayoutParams(layoutParams);
-		LightnessBar lightnessBar = new LightnessBar(context);
+		lightnessBar = new LightnessBar(context);
 		lightnessBar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 64));
 
 		pickerContainer.addView(colorPickerView);
@@ -39,6 +40,7 @@ public class ColorPickerDialogBuilder {
 
 	public ColorPickerDialogBuilder initialColor(int initialColor) {
 		colorPickerView.setInitialColor(initialColor);
+		lightnessBar.setColor(initialColor);
 		return this;
 	}
 

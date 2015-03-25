@@ -21,11 +21,11 @@ public class ColorPickerView extends View {
 
 	private Bitmap colorWheel;
 
-	private float value = 1;
 	private int count = 8;
-	private Integer initialColor = null;
-	private int backgroundColor = 0xff000000;
 	private float half;
+	private float value = 1;
+	private int backgroundColor = 0x00000000;
+	private Integer initialColor = null;
 
 	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
 	private Paint stroke2 = PaintBuilder.newPaint().color(0xff000000).build();
@@ -52,6 +52,10 @@ public class ColorPickerView extends View {
 	@Override
 	public void onWindowFocusChanged(boolean hasWindowFocus) {
 		super.onWindowFocusChanged(hasWindowFocus);
+		updateColorWheel();
+	}
+
+	private void updateColorWheel() {
 		drawColorWheel(getWidth());
 	}
 
@@ -120,11 +124,14 @@ public class ColorPickerView extends View {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				lastMx = event.getX();
 				lastMy = event.getY();
+				lightnessBar.setColor(getSelectedColor());
 				invalidate();
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
 				if (listener != null) listener.onColorSelected(getSelectedColor());
+				lightnessBar.setColor(getSelectedColor());
+				invalidate();
 				break;
 			}
 		}
@@ -207,13 +214,17 @@ public class ColorPickerView extends View {
 		}
 	}
 
-//	public void setValue(float v) {
-//		this.value = v;
-//		drawColorWheel(getWidth());
-//		invalidate();
-//		if (lightnessBar.getLightness() != v) lightnessBar.setColor(getSelectedColor());
-//		currentColorCircle = findNearestByPosition(lastMx, lastMy);
-//	}
+	public void setValue(float v) {
+		this.value = v;
+		updateColorWheel();
+		invalidate();
+		lightnessBar.setColor(getSelectedColor());
+		if (lastMx != 0) {
+			currentColorCircle = findNearestByPosition(lastMx, lastMy);
+		} else {
+			currentColorCircle = findNearestByColor(getSelectedColor());
+		}
+	}
 
 	public void setOnColorSelectedListener(OnColorSelectedListener listener) {
 		this.listener = listener;
@@ -221,6 +232,7 @@ public class ColorPickerView extends View {
 
 	public void setLightnessBar(LightnessBar lightnessBar) {
 		this.lightnessBar = lightnessBar;
+		this.lightnessBar.setColorPicker(this);
 	}
 }
 
