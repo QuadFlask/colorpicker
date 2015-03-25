@@ -22,9 +22,9 @@ public class ColorPickerView extends View {
 	private Bitmap colorWheel;
 
 	private float value = 1;
-	private int count = 10;
+	private int count = 8;
 	private Integer initialColor = null;
-	private int backgroundColor = 0x00000000;
+	private int backgroundColor = 0xff000000;
 	private float half;
 
 	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
@@ -71,7 +71,7 @@ public class ColorPickerView extends View {
 		float[] hsv = new float[3];
 		float sizeJitter = 0.0f;
 		float maxRadius = half - STROKE_RATIO * (1f + GAP_PERCENTAGE) - half / count;
-		float cSize = maxRadius / count / 2;
+		float cSize = maxRadius / (count - 1) / 2;
 
 		for (int i = 0; i < count; i++) {
 			float p = (float) i / (count - 1); // 0~1
@@ -80,7 +80,7 @@ public class ColorPickerView extends View {
 			float size = cSize + cSize * jitter;
 			int total = calcTotalCount(radius, size);
 			for (int j = 0; j < total; j++) {
-				float angle = (float) (Math.PI * 2 * j / total + (Math.PI / total) * (i % 2));
+				float angle = (float) (Math.PI * 2 * j / total + (Math.PI / total) * ((i + 1) % 2));
 				x = half + (float) (radius * Math.cos(angle));
 				y = half + (float) (radius * Math.sin(angle));
 				hsv[0] = (float) (angle / Math.PI * 180);
