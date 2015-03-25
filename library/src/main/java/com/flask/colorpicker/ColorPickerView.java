@@ -15,29 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColorPickerView extends View {
-	public enum WHEEL_TYPE {
-		FLOWER, CIRCLE
+	public static enum WHEEL_TYPE {
+		FLOWER, CIRCLE;
 	}
 
 	private static final float STROKE_RATIO = 2f;
+
 	private static final float GAP_PERCENTAGE = 0.025f;
-
 	private Bitmap colorWheel;
-	private Canvas colorWheelCanvas;
-	private WHEEL_TYPE wheelType = WHEEL_TYPE.FLOWER;
 
+	private Canvas colorWheelCanvas;
+	private WHEEL_TYPE wheelType = WHEEL_TYPE.CIRCLE;
 	private int count = 10;
+
 	private float half;
 	private float value = 1;
 	private int backgroundColor = 0x00000000;
 	private Integer initialColor = null;
-
 	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
+
 	private Paint selectorStroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
 	private Paint selectorStroke2 = PaintBuilder.newPaint().color(0xff000000).build();
 	private Paint selectorFill = PaintBuilder.newPaint().build();
-
 	private List<ColorCircle> colorCircleList = new ArrayList<>(128);
+
 	private ColorCircle currentColorCircle;
 	private OnColorSelectedListener listener;
 	private LightnessBar lightnessBar;
@@ -282,6 +283,11 @@ public class ColorPickerView extends View {
 	public void setLightnessBar(LightnessBar lightnessBar) {
 		this.lightnessBar = lightnessBar;
 		this.lightnessBar.setColorPicker(this);
+	}
+
+	public void setWheelType(WHEEL_TYPE wheelType) {
+		this.wheelType = wheelType;
+		invalidate();
 	}
 }
 

@@ -51,6 +51,11 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
+	public ColorPickerDialogBuilder wheelType(ColorPickerView.WHEEL_TYPE wheelType) {
+		colorPickerView.setWheelType(wheelType);
+		return this;
+	}
+
 	public ColorPickerDialogBuilder setOnColorSelectedListener(OnColorSelectedListener onColorSelectedListener) {
 		colorPickerView.setOnColorSelectedListener(onColorSelectedListener);
 		return this;

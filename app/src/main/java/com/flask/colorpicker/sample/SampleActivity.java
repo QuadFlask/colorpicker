@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerDialogBuilder;
+import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 
 public class SampleActivity extends ActionBarActivity {
@@ -29,6 +30,7 @@ public class SampleActivity extends ActionBarActivity {
 						.with(context)
 						.setTitle("Choose color")
 						.initialColor(currentBackgroundColor)
+						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.setOnColorSelectedListener(new OnColorSelectedListener() {
 							@Override
 							public void onColorSelected(int selectedColor) {
