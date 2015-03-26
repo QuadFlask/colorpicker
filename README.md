@@ -5,6 +5,9 @@ Color Picker
 
 simple android color picker with color wheel and lightness bar.
 
+[![App on PlayStore](http://www.android.com/images/brand/android_app_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.flask.colorpicker.sample)
+
+market link: [https://play.google.com/store/apps/details?id=com.flask.colorpicker.sample](https://play.google.com/store/apps/details?id=com.flask.colorpicker.sample)
 
 ## Screenshot
 
@@ -13,6 +16,9 @@ simple android color picker with color wheel and lightness bar.
 
 ### WHEEL_TYPE.CIRCLE
 ![screenshot.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot.png)
+
+
+## Usage
 
 ```java
 
