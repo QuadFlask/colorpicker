@@ -48,15 +48,17 @@ public class LightnessBar extends View {
 		handleRadius = getHeight() / 2;
 		barHeight = getHeight() / 6;
 		barOffsetX = handleRadius;
-		drawBar(getWidth() - barOffsetX * 2, barHeight);
-	}
+		int width = getWidth();
+		int height = getHeight();
 
-	private void drawBar(int width, int height) {
 		if (bar == null) {
 			bar = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 			barCanvas = new Canvas(bar);
 		}
+		drawBar(width - barOffsetX * 2, barHeight);
+	}
 
+	private void drawBar(int width, int height) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 		int l = Math.max(2, width / 256);
