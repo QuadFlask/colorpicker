@@ -125,7 +125,7 @@ public class ColorPickerView extends View {
 	private void drawFlowerColorWheel(float maxRadius, float cSize) {
 		float x, y;
 		float[] hsv = new float[3];
-		float sizeJitter = 1.f;
+		float sizeJitter = 1.2f;
 		final int setSize = colorCircleList.size();
 		int currentCount = 0;
 
@@ -134,7 +134,7 @@ public class ColorPickerView extends View {
 			float p = (float) i / (count - 1); // 0~1
 			float radius = maxRadius * p;
 			float size = cSize + cSize * sizeJitter * jitter;
-			int total = count * 2;
+			int total = Math.max(1, count * 2 * Math.min(i, 1));
 			for (int j = 0; j < total; j++) {
 				double angle = Math.PI * 2 * j / total + (Math.PI / total) * ((i + 1) % 2);
 				x = half + (float) (radius * Math.cos(angle));
