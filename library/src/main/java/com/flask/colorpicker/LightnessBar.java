@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -99,12 +98,12 @@ public class LightnessBar extends View {
 			case MotionEvent.ACTION_MOVE: {
 				lightness = (event.getX() - barOffsetX) / bar.getWidth();
 				lightness = Math.max(0, Math.min(lightness, 1));
-				colorPicker.setValue(lightness);
+				colorPicker.setLightness(lightness);
 				invalidate();
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
-				colorPicker.setValue(lightness);
+				colorPicker.setLightness(lightness);
 				invalidate();
 			}
 		}

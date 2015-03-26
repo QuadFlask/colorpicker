@@ -31,6 +31,7 @@ public class SampleActivity extends ActionBarActivity {
 						.setTitle("Choose color")
 						.initialColor(currentBackgroundColor)
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+						.density(12)
 						.setOnColorSelectedListener(new OnColorSelectedListener() {
 							@Override
 							public void onColorSelected(int selectedColor) {

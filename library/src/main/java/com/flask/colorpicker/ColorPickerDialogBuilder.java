@@ -56,6 +56,11 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
+	public ColorPickerDialogBuilder density(int density) {
+		colorPickerView.setDensity(density);
+		return this;
+	}
+
 	public ColorPickerDialogBuilder setOnColorSelectedListener(OnColorSelectedListener onColorSelectedListener) {
 		colorPickerView.setOnColorSelectedListener(onColorSelectedListener);
 		return this;
