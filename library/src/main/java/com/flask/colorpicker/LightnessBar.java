@@ -60,8 +60,8 @@ public class LightnessBar extends View {
 
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
-		int l = width / 256;
-		for (int x = 0; x < width; x += l) {
+		int l = Math.max(2, width / 256);
+		for (int x = 0; x <= width; x += l) {
 			hsv[2] = (float) x / (width - 1);
 			barPaint.setColor(Color.HSVToColor(hsv));
 			barCanvas.drawRect(x, 0, x + l, height, barPaint);
