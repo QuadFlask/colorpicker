@@ -9,6 +9,7 @@ simple android color picker with color wheel and lightness bar.
 
 market link: [https://play.google.com/store/apps/details?id=com.flask.colorpicker.sample](https://play.google.com/store/apps/details?id=com.flask.colorpicker.sample)
 
+
 ## Screenshot
 
 ### WHEEL_TYPE_FLOWER
@@ -18,10 +19,32 @@ market link: [https://play.google.com/store/apps/details?id=com.flask.colorpicke
 ![screenshot.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot.png)
 
 
+## How to add dependency?
+
+This library is not released in Maven Central, but instead you can use [JitPack](https://jitpack.io)
+
+add remote maven url
+
+```groovy
+repositories {
+	maven {
+		url "https://jitpack.io"
+	}
+}
+````
+
+then add a library dependency
+
+```groovy
+dependencies {
+	compile 'com.github.QuadFlask:colorpicker:0.0.2@arr'
+}
+```
+
+
 ## Usage
 
 ```java
-
 ColorPickerDialogBuilder
 	.with(context)
 	.setTitle("Choose color")
@@ -47,7 +70,6 @@ ColorPickerDialogBuilder
 	})
 	.build()
 	.show();
-
 ```
 
 ## To do
@@ -55,3 +77,22 @@ ColorPickerDialogBuilder
 * gradle support
 * performance improvement
 * refactoring
+
+
+## License
+
+```
+Copyright 2014-2015 QuadFlask
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
