@@ -27,6 +27,7 @@ ColorPickerDialogBuilder
 	.setTitle("Choose color")
 	.initialColor(0xffffffff)
 	.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+	.density(12)
 	.setOnColorSelectedListener(new OnColorSelectedListener() {
 		@Override
 		public void onColorSelected(int selectedColor) {
