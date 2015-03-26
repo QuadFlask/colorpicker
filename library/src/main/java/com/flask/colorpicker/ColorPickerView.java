@@ -92,6 +92,7 @@ public class ColorPickerView extends View {
 
 	private void drawCircleColorWheel(float maxRadius, float cSize) {
 		float x, y;
+		float stroke = STROKE_RATIO * (1f + GAP_PERCENTAGE);
 		float[] hsv = new float[3];
 		float sizeJitter = 0.0f;
 		final int setSize = colorCircleList.size();
@@ -112,7 +113,7 @@ public class ColorPickerView extends View {
 				hsv[2] = lightness;
 				selectorFill.setColor(Color.HSVToColor(hsv));
 
-				colorWheelCanvas.drawCircle(x, y, size - STROKE_RATIO * (1f + GAP_PERCENTAGE), selectorFill);
+				colorWheelCanvas.drawCircle(x, y, size - stroke, selectorFill);
 
 				if (currentCount >= setSize)
 					colorCircleList.add(new ColorCircle(x, y, hsv));
