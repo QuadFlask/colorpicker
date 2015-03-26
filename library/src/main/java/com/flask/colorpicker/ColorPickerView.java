@@ -42,7 +42,6 @@ public class ColorPickerView extends View {
 	private ColorCircle currentColorCircle;
 	private OnColorSelectedListener listener;
 	private LightnessBar lightnessBar;
-	private float lastMx, lastMy;
 
 	public ColorPickerView(Context context) {
 		super(context);
@@ -174,8 +173,6 @@ public class ColorPickerView extends View {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
-				lastMx = event.getX();
-				lastMy = event.getY();
 				lightnessBar.setColor(getSelectedColor());
 				invalidate();
 				break;
@@ -270,10 +267,6 @@ public class ColorPickerView extends View {
 		updateColorWheel();
 		invalidate();
 		lightnessBar.setColor(getSelectedColor());
-		if (lastMx != 0)
-			currentColorCircle = findNearestByPosition(lastMx, lastMy);
-		else
-			currentColorCircle = findNearestByColor(getSelectedColor());
 	}
 
 	public void setOnColorSelectedListener(OnColorSelectedListener listener) {

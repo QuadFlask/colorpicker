@@ -6,11 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class LightnessBar extends View {
 	private Bitmap bar;
+	private Canvas barCanvas;
 	private int barOffsetX;
 	private int color;
 	private int backgroundColor = 0x00000000;
@@ -21,6 +23,8 @@ public class LightnessBar extends View {
 	private Paint solid = PaintBuilder.newPaint().build();
 	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
 	private Paint stroke2 = PaintBuilder.newPaint().color(0xff000000).build();
+	private Paint barPaint = PaintBuilder.newPaint().build();
+
 	private ColorPickerView colorPicker;
 
 	public LightnessBar(Context context) {
@@ -49,18 +53,18 @@ public class LightnessBar extends View {
 	}
 
 	private void drawBar(int width, int height) {
-		if (bar == null)
+		if (bar == null) {
 			bar = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-		Canvas canvas = new Canvas(bar);
+			barCanvas = new Canvas(bar);
+		}
 
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
-		Paint paint = PaintBuilder.newPaint().build();
-		for (int x = 0; x < width; x++) {
+		int l = width / 256;
+		for (int x = 0; x < width; x += l) {
 			hsv[2] = (float) x / (width - 1);
-			paint.setColor(Color.HSVToColor(hsv));
-			canvas.drawLine(x, 0, x, height, paint);
+			barPaint.setColor(Color.HSVToColor(hsv));
+			barCanvas.drawRect(x, 0, x + l, height, barPaint);
 		}
 	}
 
