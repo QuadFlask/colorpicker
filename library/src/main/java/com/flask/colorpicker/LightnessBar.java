@@ -49,10 +49,9 @@ public class LightnessBar extends View {
 		barHeight = getHeight() / 6;
 		barOffsetX = handleRadius;
 		int width = getWidth();
-		int height = getHeight();
 
 		if (bar == null) {
-			bar = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			bar = Bitmap.createBitmap(width - barOffsetX * 2, barHeight, Bitmap.Config.ARGB_8888);
 			barCanvas = new Canvas(bar);
 		}
 		drawBar(width - barOffsetX * 2, barHeight);
