@@ -13,14 +13,14 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 
 public class SampleActivity extends ActionBarActivity {
-	private RelativeLayout root;
+	private View root;
 	private int currentBackgroundColor = 0xffffffff;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sample);
-		root = (RelativeLayout) findViewById(R.id.rl_root);
+		root = findViewById(R.id.color_screen);
 		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
