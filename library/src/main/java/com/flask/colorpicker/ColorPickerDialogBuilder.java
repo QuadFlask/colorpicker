@@ -3,6 +3,7 @@ package com.flask.colorpicker;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -11,6 +12,7 @@ public class ColorPickerDialogBuilder {
 	private LinearLayout pickerContainer;
 	private ColorPickerView colorPickerView;
 	private LightnessBar lightnessBar;
+	private AlphaBar alphaBar;
 
 	private ColorPickerDialogBuilder(Context context) {
 		builder = new AlertDialog.Builder(context);
@@ -26,9 +28,14 @@ public class ColorPickerDialogBuilder {
 		layoutParamsForLightnessBar.setMargins(margin, margin, margin, margin);
 		lightnessBar.setLayoutParams(layoutParamsForLightnessBar);
 
+		alphaBar = new AlphaBar(context);
+		alphaBar.setLayoutParams(layoutParamsForLightnessBar);
+
 		pickerContainer.addView(colorPickerView);
 		pickerContainer.addView(lightnessBar);
+		pickerContainer.addView(alphaBar);
 		colorPickerView.setLightnessBar(lightnessBar);
+		colorPickerView.setAlphaBar(alphaBar);
 		builder.setView(pickerContainer);
 	}
 
@@ -48,6 +55,7 @@ public class ColorPickerDialogBuilder {
 	public ColorPickerDialogBuilder initialColor(int initialColor) {
 		colorPickerView.setInitialColor(initialColor);
 		lightnessBar.setColor(initialColor);
+		alphaBar.setColor(initialColor);
 		return this;
 	}
 
@@ -70,7 +78,9 @@ public class ColorPickerDialogBuilder {
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				onClickListener.onClick(dialog, colorPickerView.getSelectedColor());
+				int selectedColor = colorPickerView.getSelectedColor();
+				Log.e("ColorPickerDialogBuilder.onClick", "0x" + Integer.toHexString(selectedColor));
+				onClickListener.onClick(dialog, selectedColor);
 			}
 		});
 		return this;

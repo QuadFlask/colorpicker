@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -15,35 +16,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColorPickerView extends View {
-	public enum WHEEL_TYPE {
-		FLOWER, CIRCLE
-	}
-
 	private static final float STROKE_RATIO = 2f;
 	private static final float GAP_PERCENTAGE = 0.025f;
 
 	private Bitmap colorWheel;
-
 	private Canvas colorWheelCanvas;
 	private WHEEL_TYPE wheelType = WHEEL_TYPE.CIRCLE;
 	private int density = 10;
-	private float strokeWidth = 2;
 
+	private float strokeWidth = 2;
 	private float half;
 	private float lightness = 1;
+	private float alpha = 1;
 	private int backgroundColor = 0x00000000;
-	private Integer initialColor = null;
 
+	private Integer initialColor = null;
 	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
 	private Paint selectorStroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
 	private Paint selectorStroke2 = PaintBuilder.newPaint().color(0xff000000).build();
 	private Paint selectorFill = PaintBuilder.newPaint().build();
-
 	private List<ColorCircle> colorCircleList = new ArrayList<>(128);
 	private ColorCircle currentColorCircle;
-	private OnColorSelectedListener listener;
 
+	private OnColorSelectedListener listener;
 	private LightnessBar lightnessBar;
+	private AlphaBar alphaBar;
 
 	public ColorPickerView(Context context) {
 		super(context);
@@ -111,7 +108,8 @@ public class ColorPickerView extends View {
 				hsv[0] = (float) (angle / Math.PI * 180);
 				hsv[1] = radius / maxRadius;
 				hsv[2] = lightness;
-				selectorFill.setColor(Color.HSVToColor(hsv));
+				selectorFill.setColor(0x00ffffff & Color.HSVToColor(hsv));
+				selectorFill.setAlpha(getAlphaValueAsInt());
 
 				colorWheelCanvas.drawCircle(x, y, size - strokeWidth, selectorFill);
 
@@ -143,6 +141,7 @@ public class ColorPickerView extends View {
 				hsv[1] = radius / maxRadius;
 				hsv[2] = lightness;
 				selectorFill.setColor(Color.HSVToColor(hsv));
+				selectorFill.setAlpha(getAlphaValueAsInt());
 
 				colorWheelCanvas.drawCircle(x, y, size - strokeWidth, selectorFill);
 
@@ -175,12 +174,14 @@ public class ColorPickerView extends View {
 			case MotionEvent.ACTION_MOVE: {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				lightnessBar.setColor(getSelectedColor());
+				alphaBar.setColor(getSelectedColor());
 				invalidate();
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
 				if (listener != null) listener.onColorSelected(getSelectedColor());
 				lightnessBar.setColor(getSelectedColor());
+				alphaBar.setColor(getSelectedColor());
 				invalidate();
 				break;
 			}
@@ -247,17 +248,23 @@ public class ColorPickerView extends View {
 		return near;
 	}
 
+	private int getAlphaValueAsInt() {
+		return Math.round(this.alpha * 255);
+	}
+
 	public int getSelectedColor() {
 		int color = 0;
 		if (currentColorCircle != null)
 			color = Color.HSVToColor(currentColorCircle.getHsv());
-		return color;
+		return getAlphaValueAsInt() << 24 | (0x00ffffff & color);
 	}
 
 	public void setInitialColor(int color) {
-		this.initialColor = color;
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
+
+		this.alpha = (color >> 24 & 0xff) / 255f;
+		this.initialColor = color;
 		this.lightness = hsv[2];
 		if (colorCircleList != null)
 			currentColorCircle = findNearestByColor(initialColor);
@@ -267,7 +274,12 @@ public class ColorPickerView extends View {
 		this.lightness = lightness;
 		updateColorWheel();
 		invalidate();
-		lightnessBar.setColor(getSelectedColor());
+	}
+
+	public void setAlphaValue(float alpha) {
+		this.alpha = alpha;
+		updateColorWheel();
+		invalidate();
 	}
 
 	public void setOnColorSelectedListener(OnColorSelectedListener listener) {
@@ -279,6 +291,11 @@ public class ColorPickerView extends View {
 		this.lightnessBar.setColorPicker(this);
 	}
 
+	public void setAlphaBar(AlphaBar alphaBar) {
+		this.alphaBar = alphaBar;
+		this.alphaBar.setColorPicker(this);
+	}
+
 	public void setWheelType(WHEEL_TYPE wheelType) {
 		this.wheelType = wheelType;
 		invalidate();
@@ -287,6 +304,10 @@ public class ColorPickerView extends View {
 	public void setDensity(int density) {
 		this.density = Math.max(2, density);
 		invalidate();
+	}
+
+	public enum WHEEL_TYPE {
+		FLOWER, CIRCLE
 	}
 }
 
