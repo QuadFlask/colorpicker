@@ -79,7 +79,6 @@ public class ColorPickerDialogBuilder {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				int selectedColor = colorPickerView.getSelectedColor();
-				Log.e("ColorPickerDialogBuilder.onClick", "0x" + Integer.toHexString(selectedColor));
 				onClickListener.onClick(dialog, selectedColor);
 			}
 		});
