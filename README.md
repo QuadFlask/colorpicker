@@ -41,7 +41,7 @@ then add a library dependency
 
 ```groovy
 dependencies {
-	compile 'com.github.QuadFlask:colorpicker:0.0.4444r'
+	compile 'com.github.QuadFlask:colorpicker:0.0.4aar'
 }
 ```
 
