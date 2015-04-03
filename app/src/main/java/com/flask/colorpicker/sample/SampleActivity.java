@@ -21,6 +21,8 @@ public class SampleActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sample);
 		root = findViewById(R.id.color_screen);
+		changeBackgroundColor(currentBackgroundColor);
+
 		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

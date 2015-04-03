@@ -18,18 +18,21 @@ public class ColorPickerDialogBuilder {
 		builder = new AlertDialog.Builder(context);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
+		int defaultMargin = getDimensionAsPx(context, R.dimen.default_bar_margin);
 
 		LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		colorPickerView = new ColorPickerView(context);
 		colorPickerView.setLayoutParams(layoutParamsForColorPickerView);
+
+		LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_bar_height));
+		layoutParamsForLightnessBar.setMargins(defaultMargin, defaultMargin, defaultMargin, defaultMargin);
 		lightnessBar = new LightnessBar(context);
-		LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.lightness_bar_height));
-		int margin = getDimensionAsPx(context, R.dimen.lightness_bar_margin);
-		layoutParamsForLightnessBar.setMargins(margin, margin, margin, margin);
 		lightnessBar.setLayoutParams(layoutParamsForLightnessBar);
 
+		LinearLayout.LayoutParams layoutParamsForAlphaBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_bar_height));
+		layoutParamsForAlphaBar.setMargins(defaultMargin, 0, defaultMargin, defaultMargin);
 		alphaBar = new AlphaBar(context);
-		alphaBar.setLayoutParams(layoutParamsForLightnessBar);
+		alphaBar.setLayoutParams(layoutParamsForAlphaBar);
 
 		pickerContainer.addView(colorPickerView);
 		pickerContainer.addView(lightnessBar);

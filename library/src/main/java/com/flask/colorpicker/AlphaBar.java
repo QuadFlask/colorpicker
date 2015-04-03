@@ -74,7 +74,7 @@ public class AlphaBar extends AbsCustomBar {
 
 	private Bitmap createAlphaBackgroundPattern(int size) {
 		size /= 2;
-		size = Math.max(4, size * 2);
+		size = Math.max(8, size * 2);
 		Bitmap bm = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(bm);
 		int s = Math.round(size / 2f);
