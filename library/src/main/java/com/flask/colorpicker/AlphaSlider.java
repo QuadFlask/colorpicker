@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 
-public class AlphaBar extends AbsCustomBar {
+public class AlphaSlider extends AbsCustomSlider {
 	public int color;
 	private Shader patternShader;
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
@@ -19,15 +19,15 @@ public class AlphaBar extends AbsCustomBar {
 
 	private ColorPickerView colorPicker;
 
-	public AlphaBar(Context context) {
+	public AlphaSlider(Context context) {
 		super(context);
 	}
 
-	public AlphaBar(Context context, AttributeSet attrs) {
+	public AlphaSlider(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public AlphaBar(Context context, AttributeSet attrs, int defStyleAttr) {
+	public AlphaSlider(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 	}
 

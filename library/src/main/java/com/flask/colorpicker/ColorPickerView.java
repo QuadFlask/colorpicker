@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -39,8 +38,8 @@ public class ColorPickerView extends View {
 	private ColorCircle currentColorCircle;
 
 	private OnColorSelectedListener listener;
-	private LightnessBar lightnessBar;
-	private AlphaBar alphaBar;
+	private LightnessSlider lightnessSlider;
+	private AlphaSlider alphaSlider;
 
 	public ColorPickerView(Context context) {
 		super(context);
@@ -173,15 +172,15 @@ public class ColorPickerView extends View {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
-				lightnessBar.setColor(getSelectedColor());
-				alphaBar.setColor(getSelectedColor());
+				lightnessSlider.setColor(getSelectedColor());
+				alphaSlider.setColor(getSelectedColor());
 				invalidate();
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
 				if (listener != null) listener.onColorSelected(getSelectedColor());
-				lightnessBar.setColor(getSelectedColor());
-				alphaBar.setColor(getSelectedColor());
+				lightnessSlider.setColor(getSelectedColor());
+				alphaSlider.setColor(getSelectedColor());
 				invalidate();
 				break;
 			}
@@ -286,14 +285,14 @@ public class ColorPickerView extends View {
 		this.listener = listener;
 	}
 
-	public void setLightnessBar(LightnessBar lightnessBar) {
-		this.lightnessBar = lightnessBar;
-		this.lightnessBar.setColorPicker(this);
+	public void setLightnessSlider(LightnessSlider lightnessSlider) {
+		this.lightnessSlider = lightnessSlider;
+		this.lightnessSlider.setColorPicker(this);
 	}
 
-	public void setAlphaBar(AlphaBar alphaBar) {
-		this.alphaBar = alphaBar;
-		this.alphaBar.setColorPicker(this);
+	public void setAlphaSlider(AlphaSlider alphaSlider) {
+		this.alphaSlider = alphaSlider;
+		this.alphaSlider.setColorPicker(this);
 	}
 
 	public void setWheelType(WHEEL_TYPE wheelType) {

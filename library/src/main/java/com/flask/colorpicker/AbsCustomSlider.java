@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-public abstract class AbsCustomBar extends View {
+public abstract class AbsCustomSlider extends View {
 	protected Bitmap bar;
 	protected Canvas barCanvas;
 	protected int barOffsetX;
@@ -16,15 +16,15 @@ public abstract class AbsCustomBar extends View {
 	protected int barHeight = 5;
 	protected float value = 1;
 
-	public AbsCustomBar(Context context) {
+	public AbsCustomSlider(Context context) {
 		super(context);
 	}
 
-	public AbsCustomBar(Context context, AttributeSet attrs) {
+	public AbsCustomSlider(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public AbsCustomBar(Context context, AttributeSet attrs, int defStyleAttr) {
+	public AbsCustomSlider(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 	}
 

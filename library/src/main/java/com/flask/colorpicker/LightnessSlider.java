@@ -1,15 +1,12 @@
 package com.flask.colorpicker;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 
-public class LightnessBar extends AbsCustomBar {
+public class LightnessSlider extends AbsCustomSlider {
 	private int color;
 	private Paint barPaint = PaintBuilder.newPaint().build();
 	private Paint solid = PaintBuilder.newPaint().build();
@@ -18,15 +15,15 @@ public class LightnessBar extends AbsCustomBar {
 
 	private ColorPickerView colorPicker;
 
-	public LightnessBar(Context context) {
+	public LightnessSlider(Context context) {
 		super(context);
 	}
 
-	public LightnessBar(Context context, AttributeSet attrs) {
+	public LightnessSlider(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public LightnessBar(Context context, AttributeSet attrs, int defStyleAttr) {
+	public LightnessSlider(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 	}
 
