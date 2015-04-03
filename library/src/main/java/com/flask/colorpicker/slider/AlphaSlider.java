@@ -1,4 +1,4 @@
-package com.flask.colorpicker;
+package com.flask.colorpicker.slider;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.builder.PaintBuilder;
 
 public class AlphaSlider extends AbsCustomSlider {
 	public int color;

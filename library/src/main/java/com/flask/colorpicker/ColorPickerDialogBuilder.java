@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.flask.colorpicker.slider.AlphaSlider;
+import com.flask.colorpicker.slider.LightnessSlider;
+
 public class ColorPickerDialogBuilder {
 	private AlertDialog.Builder builder;
 	private LinearLayout pickerContainer;
@@ -16,6 +19,7 @@ public class ColorPickerDialogBuilder {
 	private boolean isLightnessSliderEnabled = true;
 	private boolean isAlphaSliderEnabled = true;
 	private int defaultMargin = 0;
+	private int initialColor;
 
 	private ColorPickerDialogBuilder(Context context) {
 		builder = new AlertDialog.Builder(context);
@@ -31,10 +35,6 @@ public class ColorPickerDialogBuilder {
 		builder.setView(pickerContainer);
 	}
 
-	public static int getDimensionAsPx(Context context, int rid) {
-		return (int) (context.getResources().getDimension(rid) + .5f);
-	}
-
 	public static ColorPickerDialogBuilder with(Context context) {
 		return new ColorPickerDialogBuilder(context);
 	}
@@ -45,9 +45,7 @@ public class ColorPickerDialogBuilder {
 	}
 
 	public ColorPickerDialogBuilder initialColor(int initialColor) {
-		colorPickerView.setInitialColor(initialColor);
-		lightnessSlider.setColor(initialColor);
-		alphaSlider.setColor(initialColor);
+		this.initialColor = initialColor;
 		return this;
 	}
 
@@ -101,6 +99,8 @@ public class ColorPickerDialogBuilder {
 
 	public AlertDialog build() {
 		Context context = builder.getContext();
+		colorPickerView.setInitialColor(initialColor);
+
 		if (isLightnessSliderEnabled) {
 			LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_bar_height));
 			layoutParamsForLightnessBar.setMargins(defaultMargin, defaultMargin, defaultMargin, defaultMargin);
@@ -108,6 +108,7 @@ public class ColorPickerDialogBuilder {
 			lightnessSlider.setLayoutParams(layoutParamsForLightnessBar);
 			pickerContainer.addView(lightnessSlider);
 			colorPickerView.setLightnessSlider(lightnessSlider);
+			lightnessSlider.setColor(initialColor);
 		}
 		if (isAlphaSliderEnabled) {
 			LinearLayout.LayoutParams layoutParamsForAlphaBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_bar_height));
@@ -116,7 +117,12 @@ public class ColorPickerDialogBuilder {
 			alphaSlider.setLayoutParams(layoutParamsForAlphaBar);
 			pickerContainer.addView(alphaSlider);
 			colorPickerView.setAlphaSlider(alphaSlider);
+			alphaSlider.setColor(initialColor);
 		}
 		return builder.create();
+	}
+
+	private static int getDimensionAsPx(Context context, int rid) {
+		return (int) (context.getResources().getDimension(rid) + .5f);
 	}
 }

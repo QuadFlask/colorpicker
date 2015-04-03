@@ -6,10 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.flask.colorpicker.builder.PaintBuilder;
+import com.flask.colorpicker.slider.AlphaSlider;
+import com.flask.colorpicker.slider.LightnessSlider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -307,83 +310,5 @@ public class ColorPickerView extends View {
 
 	public enum WHEEL_TYPE {
 		FLOWER, CIRCLE
-	}
-}
-
-class ColorCircle {
-	private float x, y;
-	private float[] hsv = new float[3];
-
-	ColorCircle(float x, float y, float[] hsv) {
-		set(x, y, hsv);
-	}
-
-	public double sqDist(float x, float y) {
-		double dx = this.x - x;
-		double dy = this.y - y;
-		return dx * dx + dy * dy;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public float[] getHsv() {
-		return hsv;
-	}
-
-	public void set(float x, float y, float[] hsv) {
-		this.x = x;
-		this.y = y;
-		this.hsv[0] = hsv[0];
-		this.hsv[1] = hsv[1];
-		this.hsv[2] = hsv[2];
-	}
-}
-
-class PaintBuilder {
-	public static PaintHolder newPaint() {
-		return new PaintHolder();
-	}
-
-	public static class PaintHolder {
-		private Paint paint;
-
-		private PaintHolder() {
-			this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		}
-
-		public PaintHolder color(int color) {
-			this.paint.setColor(color);
-			return this;
-		}
-
-		public PaintHolder antiAlias(boolean flag) {
-			this.paint.setAntiAlias(flag);
-			return this;
-		}
-
-		public PaintHolder style(Paint.Style style) {
-			this.paint.setStyle(style);
-			return this;
-		}
-
-		public PaintHolder mode(PorterDuff.Mode mode) {
-			this.paint.setXfermode(new PorterDuffXfermode(mode));
-			return this;
-		}
-
-		public PaintHolder stroke(float width) {
-			this.paint.setStrokeWidth(width);
-			return this;
-		}
-
-		public Paint build() {
-			return this.paint;
-		}
 	}
 }

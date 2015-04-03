@@ -1,10 +1,13 @@
-package com.flask.colorpicker;
+package com.flask.colorpicker.slider;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.builder.PaintBuilder;
 
 public class LightnessSlider extends AbsCustomSlider {
 	private int color;
