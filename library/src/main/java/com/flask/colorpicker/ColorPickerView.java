@@ -13,13 +13,11 @@ import android.view.View;
 import com.flask.colorpicker.builder.PaintBuilder;
 import com.flask.colorpicker.renderer.ColorWheelRenderOption;
 import com.flask.colorpicker.renderer.ColorWheelRenderer;
-import com.flask.colorpicker.renderer.SimpleColorWheelRenderer;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
 
 public class ColorPickerView extends View {
 	private static final float STROKE_RATIO = 2f;
-	private static final float GAP_PERCENTAGE = 0.025f;
 
 	private Bitmap colorWheel;
 	private Canvas colorWheelCanvas;
@@ -72,7 +70,7 @@ public class ColorPickerView extends View {
 		colorWheelCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
 		float half = colorWheelCanvas.getWidth() / 2f;
-		float strokeWidth = STROKE_RATIO * (1f + GAP_PERCENTAGE);
+		float strokeWidth = STROKE_RATIO * (1f + ColorWheelRenderer.GAP_PERCENTAGE);
 		float maxRadius = half - strokeWidth - half / density;
 		float cSize = maxRadius / (density - 1) / 2;
 
@@ -138,7 +136,7 @@ public class ColorPickerView extends View {
 		if (colorWheel != null)
 			canvas.drawBitmap(colorWheel, 0, 0, null);
 		if (currentColorCircle != null) {
-			float maxRadius = canvas.getWidth() / 2f - STROKE_RATIO * (1f + GAP_PERCENTAGE);
+			float maxRadius = canvas.getWidth() / 2f - STROKE_RATIO * (1f + ColorWheelRenderer.GAP_PERCENTAGE);
 			float size = maxRadius / density / 2;
 			colorWheelFill.setColor(Color.HSVToColor(currentColorCircle.getHsv()));
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * STROKE_RATIO, selectorStroke1);
