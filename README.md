@@ -19,7 +19,7 @@ market link: [https://play.google.com/store/apps/details?id=com.flask.colorpicke
 ## Screenshot
 
 ### WHEEL_TYPE.FLOWER
-![screenshot2.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot2.png)
+![screenshot3.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot3.png)
 
 ### WHEEL_TYPE.CIRCLE
 ![screenshot.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot.png)
