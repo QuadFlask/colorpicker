@@ -138,7 +138,8 @@ public class ColorPickerView extends View {
 		if (currentColorCircle != null) {
 			float maxRadius = canvas.getWidth() / 2f - STROKE_RATIO * (1f + ColorWheelRenderer.GAP_PERCENTAGE);
 			float size = maxRadius / density / 2;
-			colorWheelFill.setColor(Color.HSVToColor(currentColorCircle.getHsv()));
+			colorWheelFill.setColor(Color.HSVToColor(currentColorCircle.getHsvWithLightness(this.lightness)));
+			colorWheelFill.setAlpha((int) (alpha * 0xff));
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * STROKE_RATIO, selectorStroke1);
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * (1 + (STROKE_RATIO - 1) / 2), selectorStroke2);
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, colorWheelFill);
@@ -191,7 +192,7 @@ public class ColorPickerView extends View {
 	public int getSelectedColor() {
 		int color = 0;
 		if (currentColorCircle != null)
-			color = Color.HSVToColor(currentColorCircle.getHsv());
+			color = Color.HSVToColor(currentColorCircle.getHsvWithLightness(this.lightness));
 		return getAlphaValueAsInt() << 24 | (0x00ffffff & color);
 	}
 

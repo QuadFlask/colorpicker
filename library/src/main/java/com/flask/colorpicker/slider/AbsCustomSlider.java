@@ -3,9 +3,12 @@ package com.flask.colorpicker.slider;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.flask.colorpicker.R;
 
 public abstract class AbsCustomSlider extends View {
 	protected Bitmap bar;
@@ -29,8 +32,8 @@ public abstract class AbsCustomSlider extends View {
 	}
 
 	protected void updateBar() {
-		handleRadius = getHeight() / 2;
-		barHeight = getHeight() / 6;
+		handleRadius = getDimension(R.dimen.default_slider_handler_radius);
+		barHeight = getDimension(R.dimen.default_slider_bar_height);
 		barOffsetX = handleRadius;
 
 		if (bar == null)
@@ -109,5 +112,9 @@ public abstract class AbsCustomSlider extends View {
 			}
 		}
 		return true;
+	}
+
+	protected int getDimension(@DimenRes int id) {
+		return getResources().getDimensionPixelSize(id);
 	}
 }

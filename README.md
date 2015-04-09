@@ -18,7 +18,7 @@ market link: [https://play.google.com/store/apps/details?id=com.flask.colorpicke
 
 ## Screenshot
 
-### WHEEL_TYPE_FLOWER
+### WHEEL_TYPE.FLOWER
 ![screenshot2.png](https://github.com/QuadFlask/colorpicker/blob/master/screenshot/screenshot2.png)
 
 ### WHEEL_TYPE.CIRCLE
@@ -37,7 +37,7 @@ repositories {
 		url "https://jitpack.io"
 	}
 }
-````
+```
 
 then add a library dependency
 

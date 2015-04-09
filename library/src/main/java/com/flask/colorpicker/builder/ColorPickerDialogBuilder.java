@@ -10,7 +10,6 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.R;
 import com.flask.colorpicker.renderer.ColorWheelRenderer;
-import com.flask.colorpicker.renderer.SimpleColorWheelRenderer;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
 
@@ -30,7 +29,7 @@ public class ColorPickerDialogBuilder {
 		builder = new AlertDialog.Builder(context);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
-		defaultMargin = getDimensionAsPx(context, R.dimen.default_bar_margin);
+		defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
 
 		LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		colorPickerView = new ColorPickerView(context);
@@ -108,8 +107,8 @@ public class ColorPickerDialogBuilder {
 		colorPickerView.setInitialColor(initialColor);
 
 		if (isLightnessSliderEnabled) {
-			LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_bar_height));
-			layoutParamsForLightnessBar.setMargins(defaultMargin, defaultMargin, defaultMargin, defaultMargin);
+			LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_slider_height));
+			layoutParamsForLightnessBar.setMargins(defaultMargin, 0, defaultMargin, 0);
 			lightnessSlider = new LightnessSlider(context);
 			lightnessSlider.setLayoutParams(layoutParamsForLightnessBar);
 			pickerContainer.addView(lightnessSlider);
@@ -117,8 +116,8 @@ public class ColorPickerDialogBuilder {
 			lightnessSlider.setColor(initialColor);
 		}
 		if (isAlphaSliderEnabled) {
-			LinearLayout.LayoutParams layoutParamsForAlphaBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_bar_height));
-			layoutParamsForAlphaBar.setMargins(defaultMargin, 0, defaultMargin, defaultMargin);
+			LinearLayout.LayoutParams layoutParamsForAlphaBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_slider_height));
+			layoutParamsForAlphaBar.setMargins(defaultMargin, 0, defaultMargin, 0);
 			alphaSlider = new AlphaSlider(context);
 			alphaSlider.setLayoutParams(layoutParamsForAlphaBar);
 			pickerContainer.addView(alphaSlider);
