@@ -45,15 +45,16 @@ public abstract class AbsCustomSlider extends View {
 
 	protected void createBitmaps() {
 		int width = getWidth();
+		int height = getHeight();
 		bar = Bitmap.createBitmap(width - barOffsetX * 2, barHeight, Bitmap.Config.ARGB_8888);
 		barCanvas = new Canvas(bar);
+
+		if (bitmap == null || bitmap.getWidth() != width || bitmap.getHeight() != height) {
+			if (bitmap != null) bitmap.recycle();
+			bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			bitmapCanvas = new Canvas(bitmap);
+		}
 	}
-
-	protected abstract void drawBar(Canvas barCanvas);
-
-	protected abstract void onValueChanged(float value);
-
-	protected abstract void drawHandle(Canvas canvas, float x, float y);
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -67,6 +68,12 @@ public abstract class AbsCustomSlider extends View {
 		drawHandle(bitmapCanvas, x, y);
 		canvas.drawBitmap(bitmap, 0, 0, null);
 	}
+
+	protected abstract void drawBar(Canvas barCanvas);
+
+	protected abstract void onValueChanged(float value);
+
+	protected abstract void drawHandle(Canvas canvas, float x, float y);
 
 	@Override
 	public void onWindowFocusChanged(boolean hasWindowFocus) {
@@ -96,11 +103,6 @@ public abstract class AbsCustomSlider extends View {
 			height = MeasureSpec.getSize(heightMeasureSpec);
 
 		setMeasuredDimension(width, height);
-		if (bitmap == null || bitmap.getWidth() != width || bitmap.getHeight() != height) {
-			if (bitmap != null) bitmap.recycle();
-			bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			bitmapCanvas = new Canvas(bitmap);
-		}
 	}
 
 	@Override
