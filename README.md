@@ -47,6 +47,16 @@ dependencies {
 }
 ```
 
+or, you can manually download `aar` and put into your project's `libs` directory.
+
+and add dependency
+
+```groovy
+dependencies {
+	compile(name:'[arrFileName]', ext:'aar')
+}
+```
+
 
 ## Usage
 
