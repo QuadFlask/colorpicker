@@ -57,6 +57,7 @@ dependencies {
 }
 ```
 
+> check out [latestVersion] at [releases](https://github.com/QuadFlask/colorpicker/releases)
 
 ## Usage
 
