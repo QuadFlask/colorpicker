@@ -41,6 +41,11 @@ public class PaintBuilder {
 			return this;
 		}
 
+		public PaintHolder xPerMode(PorterDuff.Mode mode) {
+			this.paint.setXfermode(new PorterDuffXfermode(mode));
+			return this;
+		}
+
 		public Paint build() {
 			return this.paint;
 		}

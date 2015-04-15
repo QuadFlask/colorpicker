@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 
 import com.flask.colorpicker.ColorPickerView;
@@ -13,8 +14,7 @@ public class LightnessSlider extends AbsCustomSlider {
 	private int color;
 	private Paint barPaint = PaintBuilder.newPaint().build();
 	private Paint solid = PaintBuilder.newPaint().build();
-	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
-	private Paint stroke2 = PaintBuilder.newPaint().color(0xff000000).build();
+	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).xPerMode(PorterDuff.Mode.CLEAR).build();
 
 	private ColorPickerView colorPicker;
 
@@ -54,8 +54,7 @@ public class LightnessSlider extends AbsCustomSlider {
 	protected void drawHandle(Canvas canvas, float x, float y) {
 		solid.setColor(colorAtLightness(color, value));
 		canvas.drawCircle(x, y, handleRadius, stroke1);
-		canvas.drawCircle(x, y, handleRadius * 0.8f, stroke2);
-		canvas.drawCircle(x, y, handleRadius * 0.6f, solid);
+		canvas.drawCircle(x, y, handleRadius * 0.75f, solid);
 	}
 
 	public void setColorPicker(ColorPickerView colorPicker) {
