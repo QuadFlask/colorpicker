@@ -113,15 +113,19 @@ public class ColorPickerView extends View {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
-				lightnessSlider.setColor(getSelectedColor());
-				alphaSlider.setColor(getSelectedColor());
+				if (lightnessSlider != null)
+					lightnessSlider.setColor(getSelectedColor());
+				if (alphaSlider != null)
+					alphaSlider.setColor(getSelectedColor());
 				invalidate();
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
 				if (listener != null) listener.onColorSelected(getSelectedColor());
-				lightnessSlider.setColor(getSelectedColor());
-				alphaSlider.setColor(getSelectedColor());
+				if (lightnessSlider != null)
+					lightnessSlider.setColor(getSelectedColor());
+				if (alphaSlider != null)
+					alphaSlider.setColor(getSelectedColor());
 				invalidate();
 				break;
 			}
@@ -225,12 +229,14 @@ public class ColorPickerView extends View {
 
 	public void setLightnessSlider(LightnessSlider lightnessSlider) {
 		this.lightnessSlider = lightnessSlider;
-		this.lightnessSlider.setColorPicker(this);
+		if (lightnessSlider != null)
+			this.lightnessSlider.setColorPicker(this);
 	}
 
 	public void setAlphaSlider(AlphaSlider alphaSlider) {
 		this.alphaSlider = alphaSlider;
-		this.alphaSlider.setColorPicker(this);
+		if (alphaSlider != null)
+			this.alphaSlider.setColorPicker(this);
 	}
 
 	public void setDensity(int density) {
