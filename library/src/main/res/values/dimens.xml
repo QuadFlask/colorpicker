@@ -4,4 +4,5 @@
 	<dimen name="default_slider_margin">4dp</dimen>
 	<dimen name="default_slider_bar_height">4dp</dimen>
 	<dimen name="default_slider_handler_radius">10dp</dimen>
+	<dimen name="default_padding_side">10dp</dimen>
 </resources>

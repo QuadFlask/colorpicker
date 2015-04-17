@@ -15,6 +15,9 @@ import com.flask.colorpicker.renderer.ColorWheelRenderOption;
 import com.flask.colorpicker.renderer.ColorWheelRenderer;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
+import com.rengwuxian.materialedittext.MaterialEditText;
+
+import java.util.ArrayList;
 
 public class ColorPickerView extends View {
 	private static final float STROKE_RATIO = 2f;
@@ -33,9 +36,10 @@ public class ColorPickerView extends View {
 	private Paint selectorStroke2 = PaintBuilder.newPaint().color(0xff000000).build();
 	private ColorCircle currentColorCircle;
 
-	private OnColorSelectedListener listener;
+	private ArrayList<OnColorSelectedListener> listeners = new ArrayList<OnColorSelectedListener>();
 	private LightnessSlider lightnessSlider;
 	private AlphaSlider alphaSlider;
+	private MaterialEditText colorEdit;
 
 	private ColorWheelRenderer renderer;
 
@@ -89,6 +93,9 @@ public class ColorPickerView extends View {
 
 		if (initialColor != null) {
 			currentColorCircle = findNearestByColor(initialColor);
+			float[] hsv = new float[3];
+			Color.colorToHSV(initialColor, hsv);
+			currentColorCircle.set(currentColorCircle.getX(), currentColorCircle.getY(), hsv);
 			initialColor = null;
 		}
 	}
@@ -121,7 +128,15 @@ public class ColorPickerView extends View {
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
-				if (listener != null) listener.onColorSelected(getSelectedColor());
+				if (listeners != null) {
+					for (OnColorSelectedListener listener : listeners) {
+						try {
+							listener.onColorSelected(getSelectedColor());
+						} catch (Exception e) {
+							//Squash individual listener exceptions
+						}
+					}
+				}
 				if (lightnessSlider != null)
 					lightnessSlider.setColor(getSelectedColor());
 				if (alphaSlider != null)
@@ -213,18 +228,30 @@ public class ColorPickerView extends View {
 
 	public void setLightness(float lightness) {
 		this.lightness = lightness;
+		this.initialColor = Color.HSVToColor(getAlphaValueAsInt(), currentColorCircle.getHsvWithLightness(lightness));
+		if (this.colorEdit != null)
+			this.colorEdit.setText("#" + Integer.toHexString(this.initialColor).toUpperCase());
+		updateColorWheel();
+		invalidate();
+	}
+
+	public void setColor(int color) {
+		setInitialColor(color);
 		updateColorWheel();
 		invalidate();
 	}
 
 	public void setAlphaValue(float alpha) {
 		this.alpha = alpha;
+		this.initialColor = Color.HSVToColor(getAlphaValueAsInt(), currentColorCircle.getHsvWithLightness(this.lightness));
+		if (this.colorEdit != null)
+			this.colorEdit.setText("#" + Integer.toHexString(this.initialColor).toUpperCase());
 		updateColorWheel();
 		invalidate();
 	}
 
-	public void setOnColorSelectedListener(OnColorSelectedListener listener) {
-		this.listener = listener;
+	public void addOnColorSelectedListener(OnColorSelectedListener listener) {
+		this.listeners.add(listener);
 	}
 
 	public void setLightnessSlider(LightnessSlider lightnessSlider) {
@@ -237,6 +264,12 @@ public class ColorPickerView extends View {
 		this.alphaSlider = alphaSlider;
 		if (alphaSlider != null)
 			this.alphaSlider.setColorPicker(this);
+	}
+
+	public void setColorEdit(MaterialEditText colorEdit) {
+		this.colorEdit = colorEdit;
+		if (this.colorEdit != null)
+			this.colorEdit.setVisibility(View.VISIBLE);
 	}
 
 	public void setDensity(int density) {
