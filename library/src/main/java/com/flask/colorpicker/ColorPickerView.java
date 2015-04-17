@@ -370,7 +370,7 @@ public class ColorPickerView extends View {
 				continue;
 			LinearLayout childLayout = (LinearLayout)childView;
 			if (i == selectedColor) {
-				childLayout.setBackgroundColor(Color.YELLOW);
+				childLayout.setBackgroundColor(Color.WHITE);
 			}
 			ImageView childImage = (ImageView)childLayout.findViewById(R.id.image_preview);
 			childImage.setClickable(true);
@@ -411,7 +411,7 @@ public class ColorPickerView extends View {
 				continue;
 			LinearLayout childLayout = (LinearLayout)childView;
 			if (i == previewNumber) {
-				childLayout.setBackgroundColor(Color.YELLOW);
+				childLayout.setBackgroundColor(Color.WHITE);
 			} else {
 				childLayout.setBackgroundColor(Color.TRANSPARENT);
 			}
