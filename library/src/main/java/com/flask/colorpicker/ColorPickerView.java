@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.flask.colorpicker.builder.PaintBuilder;
 import com.flask.colorpicker.renderer.ColorWheelRenderOption;
@@ -219,7 +220,7 @@ public class ColorPickerView extends View {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 
-		this.alpha = (color >> 24 & 0xff) / 255f;
+		this.alpha = Utils.getAlphaPercent(color);
 		this.initialColor = color;
 		this.lightness = hsv[2];
 		if (renderer.getColorCircleList() != null)
@@ -231,6 +232,12 @@ public class ColorPickerView extends View {
 		this.initialColor = Color.HSVToColor(getAlphaValueAsInt(), currentColorCircle.getHsvWithLightness(lightness));
 		if (this.colorEdit != null)
 			this.colorEdit.setText("#" + Integer.toHexString(this.initialColor).toUpperCase());
+		if (this.alphaSlider != null && this.initialColor != null)
+			this.alphaSlider.setColor(this.initialColor);
+		else if (this.alphaSlider == null)
+			Toast.makeText(this.getContext(), "something weird happened", Toast.LENGTH_SHORT).show();
+		else if (this.initialColor == null)
+			Toast.makeText(this.getContext(), "something weirder happened", Toast.LENGTH_SHORT).show();
 		updateColorWheel();
 		invalidate();
 	}
@@ -246,6 +253,8 @@ public class ColorPickerView extends View {
 		this.initialColor = Color.HSVToColor(getAlphaValueAsInt(), currentColorCircle.getHsvWithLightness(this.lightness));
 		if (this.colorEdit != null)
 			this.colorEdit.setText("#" + Integer.toHexString(this.initialColor).toUpperCase());
+		if (this.lightnessSlider != null && this.initialColor != null)
+			this.lightnessSlider.setColor(this.initialColor);
 		updateColorWheel();
 		invalidate();
 	}

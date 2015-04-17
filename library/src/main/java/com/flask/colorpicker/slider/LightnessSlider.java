@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 
 import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.Utils;
 import com.flask.colorpicker.builder.PaintBuilder;
 
 public class LightnessSlider extends AbsCustomSlider {
@@ -52,7 +53,7 @@ public class LightnessSlider extends AbsCustomSlider {
 
 	@Override
 	protected void drawHandle(Canvas canvas, float x, float y) {
-		solid.setColor(colorAtLightness(color, value));
+		solid.setColor(Utils.colorAtLightness(color, value));
 		canvas.drawCircle(x, y, handleRadius, stroke1);
 		canvas.drawCircle(x, y, handleRadius * 0.75f, solid);
 	}
@@ -63,23 +64,11 @@ public class LightnessSlider extends AbsCustomSlider {
 
 	public void setColor(int color) {
 		this.color = color;
-		this.value = lightnessOfColor(color);
+		this.value = Utils.lightnessOfColor(color);
 		if (bar != null) {
 			updateBar();
 			invalidate();
 		}
 	}
 
-	private int colorAtLightness(int color, float lightness) {
-		float[] hsv = new float[3];
-		Color.colorToHSV(color, hsv);
-		hsv[2] = lightness;
-		return Color.HSVToColor(hsv);
-	}
-
-	private float lightnessOfColor(int color) {
-		float[] hsv = new float[3];
-		Color.colorToHSV(color, hsv);
-		return hsv[2];
-	}
 }
