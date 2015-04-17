@@ -301,10 +301,6 @@ public class ColorPickerView extends View {
 			this.colorEdit.setText("#" + Integer.toHexString(this.initialColor).toUpperCase());
 		if (this.alphaSlider != null && this.initialColor != null)
 			this.alphaSlider.setColor(this.initialColor);
-		else if (this.alphaSlider == null)
-			Toast.makeText(this.getContext(), "something weird happened", Toast.LENGTH_SHORT).show();
-		else if (this.initialColor == null)
-			Toast.makeText(this.getContext(), "something weirder happened", Toast.LENGTH_SHORT).show();
 		updateColorWheel();
 		invalidate();
 	}
