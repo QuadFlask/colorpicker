@@ -33,7 +33,7 @@ public class ColorPickerDialogBuilder {
 	private boolean isAlphaSliderEnabled = true;
 	private boolean isColorEditEnabled = false;
 	private boolean isPreviewEnabled = false;
-	private int pickerCount = 5;
+	private int pickerCount = 1;
 	private int defaultMargin = 0;
 	private Integer[] initialColor = new Integer[] { null, null, null, null, null};
 
