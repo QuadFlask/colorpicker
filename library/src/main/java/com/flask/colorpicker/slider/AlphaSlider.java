@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 
 import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.Utils;
 import com.flask.colorpicker.builder.PaintBuilder;
 
 public class AlphaSlider extends AbsCustomSlider {
@@ -96,14 +97,10 @@ public class AlphaSlider extends AbsCustomSlider {
 
 	public void setColor(int color) {
 		this.color = color;
-		this.value = alphaOfColor(color);
+		this.value = Utils.getAlphaPercent(color);
 		if (bar != null) {
 			updateBar();
 			invalidate();
 		}
-	}
-
-	private float alphaOfColor(int color) {
-		return (color >> 24 & 0xff) / 255f;
 	}
 }
