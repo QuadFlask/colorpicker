@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.flask.colorpicker.builder.PaintBuilder;
 import com.flask.colorpicker.renderer.ColorWheelRenderOption;
@@ -164,33 +163,30 @@ public class ColorPickerView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
+				int selectedColor = getSelectedColor();
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
-				if (lightnessSlider != null)
-					lightnessSlider.setColor(getSelectedColor());
-				if (alphaSlider != null)
-					alphaSlider.setColor(getSelectedColor());
+				setColorToSliders(selectedColor);
 				invalidate();
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
+				int selectedColor = getSelectedColor();
 				if (listeners != null) {
 					for (OnColorSelectedListener listener : listeners) {
 						try {
-							listener.onColorSelected(getSelectedColor());
+							listener.onColorSelected(selectedColor);
 						} catch (Exception e) {
 							//Squash individual listener exceptions
 						}
 					}
 				}
-				if (lightnessSlider != null)
-					lightnessSlider.setColor(getSelectedColor());
-				if (alphaSlider != null)
-					alphaSlider.setColor(getSelectedColor());
-				setColorText(getSelectedColor(), true);
-				setColorPreviewColor(getSelectedColor());
+				setColorToSliders(selectedColor);
+				setColorText(selectedColor, true);
+				setColorPreviewColor(selectedColor);
 				invalidate();
 				break;
 			}
@@ -271,13 +267,13 @@ public class ColorPickerView extends View {
 		return initialColors;
 	}
 
-
 	public void setInitialColors(Integer[] colors, int selectedColor) {
 
 		this.initialColors = colors;
 		this.colorSelection = selectedColor;
 		setInitialColor(this.initialColors[this.colorSelection]);
 	}
+
 
 	public void setInitialColor(int color) {
 		float[] hsv = new float[3];
@@ -288,10 +284,7 @@ public class ColorPickerView extends View {
 		this.initialColors[this.colorSelection] = color;
 		this.initialColor = color;
 		setColorPreviewColor(color);
-		if (this.alphaSlider != null)
-			this.alphaSlider.setColor(color);
-		if (this.lightnessSlider != null)
-			this.lightnessSlider.setColor(color);
+		setColorToSliders(color);
 		if (this.colorEdit != null)
 			setColorText(color, true);
 		if (renderer.getColorCircleList() != null)
@@ -446,6 +439,13 @@ public class ColorPickerView extends View {
 		colorEdit.setText("#" + Integer.toHexString(argb));
 		if (internal)
 			colorEdit.addTextChangedListener(colorTextChange);
+	}
+
+	private void setColorToSliders(int selectedColor) {
+		if (lightnessSlider != null)
+			lightnessSlider.setColor(selectedColor);
+		if (alphaSlider != null)
+			alphaSlider.setColor(selectedColor);
 	}
 
 	public enum WHEEL_TYPE {

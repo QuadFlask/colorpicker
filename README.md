@@ -65,7 +65,7 @@ dependencies {
 ColorPickerDialogBuilder
 	.with(context)
 	.setTitle("Choose color")
-	.initialColor(0xffffffff)
+	.initialColor(currentBackgroundColor)
 	.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 	.density(12)
 	.setOnColorSelectedListener(new OnColorSelectedListener() {
@@ -74,9 +74,9 @@ ColorPickerDialogBuilder
 			toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
 		}
 	})
-	.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+	.setPositiveButton("ok", new ColorPickerClickListener() {
 		@Override
-		public void onClick(DialogInterface dialog, int selectedColor) {
+		public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
 			changeBackgroundColor(selectedColor);
 		}
 	})
