@@ -36,7 +36,7 @@ public class ColorPickerView extends View {
 	private float alpha = 1;
 	private int backgroundColor = 0x00000000;
 
-	private Integer initialColors[] = new Integer[] { null, null, null, null, null };
+	private Integer initialColors[] = new Integer[]{null, null, null, null, null};
 	private int colorSelection = 0;
 	private Integer initialColor;
 	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
@@ -233,13 +233,13 @@ public class ColorPickerView extends View {
 		Color.colorToHSV(color, hsv);
 		ColorCircle near = null;
 		double minDiff = Double.MAX_VALUE;
-		double x = hsv[1] * Math.cos(hsv[0] / 180 * Math.PI);
-		double y = hsv[1] * Math.sin(hsv[0] / 180 * Math.PI);
+		double x = hsv[1] * Math.cos(hsv[0] * Math.PI / 180);
+		double y = hsv[1] * Math.sin(hsv[0] * Math.PI / 180);
 
 		for (ColorCircle colorCircle : renderer.getColorCircleList()) {
 			float[] hsv1 = colorCircle.getHsv();
-			double x1 = hsv1[1] * Math.cos(hsv1[0] / 180 * Math.PI);
-			double y1 = hsv1[1] * Math.sin(hsv1[0] / 180 * Math.PI);
+			double x1 = hsv1[1] * Math.cos(hsv1[0] * Math.PI / 180);
+			double y1 = hsv1[1] * Math.sin(hsv1[0] * Math.PI / 180);
 			double dx = x - x1;
 			double dy = y - y1;
 			double dist = dx * dx + dy * dy;
@@ -368,11 +368,11 @@ public class ColorPickerView extends View {
 			View childView = colorPreview.getChildAt(i);
 			if (!(childView instanceof LinearLayout))
 				continue;
-			LinearLayout childLayout = (LinearLayout)childView;
+			LinearLayout childLayout = (LinearLayout) childView;
 			if (i == selectedColor) {
 				childLayout.setBackgroundColor(Color.WHITE);
 			}
-			ImageView childImage = (ImageView)childLayout.findViewById(R.id.image_preview);
+			ImageView childImage = (ImageView) childLayout.findViewById(R.id.image_preview);
 			childImage.setClickable(true);
 			childImage.setTag(i);
 			childImage.setOnClickListener(new OnClickListener() {
@@ -383,7 +383,7 @@ public class ColorPickerView extends View {
 					Object tag = v.getTag();
 					if (tag == null || !(tag instanceof Integer))
 						return;
-					setSelectedColor((int)tag);
+					setSelectedColor((int) tag);
 				}
 			});
 		}
@@ -409,7 +409,7 @@ public class ColorPickerView extends View {
 			View childView = colorPreview.getChildAt(i);
 			if (!(childView instanceof LinearLayout))
 				continue;
-			LinearLayout childLayout = (LinearLayout)childView;
+			LinearLayout childLayout = (LinearLayout) childView;
 			if (i == previewNumber) {
 				childLayout.setBackgroundColor(Color.WHITE);
 			} else {
@@ -429,8 +429,8 @@ public class ColorPickerView extends View {
 		View childView = colorPreview.getChildAt(colorSelection);
 		if (!(childView instanceof LinearLayout))
 			return;
-		LinearLayout childLayout = (LinearLayout)childView;
-		ImageView childImage = (ImageView)childLayout.findViewById(R.id.image_preview);
+		LinearLayout childLayout = (LinearLayout) childView;
+		ImageView childImage = (ImageView) childLayout.findViewById(R.id.image_preview);
 		childImage.setImageDrawable(new ColorDrawable(newColor));
 	}
 
