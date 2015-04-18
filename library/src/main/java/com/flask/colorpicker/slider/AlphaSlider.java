@@ -16,7 +16,6 @@ import com.flask.colorpicker.builder.PaintBuilder;
 
 public class AlphaSlider extends AbsCustomSlider {
 	public int color;
-	private Shader patternShader;
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
 	private Paint barPaint = PaintBuilder.newPaint().build();
 	private Paint solid = PaintBuilder.newPaint().build();
@@ -39,8 +38,7 @@ public class AlphaSlider extends AbsCustomSlider {
 	@Override
 	protected void createBitmaps() {
 		super.createBitmaps();
-		patternShader = createAlphaPatternShader(barHeight / 2);
-		alphaPatternPaint.setShader(patternShader);
+		alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(barHeight / 2));
 	}
 
 	@Override
@@ -70,25 +68,6 @@ public class AlphaSlider extends AbsCustomSlider {
 		canvas.drawCircle(x, y, handleRadius, stroke1);
 		canvas.drawCircle(x, y, handleRadius * 0.75f, alphaPatternPaint);
 		canvas.drawCircle(x, y, handleRadius * 0.75f, solid);
-	}
-
-	private Shader createAlphaPatternShader(int size) {
-		return new BitmapShader(createAlphaBackgroundPattern(size), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-	}
-
-	private Bitmap createAlphaBackgroundPattern(int size) {
-		size /= 2;
-		size = Math.max(8, size * 2);
-		Bitmap bm = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(bm);
-		int s = Math.round(size / 2f);
-		for (int i = 0; i < 2; i++)
-			for (int j = 0; j < 2; j++) {
-				if ((i + j) % 2 == 0) alphaPatternPaint.setColor(0xffffffff);
-				else alphaPatternPaint.setColor(0xffd0d0d0);
-				c.drawRect(i * s, j * s, (i + 1) * s, (j + 1) * s, alphaPatternPaint);
-			}
-		return bm;
 	}
 
 	public void setColorPicker(ColorPickerView colorPicker) {

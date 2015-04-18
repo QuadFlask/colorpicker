@@ -42,6 +42,7 @@ public class ColorPickerView extends View {
 	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
 	private Paint selectorStroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
 	private Paint selectorStroke2 = PaintBuilder.newPaint().color(0xff000000).build();
+	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
 	private ColorCircle currentColorCircle;
 
 	private ArrayList<OnColorSelectedListener> listeners = new ArrayList<OnColorSelectedListener>();
@@ -100,6 +101,7 @@ public class ColorPickerView extends View {
 		if (colorWheel == null) {
 			colorWheel = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
 			colorWheelCanvas = new Canvas(colorWheel);
+			alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(8));
 		}
 		drawColorWheel();
 	}
@@ -209,6 +211,8 @@ public class ColorPickerView extends View {
 			colorWheelFill.setAlpha((int) (alpha * 0xff));
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * STROKE_RATIO, selectorStroke1);
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * (1 + (STROKE_RATIO - 1) / 2), selectorStroke2);
+
+			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, alphaPatternPaint);
 			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, colorWheelFill);
 		}
 	}
