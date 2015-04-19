@@ -163,7 +163,6 @@ public class ColorPickerView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
@@ -252,15 +251,11 @@ public class ColorPickerView extends View {
 		return near;
 	}
 
-	private int getAlphaValueAsInt() {
-		return Math.round(this.alpha * 255);
-	}
-
 	public int getSelectedColor() {
 		int color = 0;
 		if (currentColorCircle != null)
 			color = Color.HSVToColor(currentColorCircle.getHsvWithLightness(this.lightness));
-		return getAlphaValueAsInt() << 24 | (0x00ffffff & color);
+		return Utils.adjustAlpha(this.alpha, color);
 	}
 
 	public Integer[] getAllColors() {
@@ -293,7 +288,7 @@ public class ColorPickerView extends View {
 
 	public void setLightness(float lightness) {
 		this.lightness = lightness;
-		this.initialColor = Color.HSVToColor(getAlphaValueAsInt(), currentColorCircle.getHsvWithLightness(lightness));
+		this.initialColor = Color.HSVToColor(Utils.alphaValueAsInt(this.alpha), currentColorCircle.getHsvWithLightness(lightness));
 		if (this.colorEdit != null)
 			this.colorEdit.setText("#" + Integer.toHexString(this.initialColor).toUpperCase());
 		if (this.alphaSlider != null && this.initialColor != null)
@@ -310,7 +305,7 @@ public class ColorPickerView extends View {
 
 	public void setAlphaValue(float alpha) {
 		this.alpha = alpha;
-		this.initialColor = Color.HSVToColor(getAlphaValueAsInt(), currentColorCircle.getHsvWithLightness(this.lightness));
+		this.initialColor = Color.HSVToColor(Utils.alphaValueAsInt(this.alpha), currentColorCircle.getHsvWithLightness(this.lightness));
 		if (this.colorEdit != null)
 			this.colorEdit.setText("#" + Integer.toHexString(this.initialColor).toUpperCase());
 		if (this.lightnessSlider != null && this.initialColor != null)
