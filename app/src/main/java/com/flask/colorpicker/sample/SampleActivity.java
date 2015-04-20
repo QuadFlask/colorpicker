@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.flask.colorpicker.OnAlphaSelectedListener;
+import com.flask.colorpicker.OnLightnessSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.flask.colorpicker.ColorPickerView;
@@ -34,12 +36,24 @@ public class SampleActivity extends ActionBarActivity {
 						.initialColor(currentBackgroundColor)
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.density(12)
+                        .setOnAlphaSelectedListener(new OnAlphaSelectedListener() {
+                            @Override
+                            public void onAlphaSelected(int color) {
+                                toast("onAlphaSelected: 0x" + Integer.toHexString(color));
+                            }
+                        })
+                        .setOnLightnessSelectedListener(new OnLightnessSelectedListener() {
+                            @Override
+                            public void onLightnessSelected(int color) {
+                                toast("onLightnessSelected: 0x" + Integer.toHexString(color));
+                            }
+                        })
 						.setOnColorSelectedListener(new OnColorSelectedListener() {
-							@Override
-							public void onColorSelected(int selectedColor) {
-								toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
-							}
-						})
+                            @Override
+                            public void onColorSelected(int selectedColor) {
+                                toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                            }
+                        })
 						.setPositiveButton("ok", new ColorPickerClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
