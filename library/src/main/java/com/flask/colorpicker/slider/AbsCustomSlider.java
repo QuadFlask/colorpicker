@@ -59,14 +59,15 @@ public abstract class AbsCustomSlider extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		bitmapCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-		if (bar != null)
+		if (bar != null && bitmapCanvas != null) {
+			bitmapCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 			bitmapCanvas.drawBitmap(bar, barOffsetX, (getHeight() - bar.getHeight()) / 2, null);
 
-		float x = handleRadius + value * (getWidth() - handleRadius * 2);
-		float y = getHeight() / 2f;
-		drawHandle(bitmapCanvas, x, y);
-		canvas.drawBitmap(bitmap, 0, 0, null);
+			float x = handleRadius + value * (getWidth() - handleRadius * 2);
+			float y = getHeight() / 2f;
+			drawHandle(bitmapCanvas, x, y);
+			canvas.drawBitmap(bitmap, 0, 0, null);
+		}
 	}
 
 	protected abstract void drawBar(Canvas barCanvas);
