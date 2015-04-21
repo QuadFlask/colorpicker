@@ -31,7 +31,7 @@ public class SimpleColorWheelRenderer extends AbsColorWheelRenderer {
 				double angle = Math.PI * 2 * j / total + (Math.PI / total) * ((i + 1) % 2);
 				float x = half + (float) (radius * Math.cos(angle));
 				float y = half + (float) (radius * Math.sin(angle));
-				hsv[0] = (float) (angle / Math.PI * 180);
+				hsv[0] = (float) (angle * 180 / Math.PI);
 				hsv[1] = radius / maxRadius;
 				hsv[2] = colorWheelRenderOption.lightness;
 				selectorFill.setColor(Color.HSVToColor(hsv));

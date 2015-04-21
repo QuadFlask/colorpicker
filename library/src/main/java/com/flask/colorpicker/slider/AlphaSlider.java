@@ -1,21 +1,17 @@
 package com.flask.colorpicker.slider;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Shader;
 import android.util.AttributeSet;
 
 import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.Utils;
 import com.flask.colorpicker.builder.PaintBuilder;
 
 public class AlphaSlider extends AbsCustomSlider {
 	public int color;
-	private Shader patternShader;
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
 	private Paint barPaint = PaintBuilder.newPaint().build();
 	private Paint solid = PaintBuilder.newPaint().build();
@@ -38,8 +34,7 @@ public class AlphaSlider extends AbsCustomSlider {
 	@Override
 	protected void createBitmaps() {
 		super.createBitmaps();
-		patternShader = createAlphaPatternShader(barHeight / 2);
-		alphaPatternPaint.setShader(patternShader);
+		alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(barHeight / 2));
 	}
 
 	@Override
@@ -71,39 +66,16 @@ public class AlphaSlider extends AbsCustomSlider {
 		canvas.drawCircle(x, y, handleRadius * 0.75f, solid);
 	}
 
-	private Shader createAlphaPatternShader(int size) {
-		return new BitmapShader(createAlphaBackgroundPattern(size), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-	}
-
-	private Bitmap createAlphaBackgroundPattern(int size) {
-		size /= 2;
-		size = Math.max(8, size * 2);
-		Bitmap bm = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(bm);
-		int s = Math.round(size / 2f);
-		for (int i = 0; i < 2; i++)
-			for (int j = 0; j < 2; j++) {
-				if ((i + j) % 2 == 0) alphaPatternPaint.setColor(0xffffffff);
-				else alphaPatternPaint.setColor(0xffd0d0d0);
-				c.drawRect(i * s, j * s, (i + 1) * s, (j + 1) * s, alphaPatternPaint);
-			}
-		return bm;
-	}
-
 	public void setColorPicker(ColorPickerView colorPicker) {
 		this.colorPicker = colorPicker;
 	}
 
 	public void setColor(int color) {
 		this.color = color;
-		this.value = alphaOfColor(color);
+		this.value = Utils.getAlphaPercent(color);
 		if (bar != null) {
 			updateBar();
 			invalidate();
 		}
-	}
-
-	private float alphaOfColor(int color) {
-		return (color >> 24 & 0xff) / 255f;
 	}
 }
