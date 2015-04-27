@@ -4,4 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/PickerEditText"
     app:met_floatingLabelAlwaysShown="true"
+    app:met_baseColor="@android:color/white"
+    app:met_floatingLabel="normal"
+    app:met_primaryColor="@android:color/white"
     android:hint="Color Value"/>
