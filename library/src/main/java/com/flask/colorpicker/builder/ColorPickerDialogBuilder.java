@@ -193,7 +193,6 @@ public class ColorPickerDialogBuilder {
 			colorEdit.setText("#" + Integer.toHexString(getStartColor(initialColor)).toUpperCase());
 			colorPickerView.setColorEdit(colorEdit);
 		}
-
 		if (isPreviewEnabled) {
 			colorPreview = (LinearLayout) View.inflate(context, R.layout.color_preview, null);
 			colorPreview.setVisibility(View.GONE);
