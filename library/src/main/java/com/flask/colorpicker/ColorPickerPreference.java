@@ -42,7 +42,7 @@ public class ColorPickerPreference extends Preference {
 		alphaSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_alphaSlider, false);
 		lightSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_lightnessSlider, false);
 		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
-		wheelType = ColorPickerView.WHEEL_TYPE.get(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
+		wheelType = ColorPickerView.WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
 
 		setWidgetLayoutResource(R.layout.view_color_picker_preference);
 	}
@@ -52,7 +52,7 @@ public class ColorPickerPreference extends Preference {
 		super.onBindView(view);
 
 		selectedColorIndicator = view.findViewById(R.id.v_color_indicator);
-		circleColorDrawable = new CircleColorDrawable();
+		circleColorDrawable = new CircleColorDrawable(initialColor);
 		selectedColorIndicator.setBackgroundDrawable(circleColorDrawable);
 		updateColorIndicator();
 	}

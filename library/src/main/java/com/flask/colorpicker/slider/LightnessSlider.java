@@ -15,7 +15,7 @@ public class LightnessSlider extends AbsCustomSlider {
 	private int color;
 	private Paint barPaint = PaintBuilder.newPaint().build();
 	private Paint solid = PaintBuilder.newPaint().build();
-	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).xPerMode(PorterDuff.Mode.CLEAR).build();
+	private Paint clearingStroke = PaintBuilder.newPaint().color(0xffffffff).xPerMode(PorterDuff.Mode.CLEAR).build();
 
 	private ColorPickerView colorPicker;
 
@@ -54,7 +54,7 @@ public class LightnessSlider extends AbsCustomSlider {
 	@Override
 	protected void drawHandle(Canvas canvas, float x, float y) {
 		solid.setColor(Utils.colorAtLightness(color, value));
-		canvas.drawCircle(x, y, handleRadius, stroke1);
+		canvas.drawCircle(x, y, handleRadius, clearingStroke);
 		canvas.drawCircle(x, y, handleRadius * 0.75f, solid);
 	}
 

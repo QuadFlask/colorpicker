@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -422,7 +421,7 @@ public class ColorPickerView extends View {
 			return;
 		LinearLayout childLayout = (LinearLayout) childView;
 		ImageView childImage = (ImageView) childLayout.findViewById(R.id.image_preview);
-		childImage.setImageDrawable(new ColorDrawable(newColor));
+		childImage.setImageDrawable(new CircleColorDrawable(newColor));
 	}
 
 	private void setColorText(int argb, boolean internal) {
@@ -445,7 +444,7 @@ public class ColorPickerView extends View {
 	public enum WHEEL_TYPE {
 		FLOWER, CIRCLE;
 
-		public static WHEEL_TYPE get(int index) {
+		public static WHEEL_TYPE indexOf(int index) {
 			switch (index) {
 				case 0:
 					return FLOWER;

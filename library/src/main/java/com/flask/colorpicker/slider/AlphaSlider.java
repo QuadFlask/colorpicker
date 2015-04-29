@@ -15,7 +15,7 @@ public class AlphaSlider extends AbsCustomSlider {
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
 	private Paint barPaint = PaintBuilder.newPaint().build();
 	private Paint solid = PaintBuilder.newPaint().build();
-	private Paint stroke1 = PaintBuilder.newPaint().color(0xffffffff).xPerMode(PorterDuff.Mode.CLEAR).build();
+	private Paint clearingStroke = PaintBuilder.newPaint().color(0xffffffff).xPerMode(PorterDuff.Mode.CLEAR).build();
 
 	private ColorPickerView colorPicker;
 
@@ -61,8 +61,9 @@ public class AlphaSlider extends AbsCustomSlider {
 	protected void drawHandle(Canvas canvas, float x, float y) {
 		solid.setColor(color);
 		solid.setAlpha(Math.round(value * 255));
-		canvas.drawCircle(x, y, handleRadius, stroke1);
-		canvas.drawCircle(x, y, handleRadius * 0.75f, alphaPatternPaint);
+		canvas.drawCircle(x, y, handleRadius, clearingStroke);
+		if (value < 1)
+			canvas.drawCircle(x, y, handleRadius * 0.75f, alphaPatternPaint);
 		canvas.drawCircle(x, y, handleRadius * 0.75f, solid);
 	}
 
