@@ -35,7 +35,7 @@ public class ColorPickerDialogBuilder {
 	private boolean isPreviewEnabled = false;
 	private int pickerCount = 1;
 	private int defaultMargin = 0;
-	private Integer[] initialColor = new Integer[] { null, null, null, null, null};
+	private Integer[] initialColor = new Integer[]{null, null, null, null, null};
 
 	private ColorPickerDialogBuilder(Context context) {
 		builder = new AlertDialog.Builder(context);
@@ -49,20 +49,6 @@ public class ColorPickerDialogBuilder {
 		colorPickerView = new ColorPickerView(context);
 
 		pickerContainer.addView(colorPickerView, layoutParamsForColorPickerView);
-
-		colorPreview = (LinearLayout)View.inflate(context, R.layout.color_preview, null);
-		colorPreview.setVisibility(View.GONE);
-		pickerContainer.addView(colorPreview);
-
-		LinearLayout.LayoutParams layoutParamsForColorEdit = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		int padSide = getDimensionAsPx(context, R.dimen.default_padding_side);
-		layoutParamsForColorEdit.leftMargin = padSide;
-		layoutParamsForColorEdit.rightMargin = padSide;
-		colorEdit = (MaterialEditText)View.inflate(context, R.layout.picker_edit, null);
-		colorEdit.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-		colorEdit.setMaxCharacters(9);
-		colorEdit.setVisibility(View.GONE);
-		pickerContainer.addView(colorEdit, layoutParamsForColorEdit);
 
 		builder.setView(pickerContainer);
 	}
@@ -193,13 +179,26 @@ public class ColorPickerDialogBuilder {
 			colorPickerView.setAlphaSlider(alphaSlider);
 			alphaSlider.setColor(getStartColor(initialColor));
 		}
-
 		if (isColorEditEnabled) {
+			LinearLayout.LayoutParams layoutParamsForColorEdit = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			int padSide = getDimensionAsPx(context, R.dimen.default_padding_side);
+			layoutParamsForColorEdit.leftMargin = padSide;
+			layoutParamsForColorEdit.rightMargin = padSide;
+			colorEdit = (MaterialEditText) View.inflate(context, R.layout.picker_edit, null);
+			colorEdit.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+			colorEdit.setMaxCharacters(9);
+			colorEdit.setVisibility(View.GONE);
+			pickerContainer.addView(colorEdit, layoutParamsForColorEdit);
+
 			colorEdit.setText("#" + Integer.toHexString(getStartColor(initialColor)).toUpperCase());
 			colorPickerView.setColorEdit(colorEdit);
 		}
 
 		if (isPreviewEnabled) {
+			colorPreview = (LinearLayout) View.inflate(context, R.layout.color_preview, null);
+			colorPreview.setVisibility(View.GONE);
+			pickerContainer.addView(colorPreview);
+
 			if (initialColor.length == 0) {
 				ImageView colorImage = (ImageView) View.inflate(context, R.layout.color_selector, null);
 				colorImage.setImageDrawable(new ColorDrawable(Color.WHITE));
@@ -208,17 +207,13 @@ public class ColorPickerDialogBuilder {
 					if (initialColor[i] == null)
 						break;
 					LinearLayout colorLayout = (LinearLayout) View.inflate(context, R.layout.color_selector, null);
-					ImageView colorImage = (ImageView)colorLayout.findViewById(R.id.image_preview);
+					ImageView colorImage = (ImageView) colorLayout.findViewById(R.id.image_preview);
 					colorImage.setImageDrawable(new ColorDrawable(initialColor[i]));
 					colorPreview.addView(colorLayout);
 				}
 			}
 			colorPreview.setVisibility(View.VISIBLE);
 			colorPickerView.setColorPreview(colorPreview, getStartOffset(initialColor));
-		}
-
-		if (isPreviewEnabled) {
-
 		}
 
 		return builder.create();
