@@ -269,7 +269,6 @@ public class ColorPickerView extends View {
 		setInitialColor(this.initialColors[this.colorSelection]);
 	}
 
-
 	public void setInitialColor(int color) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
@@ -444,6 +443,16 @@ public class ColorPickerView extends View {
 	}
 
 	public enum WHEEL_TYPE {
-		FLOWER, CIRCLE
+		FLOWER, CIRCLE;
+
+		public static WHEEL_TYPE get(int index) {
+			switch (index) {
+				case 0:
+					return FLOWER;
+				case 1:
+					return CIRCLE;
+			}
+			return FLOWER;
+		}
 	}
 }

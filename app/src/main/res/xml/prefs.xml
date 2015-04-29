@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+	<PreferenceCategory
+		android:title="Color">
+		<com.flask.colorpicker.ColorPickerPreference
+			android:defaultValue="0xffff0000"
+			android:key="color_picker_preference"
+			android:title="Color"
+			app:alphaSlider="true"
+			app:lightnessSlider="true"
+			app:density="12"
+			/>
+	</PreferenceCategory>
+</PreferenceScreen>

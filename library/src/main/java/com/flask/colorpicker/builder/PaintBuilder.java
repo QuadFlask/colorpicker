@@ -50,6 +50,11 @@ public class PaintBuilder {
 			return this;
 		}
 
+		public PaintHolder shader(Shader shader) {
+			this.paint.setShader(shader);
+			return this;
+		}
+
 		public Paint build() {
 			return this.paint;
 		}
