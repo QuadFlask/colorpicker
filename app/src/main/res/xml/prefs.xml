@@ -8,8 +8,28 @@
 			android:key="color_picker_preference"
 			android:title="Color"
 			app:alphaSlider="true"
-			app:lightnessSlider="true"
 			app:density="12"
+			app:lightnessSlider="true"
 			/>
+		<com.flask.colorpicker.ColorPickerPreference
+			android:defaultValue="0xff00ff00"
+			android:key="color_picker_preference2"
+			android:title="Color2"
+			app:alphaSlider="false"
+			app:density="10"
+			app:lightnessSlider="true"
+			/>
+		<com.flask.colorpicker.ColorPickerPreference
+			android:defaultValue="0xff0000ff"
+			android:key="color_picker_preference3"
+			android:title="Color3"
+			app:alphaSlider="false"
+			app:density="8"
+			app:lightnessSlider="false"
+			/>
+		<CheckBoxPreference
+			android:key="color_picker_preference4"
+			android:title="Color"/>
+
 	</PreferenceCategory>
 </PreferenceScreen>

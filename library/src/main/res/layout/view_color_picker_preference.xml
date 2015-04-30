@@ -1,66 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:minHeight="?android:attr/listPreferredItemHeight"
-              android:gravity="center_vertical"
-              android:paddingRight="?android:attr/scrollbarSize"
-              android:background="?android:attr/selectableItemBackground">
-
-	<ImageView
-		android:id="@+android:id/icon"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		/>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:gravity="center_vertical"
+	android:minHeight="?android:attr/listPreferredItemHeight"
+	android:paddingRight="?android:attr/scrollbarSize">
 
 	<RelativeLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginLeft="15dip"
-		android:layout_marginRight="6dip"
-		android:layout_marginTop="6dip"
-		android:layout_marginBottom="6dip"
-		android:layout_weight="1">
+		>
 
 		<TextView
 			android:id="@+id/title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:singleLine="true"
-			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:ellipsize="marquee"
 			android:fadingEdge="horizontal"
-			android:text="Title"/>
+			android:singleLine="true"
+			android:text="Title"
+			android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 		<TextView
 			android:id="@+id/summary"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_below="@+id/title"
 			android:layout_alignLeft="@+id/title"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textColor="?android:attr/textColorSecondary"
+			android:layout_below="@+id/title"
 			android:maxLines="4"
-			android:text="summary"/>
+			android:text="summary"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:textColor="?android:attr/textColorSecondary"/>
 
 		<View
 			android:id="@+id/v_color_indicator"
-		    android:layout_width="24dp"
-		    android:layout_height="24dp"
-		    android:layout_alignParentRight="true"
-		    android:layout_centerVertical="true"
-		    android:layout_marginRight="6dp"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="6dp"
 			></View>
 
 	</RelativeLayout>
-
-	<!-- Preference should place its actual preference widget here. -->
-	<LinearLayout
-		android:id="@+id/widget_frame"
-		android:layout_width="wrap_content"
-		android:layout_height="match_parent"
-		android:gravity="center_vertical"
-		android:orientation="vertical"/>
-
 </LinearLayout>

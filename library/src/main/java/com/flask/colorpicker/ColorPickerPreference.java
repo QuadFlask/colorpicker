@@ -78,7 +78,7 @@ public class ColorPickerPreference extends Preference {
 		ColorPickerDialogBuilder builder = ColorPickerDialogBuilder
 				.with(getContext())
 				.setTitle("Choose color")
-				.initialColor(initialColor)
+				.initialColor(selectedColor)
 				.wheelType(wheelType)
 				.density(density)
 				.setPositiveButton("ok", new ColorPickerClickListener() {
@@ -89,7 +89,8 @@ public class ColorPickerPreference extends Preference {
 						updateColorIndicator();
 						notifyChanged();
 					}
-				});
+				})
+				.setNegativeButton("cancel", null);
 
 		if (!alphaSlider && !lightSlider) builder.noSliders();
 		else if (alphaSlider && lightSlider) {

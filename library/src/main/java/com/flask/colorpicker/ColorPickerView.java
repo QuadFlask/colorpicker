@@ -107,6 +107,8 @@ public class ColorPickerView extends View {
 	private void drawColorWheel() {
 		colorWheelCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
+		if (renderer == null) return;
+
 		float half = colorWheelCanvas.getWidth() / 2f;
 		float strokeWidth = STROKE_RATIO * (1f + ColorWheelRenderer.GAP_PERCENTAGE);
 		float maxRadius = half - strokeWidth - half / density;

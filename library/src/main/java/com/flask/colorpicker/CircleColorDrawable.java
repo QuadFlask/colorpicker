@@ -2,6 +2,8 @@ package com.flask.colorpicker;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Xfermode;
 import android.graphics.drawable.ColorDrawable;
 
 import com.flask.colorpicker.builder.PaintBuilder;
@@ -18,25 +20,26 @@ public class CircleColorDrawable extends ColorDrawable {
 
 	public CircleColorDrawable(int color) {
 		super(color);
-		invalidateSelf();
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		super.draw(canvas);
+		canvas.drawColor(0);
 
-		int intrinsicWidth = getIntrinsicWidth();
-		float radius = intrinsicWidth / 2f;
+		int width = canvas.getWidth();
+		float radius = width / 2f;
+		strokeWidth = radius / 8f;
 
-		canvas.drawCircle(radius, radius, radius - strokeWidth / 2, fillBackPaint);
-		canvas.drawCircle(radius, radius, radius - strokeWidth / 2, fillPaint);
+		this.strokePaint.setStrokeWidth(strokeWidth);
+		this.fillPaint.setColor(getColor());
+		canvas.drawCircle(radius, radius, radius - strokeWidth * 1.5f, fillBackPaint);
+		canvas.drawCircle(radius, radius, radius - strokeWidth * 1.5f, fillPaint);
 		canvas.drawCircle(radius, radius, radius - strokeWidth, strokePaint);
 	}
 
 	@Override
 	public void setColor(int color) {
 		super.setColor(color);
-		this.fillPaint.setColor(getColor());
 		invalidateSelf();
 	}
 }
