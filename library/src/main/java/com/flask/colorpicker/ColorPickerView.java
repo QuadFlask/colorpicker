@@ -1,6 +1,7 @@
 package com.flask.colorpicker;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.flask.colorpicker.builder.ColorWheelRendererBuilder;
 import com.flask.colorpicker.builder.PaintBuilder;
 import com.flask.colorpicker.renderer.ColorWheelRenderOption;
 import com.flask.colorpicker.renderer.ColorWheelRenderer;
@@ -77,10 +79,32 @@ public class ColorPickerView extends View {
 
 	public ColorPickerView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		initWith(context, attrs);
 	}
 
 	public ColorPickerView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
+		initWith(context, attrs);
+	}
+
+	private void initWith(Context context, AttributeSet attrs) {
+		final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference);
+
+//		final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference);
+//		alphaSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_alphaSlider, false);
+//		lightSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_lightnessSlider, false);
+//		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
+//		initialColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
+//		wheelType = ColorPickerView.WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
+
+		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
+		initialColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
+		WHEEL_TYPE wheelType = WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
+		ColorWheelRenderer renderer = ColorWheelRendererBuilder.getRenderer(wheelType);
+
+		setRenderer(renderer);
+		setDensity(density);
+		setInitialColor(initialColor);
 	}
 
 	@Override
