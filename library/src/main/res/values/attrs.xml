@@ -4,6 +4,7 @@
 		<attr name="alphaSlider" format="boolean"/>
 		<attr name="lightnessSlider" format="boolean"/>
 		<attr name="density" format="integer"/>
+		<attr name="initialColor" format="integer"/>
 		<attr name="wheelType" format="enum">
 			<enum name="FLOWER" value="0"/>
 			<enum name="CIRCLE" value="1"/>

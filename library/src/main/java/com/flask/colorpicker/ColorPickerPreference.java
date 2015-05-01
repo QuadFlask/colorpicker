@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.flask.colorpicker.builder.ColorPickerClickListener;
@@ -42,7 +43,9 @@ public class ColorPickerPreference extends Preference {
 		alphaSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_alphaSlider, false);
 		lightSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_lightnessSlider, false);
 		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
+		initialColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
 		wheelType = ColorPickerView.WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
+		selectedColor = initialColor;
 
 		setWidgetLayoutResource(R.layout.view_color_picker_preference);
 	}
