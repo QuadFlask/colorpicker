@@ -9,5 +9,7 @@
 			<enum name="FLOWER" value="0"/>
 			<enum name="CIRCLE" value="1"/>
 		</attr>
+		<attr name="lightnessSliderView" format="reference"/>
+		<attr name="alphaSliderView" format="reference"/>
 	</declare-styleable>
 </resources>

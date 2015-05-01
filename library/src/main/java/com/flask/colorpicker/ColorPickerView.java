@@ -95,6 +95,13 @@ public class ColorPickerView extends View {
 		WHEEL_TYPE wheelType = WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
 		ColorWheelRenderer renderer = ColorWheelRendererBuilder.getRenderer(wheelType);
 
+		int alphaSliderViewId = typedArray.getResourceId(R.styleable.ColorPickerPreference_alphaSliderView, -1);
+		if (alphaSliderViewId != -1)
+			setAlphaSlider((AlphaSlider) getRootView().findViewById(alphaSliderViewId));
+		int lightnessSliderView = typedArray.getResourceId(R.styleable.ColorPickerPreference_alphaSliderView, -1);
+		if (lightnessSliderView != -1)
+			setLightnessSlider((LightnessSlider) getRootView().findViewById(lightnessSliderView));
+
 		setRenderer(renderer);
 		setDensity(density);
 		setInitialColor(initialColor);

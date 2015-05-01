@@ -13,6 +13,20 @@
 		app:density="12"
 		app:lightnessSlider="true"
 		app:wheelType="FLOWER"
+	    app:alphaSliderView="@+id/v_alphaslider"
+		app:lightnessSliderView="@+id/v_lightnessSlider"
+		/>
+
+	<com.flask.colorpicker.slider.AlphaSlider
+		android:id="@+id/v_alphaslider"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		/>
+
+	<com.flask.colorpicker.slider.LightnessSlider
+		android:id="@+id/v_lightnessslider"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		/>
 
 </LinearLayout>
