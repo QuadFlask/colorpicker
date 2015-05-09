@@ -73,6 +73,8 @@ public class ColorPickerView extends View {
 
 	private ColorWheelRenderer renderer;
 
+	private int alphaSliderViewId, lightnessSliderViewId;
+
 	public ColorPickerView(Context context) {
 		super(context);
 	}
@@ -95,16 +97,23 @@ public class ColorPickerView extends View {
 		WHEEL_TYPE wheelType = WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
 		ColorWheelRenderer renderer = ColorWheelRendererBuilder.getRenderer(wheelType);
 
-		int alphaSliderViewId = typedArray.getResourceId(R.styleable.ColorPickerPreference_alphaSliderView, -1);
-		if (alphaSliderViewId != -1)
-			setAlphaSlider((AlphaSlider) getRootView().findViewById(alphaSliderViewId));
-		int lightnessSliderView = typedArray.getResourceId(R.styleable.ColorPickerPreference_alphaSliderView, -1);
-		if (lightnessSliderView != -1)
-			setLightnessSlider((LightnessSlider) getRootView().findViewById(lightnessSliderView));
+		alphaSliderViewId = typedArray.getResourceId(R.styleable.ColorPickerPreference_alphaSliderView, 0);
+		lightnessSliderViewId = typedArray.getResourceId(R.styleable.ColorPickerPreference_lightnessSliderView, 0);
 
 		setRenderer(renderer);
 		setDensity(density);
 		setInitialColor(initialColor);
+	}
+
+	// FIXME Is it correct to find referenced view?
+	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
+
+		if (alphaSliderViewId != 0)
+			setAlphaSlider((AlphaSlider) getRootView().findViewById(alphaSliderViewId));
+		if (lightnessSliderViewId != 0)
+			setLightnessSlider((LightnessSlider) getRootView().findViewById(lightnessSliderViewId));
 	}
 
 	@Override
@@ -343,14 +352,18 @@ public class ColorPickerView extends View {
 
 	public void setLightnessSlider(LightnessSlider lightnessSlider) {
 		this.lightnessSlider = lightnessSlider;
-		if (lightnessSlider != null)
+		if (lightnessSlider != null) {
 			this.lightnessSlider.setColorPicker(this);
+			this.lightnessSlider.setColor(getSelectedColor());
+		}
 	}
 
 	public void setAlphaSlider(AlphaSlider alphaSlider) {
 		this.alphaSlider = alphaSlider;
-		if (alphaSlider != null)
+		if (alphaSlider != null) {
 			this.alphaSlider.setColorPicker(this);
+			this.alphaSlider.setColor(getSelectedColor());
+		}
 	}
 
 	public void setColorEdit(MaterialEditText colorEdit) {

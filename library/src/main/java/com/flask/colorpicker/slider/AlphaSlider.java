@@ -54,7 +54,8 @@ public class AlphaSlider extends AbsCustomSlider {
 
 	@Override
 	protected void onValueChanged(float value) {
-		colorPicker.setAlphaValue(value);
+		if (colorPicker != null)
+			colorPicker.setAlphaValue(value);
 	}
 
 	@Override

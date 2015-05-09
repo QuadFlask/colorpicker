@@ -48,7 +48,8 @@ public class LightnessSlider extends AbsCustomSlider {
 
 	@Override
 	protected void onValueChanged(float value) {
-		colorPicker.setLightness(value);
+		if (colorPicker != null)
+			colorPicker.setLightness(value);
 	}
 
 	@Override
