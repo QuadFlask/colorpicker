@@ -3,11 +3,11 @@ language: android
 sudo: false
 
 android:
-  components:
-      - build-tools-22.0.1
-      - android-22
-      - extra-google-m2repository
-      - extra-android-m2repository
+	components:
+		- build-tools-22.0.1
+		- android-22
+		- extra-google-m2repository
+		- extra-android-m2repository
 
-   licenses:
-      - android-sdk-license-.+
+	licenses:
+		- android-sdk-license-.+
