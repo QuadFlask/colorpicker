@@ -91,7 +91,7 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
-	public ColorPickerDialogBuilder setPositiveButton(String text, final ColorPickerClickListener onClickListener) {
+	public ColorPickerDialogBuilder setPositiveButton(CharSequence text, final ColorPickerClickListener onClickListener) {
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -103,7 +103,7 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
-	public ColorPickerDialogBuilder setNegativeButton(String text, DialogInterface.OnClickListener onClickListener) {
+	public ColorPickerDialogBuilder setNegativeButton(CharSequence text, DialogInterface.OnClickListener onClickListener) {
 		builder.setNegativeButton(text, onClickListener);
 		return this;
 	}
