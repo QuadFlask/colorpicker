@@ -7,8 +7,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
@@ -53,6 +53,9 @@ public class ColorPickerPreference extends Preference {
 	@Override
 	protected void onBindView(View view) {
 		super.onBindView(view);
+
+		((TextView) view.findViewById(R.id.title)).setText(getTitle());
+		((TextView) view.findViewById(R.id.summary)).setText(getSummary());
 
 		selectedColorIndicator = view.findViewById(R.id.v_color_indicator);
 		circleColorDrawable = new CircleColorDrawable(initialColor);
