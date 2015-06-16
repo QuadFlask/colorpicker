@@ -120,6 +120,7 @@ public class ColorPickerView extends View {
 	public void onWindowFocusChanged(boolean hasWindowFocus) {
 		super.onWindowFocusChanged(hasWindowFocus);
 		updateColorWheel();
+		currentColorCircle = findNearestByColor(initialColor);
 	}
 
 	private void updateColorWheel() {
@@ -159,14 +160,6 @@ public class ColorPickerView extends View {
 		renderer.initWith(colorWheelRenderOption);
 
 		renderer.draw();
-
-		if (initialColor != null) {
-			currentColorCircle = findNearestByColor(initialColor);
-			float[] hsv = new float[3];
-			Color.colorToHSV(initialColor, hsv);
-			currentColorCircle.set(currentColorCircle.getX(), currentColorCircle.getY(), hsv);
-			initialColor = null;
-		}
 	}
 
 	@Override
@@ -200,8 +193,9 @@ public class ColorPickerView extends View {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
-				int selectedColor = getSelectedColor();
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
+				int selectedColor = getSelectedColor();
+				initialColor = selectedColor;
 				setColorToSliders(selectedColor);
 				invalidate();
 				break;
