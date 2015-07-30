@@ -106,7 +106,7 @@ public class ColorPickerPreference extends Preference {
 		colorChoiceDrawable.setColor(tmpColor);
 		colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
 			TypedValue.COMPLEX_UNIT_DIP,
-			2,
+			1,
 			res.getDisplayMetrics()
 		), darken(tmpColor, .8f));
 
