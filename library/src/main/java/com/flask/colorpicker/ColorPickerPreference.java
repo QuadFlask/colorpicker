@@ -2,27 +2,37 @@ package com.flask.colorpicker;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 public class ColorPickerPreference extends Preference {
+
 	protected boolean alphaSlider;
 	protected boolean lightSlider;
-	protected int initialColor = 0;
+
 	protected int selectedColor = 0;
+
 	protected ColorPickerView.WHEEL_TYPE wheelType;
 	protected int density;
 
-	protected View selectedColorIndicator;
-	private CircleColorDrawable circleColorDrawable;
+	private String pickerTitle;
+	private String pickerButtonCancel;
+	private String pickerButtonOk;
+
+	protected ImageView colorIndicator;
+
 
 	public ColorPickerPreference(Context context) {
 		super(context);
@@ -38,136 +48,110 @@ public class ColorPickerPreference extends Preference {
 		initWith(context, attrs);
 	}
 
+
 	private void initWith(Context context, AttributeSet attrs) {
 		final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference);
-		alphaSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_alphaSlider, false);
-		lightSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_lightnessSlider, false);
-		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
-		initialColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
-		wheelType = ColorPickerView.WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
-		selectedColor = initialColor;
 
-		setWidgetLayoutResource(R.layout.view_color_picker_preference);
+		try {
+			alphaSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_alphaSlider, false);
+			lightSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_lightnessSlider, false);
+
+			density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
+			wheelType = ColorPickerView.WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
+
+			selectedColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
+
+			pickerTitle = typedArray.getString(R.styleable.ColorPickerPreference_pickerTitle);
+			if (pickerTitle==null)
+				pickerTitle = "Choose color";
+
+			pickerButtonCancel = typedArray.getString(R.styleable.ColorPickerPreference_pickerButtonCancel);
+			if (pickerButtonCancel==null)
+				pickerButtonCancel = "cancel";
+
+			pickerButtonOk = typedArray.getString(R.styleable.ColorPickerPreference_pickerButtonOk);
+			if (pickerButtonOk==null)
+				pickerButtonOk = "ok";
+
+		} finally {
+			typedArray.recycle();
+		}
+
+		setWidgetLayoutResource(R.layout.color_widget);
 	}
+
 
 	@Override
-	protected void onBindView(View view) {
+	protected void onBindView(@NonNull View view) {
 		super.onBindView(view);
 
-		((TextView) view.findViewById(R.id.title)).setText(getTitle());
-		((TextView) view.findViewById(R.id.summary)).setText(getSummary());
+		Resources res = view.getContext().getResources();
+		GradientDrawable colorChoiceDrawable = null;
 
-		selectedColorIndicator = view.findViewById(R.id.v_color_indicator);
-		circleColorDrawable = new CircleColorDrawable(initialColor);
-		selectedColorIndicator.setBackgroundDrawable(circleColorDrawable);
-		updateColorIndicator();
+		colorIndicator = (ImageView) view.findViewById(R.id.color_indicator);
+
+		Drawable currentDrawable = colorIndicator.getDrawable();
+		if (currentDrawable!=null && currentDrawable instanceof GradientDrawable)
+			colorChoiceDrawable = (GradientDrawable) currentDrawable;
+
+		if (colorChoiceDrawable==null) {
+			colorChoiceDrawable = new GradientDrawable();
+			colorChoiceDrawable.setShape(GradientDrawable.OVAL);
+		}
+
+		int darkenedColor = Color.rgb(
+			Color.red(selectedColor) * 192 / 256,
+			Color.green(selectedColor) * 192 / 256,
+			Color.blue(selectedColor) * 192 / 256
+		);
+
+		colorChoiceDrawable.setColor(selectedColor);
+		colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
+			TypedValue.COMPLEX_UNIT_DIP,
+			1,
+			res.getDisplayMetrics()
+		), darkenedColor);
+
+		colorIndicator.setImageDrawable(colorChoiceDrawable);
 	}
 
-	protected void updateColorIndicator() {
-		circleColorDrawable.setColor(selectedColor);
+	public void setValue(int value) {
+		if (callChangeListener(value)) {
+			selectedColor = value;
+			persistInt(value);
+			notifyChanged();
+		}
 	}
 
 	@Override
 	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-		if (restoreValue) {
-			initialColor = getPersistedInt(initialColor);
-			selectedColor = initialColor;
-		} else {
-			initialColor = (Integer) defaultValue;
-			selectedColor = initialColor;
-			persistInt(initialColor);
-		}
+		setValue(restoreValue ? getPersistedInt(0) : (Integer) defaultValue);
 	}
+
 
 	@Override
 	protected void onClick() {
 		ColorPickerDialogBuilder builder = ColorPickerDialogBuilder
-				.with(getContext())
-				.setTitle("Choose color")
-				.initialColor(selectedColor)
-				.wheelType(wheelType)
-				.density(density)
-				.setPositiveButton("ok", new ColorPickerClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int selectedColorFromPicker, Integer[] allColors) {
-						selectedColor = selectedColorFromPicker;
-						persistInt(selectedColor);
-						updateColorIndicator();
-						notifyChanged();
-					}
-				})
-				.setNegativeButton("cancel", null);
+			.with(getContext())
+			.setTitle(pickerTitle)
+			.initialColor(selectedColor)
+			.wheelType(wheelType)
+			.density(density)
+			.setPositiveButton(pickerButtonOk, new ColorPickerClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int selectedColorFromPicker, Integer[] allColors) {
+					setValue(selectedColorFromPicker);
+				}
+			})
+			.setNegativeButton(pickerButtonCancel, null);
 
 		if (!alphaSlider && !lightSlider) builder.noSliders();
-		else if (alphaSlider && lightSlider) {
-		} else if (alphaSlider) builder.alphaSliderOnly();
-		else if (lightSlider) builder.lightnessSliderOnly();
+		else if (!alphaSlider) builder.lightnessSliderOnly();
+		else if (!lightSlider) builder.alphaSliderOnly();
+
 
 		builder
-				.build()
-				.show();
-	}
-
-	@Override
-	protected Parcelable onSaveInstanceState() {
-		Parcelable parcelable = super.onSaveInstanceState();
-		if (isPersistent()) return parcelable;
-
-		final SavedState savedState = new SavedState(parcelable);
-		savedState.setSelectedColor(this.selectedColor);
-		return savedState;
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Parcelable state) {
-		if (!state.getClass().equals(SavedState.class)) {
-			super.onRestoreInstanceState(state);
-		} else {
-			SavedState savedState = (SavedState) state;
-			super.onRestoreInstanceState(savedState.getSuperState());
-			this.selectedColor = savedState.getSelectedColor();
-			updateColorIndicator();
-			notifyChanged();
-
-			super.onRestoreInstanceState(state);
-		}
-	}
-
-	static class SavedState extends BaseSavedState {
-		private int selectedColor;
-
-		@SuppressWarnings("unused")
-		public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-			public SavedState createFromParcel(Parcel in) {
-				return new SavedState(in);
-			}
-
-			public SavedState[] newArray(int size) {
-				return new SavedState[size];
-			}
-		};
-
-		@Override
-		public void writeToParcel(Parcel dest, int flags) {
-			super.writeToParcel(dest, flags);
-			dest.writeInt(selectedColor);
-		}
-
-		public SavedState(Parcel source) {
-			super(source);
-			selectedColor = source.readInt();
-		}
-
-		public SavedState(Parcelable superState) {
-			super(superState);
-		}
-
-		public void setSelectedColor(int selectedColor) {
-			this.selectedColor = selectedColor;
-		}
-
-		public int getSelectedColor() {
-			return selectedColor;
-		}
+			.build()
+			.show();
 	}
 }
