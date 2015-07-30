@@ -99,18 +99,16 @@ public class ColorPickerPreference extends Preference {
 			colorChoiceDrawable.setShape(GradientDrawable.OVAL);
 		}
 
-		int darkenedColor = Color.rgb(
-			Color.red(selectedColor) * 192 / 256,
-			Color.green(selectedColor) * 192 / 256,
-			Color.blue(selectedColor) * 192 / 256
-		);
+		int tmpColor = isEnabled()
+			? selectedColor
+			: darken(selectedColor, .5f);
 
-		colorChoiceDrawable.setColor(selectedColor);
+		colorChoiceDrawable.setColor(tmpColor);
 		colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
 			TypedValue.COMPLEX_UNIT_DIP,
-			1,
+			2,
 			res.getDisplayMetrics()
-		), darkenedColor);
+		), darken(tmpColor, .8f));
 
 		colorIndicator.setImageDrawable(colorChoiceDrawable);
 	}
@@ -153,5 +151,17 @@ public class ColorPickerPreference extends Preference {
 		builder
 			.build()
 			.show();
+	}
+
+	public static int darken(int color, float factor) {
+		int a = Color.alpha(color);
+		int r = Color.red(color);
+		int g = Color.green(color);
+		int b = Color.blue(color);
+
+		return Color.argb(a,
+			Math.max((int)(r * factor), 0),
+			Math.max((int)(g * factor), 0),
+			Math.max((int)(b * factor), 0));
 	}
 }
