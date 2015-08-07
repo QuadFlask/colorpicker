@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -18,7 +19,6 @@ import com.flask.colorpicker.R;
 import com.flask.colorpicker.renderer.ColorWheelRenderer;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class ColorPickerDialogBuilder {
 	private AlertDialog.Builder builder;
@@ -26,7 +26,7 @@ public class ColorPickerDialogBuilder {
 	private ColorPickerView colorPickerView;
 	private LightnessSlider lightnessSlider;
 	private AlphaSlider alphaSlider;
-	private MaterialEditText colorEdit;
+	private EditText colorEdit;
 	private LinearLayout colorPreview;
 
 	private boolean isLightnessSliderEnabled = true;
@@ -184,9 +184,9 @@ public class ColorPickerDialogBuilder {
 			int padSide = getDimensionAsPx(context, R.dimen.default_padding_side);
 			layoutParamsForColorEdit.leftMargin = padSide;
 			layoutParamsForColorEdit.rightMargin = padSide;
-			colorEdit = (MaterialEditText) View.inflate(context, R.layout.picker_edit, null);
+			colorEdit = (EditText) View.inflate(context, R.layout.picker_edit, null);
 			colorEdit.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-			colorEdit.setMaxCharacters(9);
+			colorEdit.setSingleLine();
 			colorEdit.setVisibility(View.GONE);
 			pickerContainer.addView(colorEdit, layoutParamsForColorEdit);
 

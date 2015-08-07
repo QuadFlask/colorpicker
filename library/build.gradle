@@ -21,7 +21,4 @@ android {
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 	compile 'com.android.support:appcompat-v7:22.0.0'
-	compile ('com.rengwuxian.materialedittext:library:2.0.3') {
-		transitive = true;
-	}
 }

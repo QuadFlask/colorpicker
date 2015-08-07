@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -21,7 +22,6 @@ import com.flask.colorpicker.renderer.ColorWheelRenderOption;
 import com.flask.colorpicker.renderer.ColorWheelRenderer;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class ColorPickerView extends View {
 	private ArrayList<OnColorSelectedListener> listeners = new ArrayList<OnColorSelectedListener>();
 	private LightnessSlider lightnessSlider;
 	private AlphaSlider alphaSlider;
-	private MaterialEditText colorEdit;
+	private EditText colorEdit;
 	private TextWatcher colorTextChange = new TextWatcher() {
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -360,7 +360,7 @@ public class ColorPickerView extends View {
 		}
 	}
 
-	public void setColorEdit(MaterialEditText colorEdit) {
+	public void setColorEdit(EditText colorEdit) {
 		this.colorEdit = colorEdit;
 		if (this.colorEdit != null)
 			this.colorEdit.setVisibility(View.VISIBLE);
