@@ -120,7 +120,8 @@ public abstract class AbsCustomSlider extends View {
 			}
 			case MotionEvent.ACTION_UP: {
 				onValueChanged(value);
-				onValueChangedListener.onValueChanged(value);
+				if (onValueChangedListener != null)
+					onValueChangedListener.onValueChanged(value);
 				invalidate();
 			}
 		}
