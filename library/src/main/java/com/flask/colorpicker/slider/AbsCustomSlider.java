@@ -16,6 +16,7 @@ public abstract class AbsCustomSlider extends View {
 	protected Canvas bitmapCanvas;
 	protected Bitmap bar;
 	protected Canvas barCanvas;
+	protected OnValueChangedListener onValueChangedListener;
 	protected int barOffsetX;
 	protected int handleRadius = 20;
 	protected int barHeight = 5;
@@ -119,6 +120,7 @@ public abstract class AbsCustomSlider extends View {
 			}
 			case MotionEvent.ACTION_UP: {
 				onValueChanged(value);
+				onValueChangedListener.onValueChanged(value);
 				invalidate();
 			}
 		}
@@ -127,5 +129,9 @@ public abstract class AbsCustomSlider extends View {
 
 	protected int getDimension(@DimenRes int id) {
 		return getResources().getDimensionPixelSize(id);
+	}
+
+	public void setOnValueChangedListener(OnValueChangedListener onValueChangedListener) {
+		this.onValueChangedListener = onValueChangedListener;
 	}
 }
