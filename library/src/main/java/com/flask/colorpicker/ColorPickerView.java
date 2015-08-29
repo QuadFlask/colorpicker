@@ -1,5 +1,6 @@
 package com.flask.colorpicker;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -77,6 +78,7 @@ public class ColorPickerView extends View {
 
 	public ColorPickerView(Context context) {
 		super(context);
+		initWith(context, null);
 	}
 
 	public ColorPickerView(Context context, AttributeSet attrs) {
@@ -86,6 +88,12 @@ public class ColorPickerView extends View {
 
 	public ColorPickerView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
+		initWith(context, attrs);
+	}
+
+	@TargetApi(21)
+	public ColorPickerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
 		initWith(context, attrs);
 	}
 
@@ -103,6 +111,8 @@ public class ColorPickerView extends View {
 		setRenderer(renderer);
 		setDensity(density);
 		setInitialColor(initialColor);
+
+		typedArray.recycle();
 	}
 
 	// FIXME Is it correct to find referenced view?
@@ -136,6 +146,7 @@ public class ColorPickerView extends View {
 			alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(8));
 		}
 		drawColorWheel();
+		invalidate();
 	}
 
 	private void drawColorWheel() {
@@ -158,7 +169,6 @@ public class ColorPickerView extends View {
 		colorWheelRenderOption.targetCanvas = colorWheelCanvas;
 
 		renderer.initWith(colorWheelRenderOption);
-
 		renderer.draw();
 	}
 

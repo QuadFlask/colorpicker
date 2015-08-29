@@ -71,5 +71,4 @@ public class LightnessSlider extends AbsCustomSlider {
 			invalidate();
 		}
 	}
-
 }

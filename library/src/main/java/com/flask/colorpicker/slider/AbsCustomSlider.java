@@ -42,6 +42,7 @@ public abstract class AbsCustomSlider extends View {
 		if (bar == null)
 			createBitmaps();
 		drawBar(barCanvas);
+		invalidate();
 	}
 
 	protected void createBitmaps() {
