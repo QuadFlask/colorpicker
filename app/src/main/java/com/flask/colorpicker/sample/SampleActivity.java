@@ -33,7 +33,7 @@ public class SampleActivity extends ActionBarActivity {
 				ColorPickerDialogBuilder
 						.with(context)
 						.setTitle("Choose color")
-						.initialColor(currentBackgroundColor)
+//						.initialColor(currentBackgroundColor)
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.density(12)
 						.setOnColorSelectedListener(new OnColorSelectedListener() {

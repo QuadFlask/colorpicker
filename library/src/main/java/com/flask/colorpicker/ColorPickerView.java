@@ -303,7 +303,9 @@ public class ColorPickerView extends View {
 	public void setInitialColors(Integer[] colors, int selectedColor) {
 		this.initialColors = colors;
 		this.colorSelection = selectedColor;
-		setInitialColor(this.initialColors[this.colorSelection]);
+		Integer initialColor = this.initialColors[this.colorSelection];
+		if (initialColor == null) initialColor = 0xffffffff;
+		setInitialColor(initialColor);
 	}
 
 	public void setInitialColor(int color) {
