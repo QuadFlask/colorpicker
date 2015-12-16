@@ -3,4 +3,4 @@
 	style="@style/PickerEditText"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:hint="Color Value"
-	android:textColor="@android:color/white"/>
+	android:textColor="@android:color/black"/>
