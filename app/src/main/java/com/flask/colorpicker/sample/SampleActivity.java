@@ -67,6 +67,7 @@ public class SampleActivity extends ActionBarActivity {
 							public void onClick(DialogInterface dialog, int which) {
 							}
 						})
+						.showColorEdit(true)
 						.build()
 						.show();
 			}
