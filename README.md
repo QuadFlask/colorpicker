@@ -29,12 +29,12 @@ market link: [https://play.google.com/store/apps/details?id=com.flask.colorpicke
 
 This library is not released in Maven Central, but instead you can use [JitPack](https://jitpack.io)
 
-add remote maven url
+add remote maven url in `allprojects.repositories`
 
 ```groovy
-repositories {
-	maven {
-		url "https://jitpack.io"
+allprojects {
+	repositories {
+		maven { url "https://jitpack.io" }
 	}
 }
 ```
@@ -43,7 +43,7 @@ then add a library dependency
 
 ```groovy
 dependencies {
-	compile 'com.github.QuadFlask:colorpicker:[latestVersion]'
+	compile 'com.github.QuadFlask:colorpicker:0.0.10'
 }
 ```
 
@@ -57,7 +57,7 @@ dependencies {
 }
 ```
 
-> check out [latestVersion] at [releases](https://github.com/QuadFlask/colorpicker/releases)
+> check out latest version at [releases](https://github.com/QuadFlask/colorpicker/releases)
 
 ## Usage
 
