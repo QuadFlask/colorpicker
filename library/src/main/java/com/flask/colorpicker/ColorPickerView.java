@@ -57,17 +57,17 @@ public class ColorPickerView extends View {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
+            try {
+                int color = Color.parseColor(s.toString());
+
+				// set the color without changing the edit text preventing stack overflow
+                setColor(color, false);
+            } catch (Exception e) {
+            }
 		}
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			try {
-				if (s == null)
-					return;
-				int color = Color.parseColor(s.toString());
-				setColor(color);
-			} catch (Exception e) {
-			}
 		}
 	};
 	private LinearLayout colorPreview;
@@ -110,7 +110,7 @@ public class ColorPickerView extends View {
 
 		setRenderer(renderer);
 		setDensity(density);
-		setInitialColor(initialColor);
+		setInitialColor(initialColor, true);
 
 		typedArray.recycle();
 	}
@@ -222,7 +222,7 @@ public class ColorPickerView extends View {
 					}
 				}
 				setColorToSliders(selectedColor);
-				setColorText(selectedColor, true);
+				setColorText(selectedColor);
 				setColorPreviewColor(selectedColor);
 				invalidate();
 				break;
@@ -305,10 +305,10 @@ public class ColorPickerView extends View {
 		this.colorSelection = selectedColor;
 		Integer initialColor = this.initialColors[this.colorSelection];
 		if (initialColor == null) initialColor = 0xffffffff;
-		setInitialColor(initialColor);
+		setInitialColor(initialColor, true);
 	}
 
-	public void setInitialColor(int color) {
+	public void setInitialColor(int color, boolean updateText) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 
@@ -318,8 +318,8 @@ public class ColorPickerView extends View {
 		this.initialColor = color;
 		setColorPreviewColor(color);
 		setColorToSliders(color);
-		if (this.colorEdit != null)
-			setColorText(color, true);
+		if (this.colorEdit != null && updateText)
+			setColorText(color);
 		if (renderer.getColorCircleList() != null)
 			currentColorCircle = findNearestByColor(color);
 	}
@@ -335,8 +335,8 @@ public class ColorPickerView extends View {
 		invalidate();
 	}
 
-	public void setColor(int color) {
-		setInitialColor(color);
+	public void setColor(int color, boolean updateText) {
+		setInitialColor(color, updateText);
 		updateColorWheel();
 		invalidate();
 	}
@@ -374,8 +374,11 @@ public class ColorPickerView extends View {
 
 	public void setColorEdit(EditText colorEdit) {
 		this.colorEdit = colorEdit;
-		if (this.colorEdit != null)
+		if (this.colorEdit != null) {
 			this.colorEdit.setVisibility(View.VISIBLE);
+			this.colorEdit.addTextChangedListener(colorTextChange);
+		}
+
 	}
 
 	public void setDensity(int density) {
@@ -431,7 +434,7 @@ public class ColorPickerView extends View {
 		Integer color = initialColors[previewNumber];
 		if (color == null)
 			return;
-		setColor(color);
+		setColor(color, true);
 	}
 
 	private void setHighlightedColor(int previewNumber) {
@@ -468,14 +471,10 @@ public class ColorPickerView extends View {
 		childImage.setImageDrawable(new CircleColorDrawable(newColor));
 	}
 
-	private void setColorText(int argb, boolean internal) {
+	private void setColorText(int argb) {
 		if (colorEdit == null)
 			return;
-		if (internal)
-			colorEdit.removeTextChangedListener(colorTextChange);
 		colorEdit.setText("#" + Integer.toHexString(argb));
-		if (internal)
-			colorEdit.addTextChangedListener(colorTextChange);
 	}
 
 	private void setColorToSliders(int selectedColor) {

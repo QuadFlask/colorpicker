@@ -180,7 +180,7 @@ public class ColorPickerDialogBuilder {
 			alphaSlider.setColor(getStartColor(initialColor));
 		}
 		if (isColorEditEnabled) {
-			LinearLayout.LayoutParams layoutParamsForColorEdit = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams layoutParamsForColorEdit = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			int padSide = getDimensionAsPx(context, R.dimen.default_padding_side);
 			layoutParamsForColorEdit.leftMargin = padSide;
 			layoutParamsForColorEdit.rightMargin = padSide;
@@ -188,6 +188,11 @@ public class ColorPickerDialogBuilder {
 			colorEdit.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 			colorEdit.setSingleLine();
 			colorEdit.setVisibility(View.GONE);
+
+			// limit number of characters to hexColors
+			int maxLength = 9;
+			colorEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+
 			pickerContainer.addView(colorEdit, layoutParamsForColorEdit);
 
 			colorEdit.setText("#" + Integer.toHexString(getStartColor(initialColor)).toUpperCase());
