@@ -141,6 +141,11 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
+	public ColorPickerDialogBuilder setColorEditTextColor(int argb) {
+		colorPickerView.setColorEditTextColor(argb);
+		return this;
+	}
+
 	public ColorPickerDialogBuilder showColorPreview(boolean showPreview) {
 		isPreviewEnabled = showPreview;
 		if (!showPreview)

@@ -68,6 +68,7 @@ public class SampleActivity extends ActionBarActivity {
 							}
 						})
 						.showColorEdit(true)
+						.setColorEditTextColor(getResources().getColor(android.R.color.holo_blue_bright))
 						.build()
 						.show();
 			}
