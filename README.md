@@ -60,7 +60,7 @@ dependencies {
 > check out latest version at [releases](https://github.com/QuadFlask/colorpicker/releases)
 
 ## Usage
-
+As a dialog
 ```java
 ColorPickerDialogBuilder
 	.with(context)
@@ -88,6 +88,33 @@ ColorPickerDialogBuilder
 	.build()
 	.show();
 ```
+As a widget
+```xml
+	<com.flask.colorpicker.ColorPickerView
+		android:id="@+id/color_picker_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:alphaSlider="true"
+		app:density="12"
+		app:lightnessSlider="true"
+		app:wheelType="FLOWER"
+		app:lightnessSliderView="@+id/v_lightness_slider"
+	    app:alphaSliderView="@+id/v_alpha_slider"
+		/>
+
+	<com.flask.colorpicker.slider.LightnessSlider
+		android:id="@+id/v_lightness_slider"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		/>
+
+	<com.flask.colorpicker.slider.AlphaSlider
+		android:id="@+id/v_alpha_slider"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		/>
+```
+
 
 ## To do
 
