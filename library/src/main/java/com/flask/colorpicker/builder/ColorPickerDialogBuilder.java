@@ -62,6 +62,11 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
+	public ColorPickerDialogBuilder setTitle(int titleId) {
+		builder.setTitle(titleId);
+		return this;
+	}
+
 	public ColorPickerDialogBuilder initialColor(int initialColor) {
 		this.initialColor[0] = initialColor;
 		return this;
@@ -95,9 +100,17 @@ public class ColorPickerDialogBuilder {
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				int selectedColor = colorPickerView.getSelectedColor();
-				Integer[] allColors = colorPickerView.getAllColors();
-				onClickListener.onClick(dialog, selectedColor, allColors);
+				positiveButtonOnClick(dialog, onClickListener);
+			}
+		});
+		return this;
+	}
+
+	public ColorPickerDialogBuilder setPositiveButton(int textId, final ColorPickerClickListener onClickListener) {
+		builder.setPositiveButton(textId, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				positiveButtonOnClick(dialog, onClickListener);
 			}
 		});
 		return this;
@@ -105,6 +118,11 @@ public class ColorPickerDialogBuilder {
 
 	public ColorPickerDialogBuilder setNegativeButton(CharSequence text, DialogInterface.OnClickListener onClickListener) {
 		builder.setNegativeButton(text, onClickListener);
+		return this;
+	}
+
+	public ColorPickerDialogBuilder setNegativeButton(int textId, DialogInterface.OnClickListener onClickListener) {
+		builder.setNegativeButton(textId, onClickListener);
 		return this;
 	}
 
@@ -246,5 +264,11 @@ public class ColorPickerDialogBuilder {
 
 	private static int getDimensionAsPx(Context context, int rid) {
 		return (int) (context.getResources().getDimension(rid) + .5f);
+	}
+
+	private void positiveButtonOnClick(DialogInterface dialog, ColorPickerClickListener onClickListener) {
+		int selectedColor = colorPickerView.getSelectedColor();
+		Integer[] allColors = colorPickerView.getAllColors();
+		onClickListener.onClick(dialog, selectedColor, allColors);
 	}
 }
