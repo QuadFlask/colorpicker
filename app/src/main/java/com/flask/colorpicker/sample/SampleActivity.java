@@ -5,14 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.flask.colorpicker.builder.ColorPickerClickListener;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 public class SampleActivity extends ActionBarActivity {
 	private View root;
@@ -32,7 +33,7 @@ public class SampleActivity extends ActionBarActivity {
 
 				ColorPickerDialogBuilder
 						.with(context)
-						.setTitle("Choose color")
+						.setTitle(R.string.color_dialog_title)
 						.initialColor(currentBackgroundColor)
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.density(12)
@@ -68,7 +69,7 @@ public class SampleActivity extends ActionBarActivity {
 							}
 						})
 						.showColorEdit(true)
-						.setColorEditTextColor(getResources().getColor(android.R.color.holo_blue_bright))
+						.setColorEditTextColor(ContextCompat.getColor(SampleActivity.this, android.R.color.holo_blue_bright))
 						.build()
 						.show();
 			}
