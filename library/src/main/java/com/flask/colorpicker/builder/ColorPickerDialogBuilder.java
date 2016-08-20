@@ -39,11 +39,14 @@ public class ColorPickerDialogBuilder {
 	private Integer[] initialColor = new Integer[]{null, null, null, null, null};
 
 	private ColorPickerDialogBuilder(Context context) {
+		defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
+		final int dialogMarginBetweenTitle = getDimensionAsPx(context, R.dimen.default_slider_margin_btw_title);
+
 		builder = new AlertDialog.Builder(context);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 		pickerContainer.setGravity(Gravity.CENTER_HORIZONTAL);
-		defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
+		pickerContainer.setPadding(defaultMargin, dialogMarginBetweenTitle, defaultMargin, defaultMargin);
 
 		LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
 		layoutParamsForColorPickerView.weight = 1;
@@ -187,7 +190,6 @@ public class ColorPickerDialogBuilder {
 
 		if (isLightnessSliderEnabled) {
 			LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_slider_height));
-			layoutParamsForLightnessBar.setMargins(defaultMargin, 0, defaultMargin, 0);
 			lightnessSlider = new LightnessSlider(context);
 			lightnessSlider.setLayoutParams(layoutParamsForLightnessBar);
 			pickerContainer.addView(lightnessSlider);
@@ -196,7 +198,6 @@ public class ColorPickerDialogBuilder {
 		}
 		if (isAlphaSliderEnabled) {
 			LinearLayout.LayoutParams layoutParamsForAlphaBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_slider_height));
-			layoutParamsForAlphaBar.setMargins(defaultMargin, 0, defaultMargin, 0);
 			alphaSlider = new AlphaSlider(context);
 			alphaSlider.setLayoutParams(layoutParamsForAlphaBar);
 			pickerContainer.addView(alphaSlider);
@@ -205,9 +206,6 @@ public class ColorPickerDialogBuilder {
 		}
 		if (isColorEditEnabled) {
 			LinearLayout.LayoutParams layoutParamsForColorEdit = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			int padSide = getDimensionAsPx(context, R.dimen.default_padding_side);
-			layoutParamsForColorEdit.leftMargin = padSide;
-			layoutParamsForColorEdit.rightMargin = padSide;
 			colorEdit = (EditText) View.inflate(context, R.layout.picker_edit, null);
 			colorEdit.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 			colorEdit.setSingleLine();
