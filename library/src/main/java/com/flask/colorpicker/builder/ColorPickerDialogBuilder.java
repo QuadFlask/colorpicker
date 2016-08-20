@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.R;
+import com.flask.colorpicker.Utils;
 import com.flask.colorpicker.renderer.ColorWheelRenderer;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
@@ -213,12 +214,12 @@ public class ColorPickerDialogBuilder {
 			colorEdit.setVisibility(View.GONE);
 
 			// limit number of characters to hexColors
-			int maxLength = 9;
+			int maxLength = isAlphaSliderEnabled ? 9 : 7;
 			colorEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
 
 			pickerContainer.addView(colorEdit, layoutParamsForColorEdit);
 
-			colorEdit.setText("#" + Integer.toHexString(getStartColor(initialColor)).toUpperCase());
+			colorEdit.setText(Utils.getHexString(getStartColor(initialColor), isAlphaSliderEnabled));
 			colorPickerView.setColorEdit(colorEdit);
 		}
 		if (isPreviewEnabled) {
