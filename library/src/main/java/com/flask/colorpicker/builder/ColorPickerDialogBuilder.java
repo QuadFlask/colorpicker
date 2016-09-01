@@ -39,10 +39,14 @@ public class ColorPickerDialogBuilder {
 	private Integer[] initialColor = new Integer[]{null, null, null, null, null};
 
 	private ColorPickerDialogBuilder(Context context) {
+		this(context, 0);
+	}
+
+	private ColorPickerDialogBuilder(Context context, int theme) {
 		defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
 		final int dialogMarginBetweenTitle = getDimensionAsPx(context, R.dimen.default_slider_margin_btw_title);
 
-		builder = new AlertDialog.Builder(context);
+		builder = new AlertDialog.Builder(context, theme);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 		pickerContainer.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -59,6 +63,10 @@ public class ColorPickerDialogBuilder {
 
 	public static ColorPickerDialogBuilder with(Context context) {
 		return new ColorPickerDialogBuilder(context);
+	}
+
+	public static ColorPickerDialogBuilder with(Context context, int theme) {
+		return new ColorPickerDialogBuilder(context, theme);
 	}
 
 	public ColorPickerDialogBuilder setTitle(String title) {
