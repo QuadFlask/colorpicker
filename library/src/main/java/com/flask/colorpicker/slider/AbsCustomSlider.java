@@ -113,10 +113,12 @@ public abstract class AbsCustomSlider extends View {
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
-				value = (event.getX() - barOffsetX) / bar.getWidth();
-				value = Math.max(0, Math.min(value, 1));
-				onValueChanged(value);
-				invalidate();
+				if (bar != null) {
+					value = (event.getX() - barOffsetX) / bar.getWidth();
+					value = Math.max(0, Math.min(value, 1));
+					onValueChanged(value);
+					invalidate();
+				}
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
