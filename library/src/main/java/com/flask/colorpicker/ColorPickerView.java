@@ -47,7 +47,9 @@ public class ColorPickerView extends View {
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
 	private ColorCircle currentColorCircle;
 
-	private ArrayList<OnColorSelectedListener> listeners = new ArrayList<OnColorSelectedListener>();
+	private ArrayList<OnColorChangedListener> colorChangedlisteners = new ArrayList<>();
+	private ArrayList<OnColorSelectedListener> listeners = new ArrayList<>();
+
 	private LightnessSlider lightnessSlider;
 	private AlphaSlider alphaSlider;
 	private EditText colorEdit;
@@ -205,10 +207,36 @@ public class ColorPickerView extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-			case MotionEvent.ACTION_MOVE: {
+			case MotionEvent.ACTION_DOWN: {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				int selectedColor = getSelectedColor();
+				if (listeners != null) {
+					for (OnColorChangedListener listener : colorChangedlisteners) {
+						try {
+							listener.onColorChanged(selectedColor);
+						} catch (Exception e) {
+							//Squash individual listener exceptions
+						}
+					}
+				}
+				initialColor = selectedColor;
+				setColorToSliders(selectedColor);
+				invalidate();
+				break;
+			}
+			case MotionEvent.ACTION_MOVE: {
+				int lastSelectedColor = getSelectedColor();
+				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
+				int selectedColor = getSelectedColor();
+				if (listeners != null && lastSelectedColor != selectedColor) {
+					for (OnColorChangedListener listener : colorChangedlisteners) {
+						try {
+							listener.onColorChanged(selectedColor);
+						} catch (Exception e) {
+							//Squash individual listener exceptions
+						}
+					}
+				}
 				initialColor = selectedColor;
 				setColorToSliders(selectedColor);
 				invalidate();
@@ -354,6 +382,10 @@ public class ColorPickerView extends View {
 			this.lightnessSlider.setColor(this.initialColor);
 		updateColorWheel();
 		invalidate();
+	}
+
+	public void addOnColorChangedListener(OnColorChangedListener listener) {
+		this.colorChangedlisteners.add(listener);
 	}
 
 	public void addOnColorSelectedListener(OnColorSelectedListener listener) {
