@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 25
-	buildToolsVersion "24.0.3"
+	buildToolsVersion "25.0.0"
 
 	defaultConfig {
 		applicationId "com.flask.colorpicker.sample"
 		minSdkVersion 14
 		targetSdkVersion 25
-		versionCode 7
-		versionName "1.0.7"
+		versionCode 8
+		versionName "1.0.8"
 	}
 //	signingConfigs {
 //		release {
@@ -32,5 +32,5 @@ dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 	compile project(":library")
 	compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta2'
+	compile 'com.android.support.constraint:constraint-layout:1.0.0-beta3'
 }
