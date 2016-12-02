@@ -139,6 +139,12 @@ public class ColorPickerView extends View {
 		currentColorCircle = findNearestByColor(initialColor);
 	}
 
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
+		updateColorWheel();
+	}
+
 	private void updateColorWheel() {
 		int width = getMeasuredWidth();
 		int height = getMeasuredHeight();
