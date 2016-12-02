@@ -7,10 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorChangedListener;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
@@ -37,6 +39,12 @@ public class SampleActivity extends ActionBarActivity {
 						.initialColor(currentBackgroundColor)
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.density(12)
+						.setOnColorChangedListener(new OnColorChangedListener() {
+							@Override public void onColorChanged(int selectedColor) {
+								// Handle on color change
+								Log.d("ColorPicker", "onColorChanged: 0x" + Integer.toHexString(selectedColor));
+							}
+						})
 						.setOnColorSelectedListener(new OnColorSelectedListener() {
 							@Override
 							public void onColorSelected(int selectedColor) {

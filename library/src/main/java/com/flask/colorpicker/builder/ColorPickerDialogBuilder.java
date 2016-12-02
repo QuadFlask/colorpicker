@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorChangedListener;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.R;
 import com.flask.colorpicker.Utils;
@@ -100,6 +101,11 @@ public class ColorPickerDialogBuilder {
 
 	public ColorPickerDialogBuilder density(int density) {
 		colorPickerView.setDensity(density);
+		return this;
+	}
+
+	public ColorPickerDialogBuilder setOnColorChangedListener(OnColorChangedListener onColorChangedListener) {
+		colorPickerView.addOnColorChangedListener(onColorChangedListener);
 		return this;
 	}
 

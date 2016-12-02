@@ -4,8 +4,8 @@ sudo: false
 
 android:
   components:
-    - build-tools-23.0.3
-    - android-23
+    - build-tools-24.0.3
+    - android-25
     - extra-google-m2repository
     - extra-android-m2repository
 
