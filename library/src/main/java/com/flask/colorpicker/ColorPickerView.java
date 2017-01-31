@@ -216,36 +216,14 @@ public class ColorPickerView extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN: {
-				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
-				int selectedColor = getSelectedColor();
-				if (listeners != null) {
-					for (OnColorChangedListener listener : colorChangedListeners) {
-						try {
-							listener.onColorChanged(selectedColor);
-						} catch (Exception e) {
-							//Squash individual listener exceptions
-						}
-					}
-				}
-				initialColor = selectedColor;
-				setColorToSliders(selectedColor);
-				invalidate();
-				break;
-			}
+			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
 				int lastSelectedColor = getSelectedColor();
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				int selectedColor = getSelectedColor();
-				if (listeners != null && lastSelectedColor != selectedColor) {
-					for (OnColorChangedListener listener : colorChangedListeners) {
-						try {
-							listener.onColorChanged(selectedColor);
-						} catch (Exception e) {
-							//Squash individual listener exceptions
-						}
-					}
-				}
+
+				callOnColorChangedListeners(lastSelectedColor, selectedColor);
+
 				initialColor = selectedColor;
 				setColorToSliders(selectedColor);
 				invalidate();
@@ -270,6 +248,18 @@ public class ColorPickerView extends View {
 			}
 		}
 		return true;
+	}
+
+	protected void callOnColorChangedListeners(int oldColor, int newColor) {
+		if (colorChangedListeners != null && oldColor != newColor) {
+			for (OnColorChangedListener listener : colorChangedListeners) {
+				try {
+					listener.onColorChanged(newColor);
+				} catch (Exception e) {
+					//Squash individual listener exceptions
+				}
+			}
+		}
 	}
 
 	@Override
@@ -365,12 +355,17 @@ public class ColorPickerView extends View {
 	}
 
 	public void setLightness(float lightness) {
+		int lastSelectedColor = getSelectedColor();
+
 		this.lightness = lightness;
 		this.initialColor = Color.HSVToColor(Utils.alphaValueAsInt(this.alpha), currentColorCircle.getHsvWithLightness(lightness));
 		if (this.colorEdit != null)
 			this.colorEdit.setText(Utils.getHexString(this.initialColor, this.alphaSlider != null));
 		if (this.alphaSlider != null && this.initialColor != null)
 			this.alphaSlider.setColor(this.initialColor);
+
+		callOnColorChangedListeners(lastSelectedColor, this.initialColor);
+
 		updateColorWheel();
 		invalidate();
 	}
@@ -382,12 +377,17 @@ public class ColorPickerView extends View {
 	}
 
 	public void setAlphaValue(float alpha) {
+		int lastSelectedColor = getSelectedColor();
+
 		this.alpha = alpha;
 		this.initialColor = Color.HSVToColor(Utils.alphaValueAsInt(this.alpha), currentColorCircle.getHsvWithLightness(this.lightness));
 		if (this.colorEdit != null)
 			this.colorEdit.setText(Utils.getHexString(this.initialColor, this.alphaSlider != null));
 		if (this.lightnessSlider != null && this.initialColor != null)
 			this.lightnessSlider.setColor(this.initialColor);
+
+		callOnColorChangedListeners(lastSelectedColor, this.initialColor);
+
 		updateColorWheel();
 		invalidate();
 	}
