@@ -43,7 +43,7 @@ then add a library dependency
 
 ```groovy
 dependencies {
-	compile 'com.github.QuadFlask:colorpicker:0.0.12'
+	compile 'com.github.QuadFlask:colorpicker:0.0.13'
 }
 ```
 
@@ -126,7 +126,7 @@ As a widget
 ## License
 
 ```
-Copyright 2014-2015 QuadFlask
+Copyright 2014-2017 QuadFlask
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
