@@ -1,4 +1,7 @@
 <resources>
 	<string name="app_name">ColorPicker</string>
 	<string name="color_dialog_title">Choose color</string>
+	<string name="title_activity_sample3">SampleActivity3</string>
+	<string name="action_settings">Settings</string>
+	<string name="section_format">Hello World from section: %1$d</string>
 </resources>

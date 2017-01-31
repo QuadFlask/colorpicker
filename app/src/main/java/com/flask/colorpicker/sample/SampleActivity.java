@@ -40,7 +40,8 @@ public class SampleActivity extends ActionBarActivity {
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.density(12)
 						.setOnColorChangedListener(new OnColorChangedListener() {
-							@Override public void onColorChanged(int selectedColor) {
+							@Override
+							public void onColorChanged(int selectedColor) {
 								// Handle on color change
 								Log.d("ColorPicker", "onColorChanged: 0x" + Integer.toHexString(selectedColor));
 							}
@@ -101,6 +102,13 @@ public class SampleActivity extends ActionBarActivity {
 				String url = "https://github.com/QuadFlask/colorpicker";
 				Intent intent = new Intent(Intent.ACTION_VIEW);
 				intent.setData(Uri.parse(url));
+				startActivity(intent);
+			}
+		});
+		findViewById(R.id.btn_fragment).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				final Intent intent = new Intent(SampleActivity.this, SampleActivity3.class);
 				startActivity(intent);
 			}
 		});

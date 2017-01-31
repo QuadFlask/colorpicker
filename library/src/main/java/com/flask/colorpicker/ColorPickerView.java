@@ -47,7 +47,7 @@ public class ColorPickerView extends View {
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
 	private ColorCircle currentColorCircle;
 
-	private ArrayList<OnColorChangedListener> colorChangedlisteners = new ArrayList<>();
+	private ArrayList<OnColorChangedListener> colorChangedListeners = new ArrayList<>();
 	private ArrayList<OnColorSelectedListener> listeners = new ArrayList<>();
 
 	private LightnessSlider lightnessSlider;
@@ -60,13 +60,13 @@ public class ColorPickerView extends View {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-            try {
-                int color = Color.parseColor(s.toString());
+			try {
+				int color = Color.parseColor(s.toString());
 
 				// set the color without changing the edit text preventing stack overflow
-                setColor(color, false);
-            } catch (Exception e) {
-            }
+				setColor(color, false);
+			} catch (Exception e) {
+			}
 		}
 
 		@Override
@@ -121,20 +121,22 @@ public class ColorPickerView extends View {
 		typedArray.recycle();
 	}
 
-	// FIXME Is it correct to find referenced view?
 	@Override
-	protected void onAttachedToWindow() {
-		super.onAttachedToWindow();
+	public void onWindowFocusChanged(boolean hasWindowFocus) {
+		super.onWindowFocusChanged(hasWindowFocus);
+		updateColorWheel();
+		currentColorCircle = findNearestByColor(initialColor);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
 
 		if (alphaSliderViewId != 0)
 			setAlphaSlider((AlphaSlider) getRootView().findViewById(alphaSliderViewId));
 		if (lightnessSliderViewId != 0)
 			setLightnessSlider((LightnessSlider) getRootView().findViewById(lightnessSliderViewId));
-	}
 
-	@Override
-	public void onWindowFocusChanged(boolean hasWindowFocus) {
-		super.onWindowFocusChanged(hasWindowFocus);
 		updateColorWheel();
 		currentColorCircle = findNearestByColor(initialColor);
 	}
@@ -148,6 +150,7 @@ public class ColorPickerView extends View {
 	private void updateColorWheel() {
 		int width = getMeasuredWidth();
 		int height = getMeasuredHeight();
+
 		if (height < width)
 			width = height;
 		if (width <= 0)
@@ -217,7 +220,7 @@ public class ColorPickerView extends View {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				int selectedColor = getSelectedColor();
 				if (listeners != null) {
-					for (OnColorChangedListener listener : colorChangedlisteners) {
+					for (OnColorChangedListener listener : colorChangedListeners) {
 						try {
 							listener.onColorChanged(selectedColor);
 						} catch (Exception e) {
@@ -235,7 +238,7 @@ public class ColorPickerView extends View {
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
 				int selectedColor = getSelectedColor();
 				if (listeners != null && lastSelectedColor != selectedColor) {
-					for (OnColorChangedListener listener : colorChangedlisteners) {
+					for (OnColorChangedListener listener : colorChangedListeners) {
 						try {
 							listener.onColorChanged(selectedColor);
 						} catch (Exception e) {
@@ -358,8 +361,7 @@ public class ColorPickerView extends View {
 		setColorToSliders(color);
 		if (this.colorEdit != null && updateText)
 			setColorText(color);
-		if (renderer.getColorCircleList() != null)
-			currentColorCircle = findNearestByColor(color);
+		currentColorCircle = findNearestByColor(color);
 	}
 
 	public void setLightness(float lightness) {
@@ -391,7 +393,7 @@ public class ColorPickerView extends View {
 	}
 
 	public void addOnColorChangedListener(OnColorChangedListener listener) {
-		this.colorChangedlisteners.add(listener);
+		this.colorChangedListeners.add(listener);
 	}
 
 	public void addOnColorSelectedListener(OnColorSelectedListener listener) {
@@ -423,11 +425,11 @@ public class ColorPickerView extends View {
 		}
 	}
 
-    public void setColorEditTextColor(int argb) {
-        this.pickerTextColor = argb;
-        if (colorEdit != null)
-            colorEdit.setTextColor(argb);
-    }
+	public void setColorEditTextColor(int argb) {
+		this.pickerTextColor = argb;
+		if (colorEdit != null)
+			colorEdit.setTextColor(argb);
+	}
 
 	public void setDensity(int density) {
 		this.density = Math.max(2, density);

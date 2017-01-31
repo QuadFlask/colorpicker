@@ -46,6 +46,12 @@
 			android:layout_height="wrap_content"
 			android:text="open preference sample"
 			/>
+		<Button
+			android:id="@+id/btn_fragment"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="open fragment sample"
+		/>
 	</LinearLayout>
 
 </RelativeLayout>

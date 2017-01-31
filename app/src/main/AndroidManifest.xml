@@ -18,6 +18,11 @@
 		</activity>
 		<activity android:name=".PrefsActivity"/>
 		<activity android:name=".SampleActivity2"/>
+		<activity
+			android:name=".SampleActivity3"
+			android:label="@string/title_activity_sample3"
+			android:theme="@style/AppTheme">
+		</activity>
 	</application>
 
 </manifest>

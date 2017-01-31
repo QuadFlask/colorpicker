@@ -1,0 +1,43 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:paddingBottom="@dimen/activity_vertical_margin"
+	android:paddingLeft="@dimen/activity_horizontal_margin"
+	android:paddingRight="@dimen/activity_horizontal_margin"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	tools:context="com.flask.colorpicker.sample.SampleActivity3$PlaceholderFragment">
+
+	<TextView
+		android:id="@+id/section_label"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
+
+	<com.flask.colorpicker.ColorPickerView
+		android:id="@+id/color_picker_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:alphaSlider="true"
+		app:alphaSliderView="@+id/v_alpha_slider"
+		app:density="12"
+		app:lightnessSlider="true"
+		app:lightnessSliderView="@+id/v_lightness_slider"
+		app:wheelType="FLOWER"
+	/>
+
+	<com.flask.colorpicker.slider.LightnessSlider
+		android:id="@+id/v_lightness_slider"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+	/>
+
+	<com.flask.colorpicker.slider.AlphaSlider
+		android:id="@+id/v_alpha_slider"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+	/>
+
+</LinearLayout>
