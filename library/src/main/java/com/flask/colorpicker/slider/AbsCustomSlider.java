@@ -79,8 +79,8 @@ public abstract class AbsCustomSlider extends View {
 	protected abstract void drawHandle(Canvas canvas, float x, float y);
 
 	@Override
-	public void onWindowFocusChanged(boolean hasWindowFocus) {
-		super.onWindowFocusChanged(hasWindowFocus);
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
 		updateBar();
 	}
 
