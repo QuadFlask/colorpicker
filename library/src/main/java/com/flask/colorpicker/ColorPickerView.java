@@ -66,7 +66,7 @@ public class ColorPickerView extends View {
 				// set the color without changing the edit text preventing stack overflow
 				setColor(color, false);
 			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
 		}
 
@@ -324,7 +324,7 @@ public class ColorPickerView extends View {
 	public int getSelectedColor() {
 		int color = 0;
 		if (currentColorCircle != null)
-			color = Color.HSVToColor(currentColorCircle.getHsvWithLightness(this.lightness));
+			color = Utils.colorAtLightness(currentColorCircle.getColor(), this.lightness);
 		return Utils.adjustAlpha(this.alpha, color);
 	}
 
