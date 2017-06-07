@@ -1,6 +1,7 @@
 package com.flask.colorpicker.slider;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
@@ -22,16 +23,32 @@ public abstract class AbsCustomSlider extends View {
 	protected int barHeight = 5;
 	protected float value = 1;
 
+	private boolean inVerticalOrientation = false;
+
 	public AbsCustomSlider(Context context) {
 		super(context);
+		init(context, null);
 	}
 
 	public AbsCustomSlider(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init(context, attrs);
 	}
 
 	public AbsCustomSlider(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
+		init(context, attrs);
+	}
+
+	private void init(Context context, AttributeSet attrs) {
+		TypedArray styledAttrs = context.getTheme().obtainStyledAttributes(
+			attrs, R.styleable.AbsCustomSlider, 0, 0);
+		try {
+			inVerticalOrientation = styledAttrs.getBoolean(
+				R.styleable.AbsCustomSlider_inVerticalOrientation, inVerticalOrientation);
+		} finally {
+			styledAttrs.recycle();
+		}
 	}
 
 	protected void updateBar() {
@@ -46,8 +63,16 @@ public abstract class AbsCustomSlider extends View {
 	}
 
 	protected void createBitmaps() {
-		int width = getWidth();
-		int height = getHeight();
+		int width;
+		int height;
+		if (inVerticalOrientation) {
+			width = getHeight();
+			height = getWidth();
+		} else {
+			width = getWidth();
+			height = getHeight();
+		}
+
 		bar = Bitmap.createBitmap(width - barOffsetX * 2, barHeight, Bitmap.Config.ARGB_8888);
 		barCanvas = new Canvas(bar);
 
@@ -61,12 +86,26 @@ public abstract class AbsCustomSlider extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+
+		int width;
+		int height;
+		if (inVerticalOrientation) {
+			width = getHeight();
+			height = getWidth();
+
+			canvas.rotate(-90);
+			canvas.translate(-width, 0);
+		} else {
+			width = getWidth();
+			height = getHeight();
+		}
+
 		if (bar != null && bitmapCanvas != null) {
 			bitmapCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-			bitmapCanvas.drawBitmap(bar, barOffsetX, (getHeight() - bar.getHeight()) / 2, null);
+			bitmapCanvas.drawBitmap(bar, barOffsetX, (height - bar.getHeight()) / 2, null);
 
-			float x = handleRadius + value * (getWidth() - handleRadius * 2);
-			float y = getHeight() / 2f;
+			float x = handleRadius + value * (width - handleRadius * 2);
+			float y = height / 2f;
 			drawHandle(bitmapCanvas, x, y);
 			canvas.drawBitmap(bitmap, 0, 0, null);
 		}
@@ -114,7 +153,11 @@ public abstract class AbsCustomSlider extends View {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_MOVE: {
 				if (bar != null) {
-					value = (event.getX() - barOffsetX) / bar.getWidth();
+					if (inVerticalOrientation) {
+						value = 1 - (event.getY() - barOffsetX) / bar.getWidth();
+					} else {
+						value = (event.getX() - barOffsetX) / bar.getWidth();
+					}
 					value = Math.max(0, Math.min(value, 1));
 					onValueChanged(value);
 					invalidate();
