@@ -5,10 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerView;
@@ -83,6 +88,13 @@ public class SampleActivity extends ActionBarActivity {
 						.show();
 			}
 		});
+		findViewById(R.id.btn_adapted_dialog).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment dialogFragment = new AdaptedDialogFragment();
+				dialogFragment.show(getSupportFragmentManager(), "adapted_dialog");
+			}
+		});
 		findViewById(R.id.btn_prefs).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -121,5 +133,16 @@ public class SampleActivity extends ActionBarActivity {
 
 	private void toast(String text) {
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+
+	public static class AdaptedDialogFragment extends AppCompatDialogFragment {
+		public AdaptedDialogFragment() {
+		}
+
+		@Nullable
+		@Override
+		public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+			return inflater.inflate(R.layout.fragment_adapted_dialog, container);
+		}
 	}
 }
