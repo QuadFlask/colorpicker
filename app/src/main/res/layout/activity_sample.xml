@@ -35,6 +35,12 @@
 			android:text="open dialog sample"
 			/>
 		<Button
+			android:id="@+id/btn_adapted_dialog"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="open adapted dialog sample"
+			/>
+		<Button
 			android:id="@+id/btn_view"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
