@@ -1,7 +1,7 @@
 package com.flask.colorpicker.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -10,7 +10,7 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorChangedListener;
 import com.flask.colorpicker.OnColorSelectedListener;
 
-public class SampleActivity2 extends ActionBarActivity {
+public class SampleActivity2 extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
