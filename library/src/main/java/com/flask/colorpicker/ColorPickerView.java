@@ -160,7 +160,7 @@ public class ColorPickerView extends View {
 		if (colorWheel == null) {
 			colorWheel = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
 			colorWheelCanvas = new Canvas(colorWheel);
-			alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(8));
+			alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(26));
 		}
 		if (currentColor == null) {
 			currentColor = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
