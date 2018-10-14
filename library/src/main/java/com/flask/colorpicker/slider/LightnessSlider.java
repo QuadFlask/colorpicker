@@ -55,7 +55,7 @@ public class LightnessSlider extends AbsCustomSlider {
 	@Override
 	protected void drawHandle(Canvas canvas, float x, float y) {
 		solid.setColor(Utils.colorAtLightness(color, value));
-		canvas.drawCircle(x, y, handleRadius, clearingStroke);
+		if (showBorder) canvas.drawCircle(x, y, handleRadius, clearingStroke);
 		canvas.drawCircle(x, y, handleRadius * 0.75f, solid);
 	}
 

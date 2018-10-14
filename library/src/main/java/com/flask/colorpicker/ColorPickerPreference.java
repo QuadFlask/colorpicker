@@ -18,6 +18,7 @@ public class ColorPickerPreference extends Preference {
 
 	protected boolean alphaSlider;
 	protected boolean lightSlider;
+	protected boolean border;
 
 	protected int selectedColor = 0;
 
@@ -51,8 +52,9 @@ public class ColorPickerPreference extends Preference {
 		try {
 			alphaSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_alphaSlider, false);
 			lightSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_lightnessSlider, false);
+			border = typedArray.getBoolean(R.styleable.ColorPickerPreference_border, true);
 
-			density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
+			density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 8);
 			wheelType = ColorPickerView.WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
 
 			selectedColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
@@ -118,6 +120,7 @@ public class ColorPickerPreference extends Preference {
 			.with(getContext())
 			.setTitle(pickerTitle)
 			.initialColor(selectedColor)
+			.showBorder(border)
 			.wheelType(wheelType)
 			.density(density)
 			.showColorEdit(pickerColorEdit)
