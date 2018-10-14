@@ -2,23 +2,17 @@ package com.flask.colorpicker;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Xfermode;
 import android.graphics.drawable.ColorDrawable;
 
 import com.flask.colorpicker.builder.PaintBuilder;
 
-public class CircleColorDrawable extends ColorDrawable {
+public class ColorCircleDrawable extends ColorDrawable {
 	private float strokeWidth;
-	private Paint strokePaint = PaintBuilder.newPaint().style(Paint.Style.STROKE).stroke(strokeWidth).color(0xffffffff).build();
+	private Paint strokePaint = PaintBuilder.newPaint().style(Paint.Style.STROKE).stroke(strokeWidth).color(0xff9e9e9e).build();
 	private Paint fillPaint = PaintBuilder.newPaint().style(Paint.Style.FILL).color(0).build();
-	private Paint fillBackPaint = PaintBuilder.newPaint().shader(PaintBuilder.createAlphaPatternShader(16)).build();
+	private Paint fillBackPaint = PaintBuilder.newPaint().shader(PaintBuilder.createAlphaPatternShader(26)).build();
 
-	public CircleColorDrawable() {
-		super();
-	}
-
-	public CircleColorDrawable(int color) {
+	public ColorCircleDrawable(int color) {
 		super(color);
 	}
 
@@ -28,12 +22,12 @@ public class CircleColorDrawable extends ColorDrawable {
 
 		int width = canvas.getWidth();
 		float radius = width / 2f;
-		strokeWidth = radius / 12f;
+		strokeWidth = radius / 8f;
 
 		this.strokePaint.setStrokeWidth(strokeWidth);
 		this.fillPaint.setColor(getColor());
-		canvas.drawCircle(radius, radius, radius - strokeWidth * 1.5f, fillBackPaint);
-		canvas.drawCircle(radius, radius, radius - strokeWidth * 1.5f, fillPaint);
+		canvas.drawCircle(radius, radius, radius - strokeWidth, fillBackPaint);
+		canvas.drawCircle(radius, radius, radius - strokeWidth, fillPaint);
 		canvas.drawCircle(radius, radius, radius - strokeWidth, strokePaint);
 	}
 

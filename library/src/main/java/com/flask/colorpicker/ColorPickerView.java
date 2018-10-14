@@ -531,7 +531,7 @@ public class ColorPickerView extends View {
 			return;
 		LinearLayout childLayout = (LinearLayout) childView;
 		ImageView childImage = (ImageView) childLayout.findViewById(R.id.image_preview);
-		childImage.setImageDrawable(new CircleColorDrawable(newColor));
+		childImage.setImageDrawable(new ColorCircleDrawable(newColor));
 	}
 
 	private void setColorText(int argb) {

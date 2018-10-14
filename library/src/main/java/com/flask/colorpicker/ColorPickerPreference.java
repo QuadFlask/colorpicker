@@ -86,13 +86,13 @@ public class ColorPickerPreference extends Preference {
 
 		colorIndicator = (ImageView) view.findViewById(R.id.color_indicator);
 
-		CircleColorDrawable colorChoiceDrawable = null;
+		ColorCircleDrawable colorChoiceDrawable = null;
 		Drawable currentDrawable = colorIndicator.getDrawable();
-		if (currentDrawable != null && currentDrawable instanceof CircleColorDrawable)
-			colorChoiceDrawable = (CircleColorDrawable) currentDrawable;
+		if (currentDrawable != null && currentDrawable instanceof ColorCircleDrawable)
+			colorChoiceDrawable = (ColorCircleDrawable) currentDrawable;
 
 		if (colorChoiceDrawable == null)
-			colorChoiceDrawable = new CircleColorDrawable(tmpColor);
+			colorChoiceDrawable = new ColorCircleDrawable(tmpColor);
 
 		colorIndicator.setImageDrawable(colorChoiceDrawable);
 	}
