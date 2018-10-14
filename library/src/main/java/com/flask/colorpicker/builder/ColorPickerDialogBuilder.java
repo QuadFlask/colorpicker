@@ -37,6 +37,7 @@ public class ColorPickerDialogBuilder {
 	private boolean isPreviewEnabled = false;
 	private int pickerCount = 1;
 	private int defaultMargin = 0;
+	private int defaultMarginTop = 0;
 	private Integer[] initialColor = new Integer[]{null, null, null, null, null};
 
 	private ColorPickerDialogBuilder(Context context) {
@@ -45,13 +46,13 @@ public class ColorPickerDialogBuilder {
 
 	private ColorPickerDialogBuilder(Context context, int theme) {
 		defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
-		final int dialogMarginBetweenTitle = getDimensionAsPx(context, R.dimen.default_slider_margin_btw_title);
+		defaultMarginTop = getDimensionAsPx(context, R.dimen.default_margin_top);
 
 		builder = new AlertDialog.Builder(context, theme);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 		pickerContainer.setGravity(Gravity.CENTER_HORIZONTAL);
-		pickerContainer.setPadding(defaultMargin, dialogMarginBetweenTitle, defaultMargin, defaultMargin);
+		pickerContainer.setPadding(defaultMargin, defaultMarginTop, defaultMargin, 0);
 
 		LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
 		layoutParamsForColorPickerView.weight = 1;

@@ -24,6 +24,7 @@ public class ColorPickerPreference extends Preference {
 	protected ColorPickerView.WHEEL_TYPE wheelType;
 	protected int density;
 
+	private boolean pickerColorEdit;
 	private String pickerTitle;
 	private String pickerButtonCancel;
 	private String pickerButtonOk;
@@ -56,6 +57,7 @@ public class ColorPickerPreference extends Preference {
 
 			selectedColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
 
+			pickerColorEdit = typedArray.getBoolean(R.styleable.ColorPickerPreference_pickerColorEdit, true);
 			pickerTitle = typedArray.getString(R.styleable.ColorPickerPreference_pickerTitle);
 			if (pickerTitle==null)
 				pickerTitle = "Choose color";
@@ -118,6 +120,7 @@ public class ColorPickerPreference extends Preference {
 			.initialColor(selectedColor)
 			.wheelType(wheelType)
 			.density(density)
+			.showColorEdit(pickerColorEdit)
 			.setPositiveButton(pickerButtonOk, new ColorPickerClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int selectedColorFromPicker, Integer[] allColors) {
@@ -129,7 +132,6 @@ public class ColorPickerPreference extends Preference {
 		if (!alphaSlider && !lightSlider) builder.noSliders();
 		else if (!alphaSlider) builder.lightnessSliderOnly();
 		else if (!lightSlider) builder.alphaSliderOnly();
-
 
 		builder
 			.build()

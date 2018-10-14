@@ -42,7 +42,7 @@ public class ColorPickerView extends View {
 	private Integer initialColors[] = new Integer[]{null, null, null, null, null};
 	private int colorSelection = 0;
 	private Integer initialColor;
-	private Integer pickerTextColor;
+	private Integer pickerColorEditTextColor;
 	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
 	private Paint selectorStroke = PaintBuilder.newPaint().color(0).build();
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
@@ -67,7 +67,7 @@ public class ColorPickerView extends View {
 				// set the color without changing the edit text preventing stack overflow
 				setColor(color, false);
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
@@ -108,7 +108,7 @@ public class ColorPickerView extends View {
 		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
 		initialColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
 
-		pickerTextColor = typedArray.getInt(R.styleable.ColorPickerPreference_pickerColorEditTextColor, 0xffffffff);
+		pickerColorEditTextColor = typedArray.getInt(R.styleable.ColorPickerPreference_pickerColorEditTextColor, 0xffffffff);
 
 		WHEEL_TYPE wheelType = WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
 		ColorWheelRenderer renderer = ColorWheelRendererBuilder.getRenderer(wheelType);
@@ -280,7 +280,7 @@ public class ColorPickerView extends View {
 			colorWheelFill.setColor(Color.HSVToColor(currentColorCircle.getHsvWithLightness(this.lightness)));
 			colorWheelFill.setAlpha((int) (alpha * 0xff));
 
-			// a separate canvas is used to erase an odd artifact caused by the alpha pattern paint
+			// a separate canvas is used to erase an issue with the alpha pattern around the edges
 			currentColorCanvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, alphaPatternPaint);
 			currentColorCanvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, colorWheelFill);
 
@@ -434,12 +434,12 @@ public class ColorPickerView extends View {
 		if (this.colorEdit != null) {
 			this.colorEdit.setVisibility(View.VISIBLE);
 			this.colorEdit.addTextChangedListener(colorTextChange);
-			setColorEditTextColor(pickerTextColor);
+			setColorEditTextColor(pickerColorEditTextColor);
 		}
 	}
 
 	public void setColorEditTextColor(int argb) {
-		this.pickerTextColor = argb;
+		this.pickerColorEditTextColor = argb;
 		if (colorEdit != null)
 			colorEdit.setTextColor(argb);
 	}
