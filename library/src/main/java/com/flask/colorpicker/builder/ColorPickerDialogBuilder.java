@@ -220,7 +220,7 @@ public class ColorPickerDialogBuilder {
 		}
 		if (isColorEditEnabled) {
 			LinearLayout.LayoutParams layoutParamsForColorEdit = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			colorEdit = (EditText) View.inflate(context, R.layout.picker_edit, null);
+			colorEdit = (EditText) View.inflate(context, R.layout.color_edit, null);
 			colorEdit.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 			colorEdit.setSingleLine();
 			colorEdit.setVisibility(View.GONE);

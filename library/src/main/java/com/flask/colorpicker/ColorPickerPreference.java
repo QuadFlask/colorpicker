@@ -2,15 +2,12 @@ package com.flask.colorpicker;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -33,7 +30,6 @@ public class ColorPickerPreference extends Preference {
 
 	protected ImageView colorIndicator;
 
-
 	public ColorPickerPreference(Context context) {
 		super(context);
 	}
@@ -47,7 +43,6 @@ public class ColorPickerPreference extends Preference {
 		super(context, attrs, defStyleAttr);
 		initWith(context, attrs);
 	}
-
 
 	private void initWith(Context context, AttributeSet attrs) {
 		final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference);
@@ -85,30 +80,19 @@ public class ColorPickerPreference extends Preference {
 	protected void onBindView(@NonNull View view) {
 		super.onBindView(view);
 
-		Resources res = view.getContext().getResources();
-		GradientDrawable colorChoiceDrawable = null;
+		int tmpColor = isEnabled()
+				? selectedColor
+				: darken(selectedColor, .5f);
 
 		colorIndicator = (ImageView) view.findViewById(R.id.color_indicator);
 
+		CircleColorDrawable colorChoiceDrawable = null;
 		Drawable currentDrawable = colorIndicator.getDrawable();
-		if (currentDrawable!=null && currentDrawable instanceof GradientDrawable)
-			colorChoiceDrawable = (GradientDrawable) currentDrawable;
+		if (currentDrawable != null && currentDrawable instanceof CircleColorDrawable)
+			colorChoiceDrawable = (CircleColorDrawable) currentDrawable;
 
-		if (colorChoiceDrawable==null) {
-			colorChoiceDrawable = new GradientDrawable();
-			colorChoiceDrawable.setShape(GradientDrawable.OVAL);
-		}
-
-		int tmpColor = isEnabled()
-			? selectedColor
-			: darken(selectedColor, .5f);
-
-		colorChoiceDrawable.setColor(tmpColor);
-		colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
-			TypedValue.COMPLEX_UNIT_DIP,
-			1,
-			res.getDisplayMetrics()
-		), darken(tmpColor, .8f));
+		if (colorChoiceDrawable == null)
+			colorChoiceDrawable = new CircleColorDrawable(tmpColor);
 
 		colorIndicator.setImageDrawable(colorChoiceDrawable);
 	}
@@ -125,7 +109,6 @@ public class ColorPickerPreference extends Preference {
 	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
 		setValue(restoreValue ? getPersistedInt(0) : (Integer) defaultValue);
 	}
-
 
 	@Override
 	protected void onClick() {

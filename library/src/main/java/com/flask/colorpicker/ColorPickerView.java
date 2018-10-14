@@ -27,10 +27,12 @@ import com.flask.colorpicker.slider.LightnessSlider;
 import java.util.ArrayList;
 
 public class ColorPickerView extends View {
-	private static final float STROKE_RATIO = 2f;
+	private static final float STROKE_RATIO = 1.6f;
 
 	private Bitmap colorWheel;
 	private Canvas colorWheelCanvas;
+	private Bitmap currentColor;
+	private Canvas currentColorCanvas;
 	private int density = 10;
 
 	private float lightness = 1;
@@ -42,8 +44,7 @@ public class ColorPickerView extends View {
 	private Integer initialColor;
 	private Integer pickerTextColor;
 	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
-	private Paint selectorStroke1 = PaintBuilder.newPaint().color(0xffffffff).build();
-	private Paint selectorStroke2 = PaintBuilder.newPaint().color(0xff000000).build();
+	private Paint selectorStroke = PaintBuilder.newPaint().color(0).build();
 	private Paint alphaPatternPaint = PaintBuilder.newPaint().build();
 	private ColorCircle currentColorCircle;
 
@@ -161,6 +162,10 @@ public class ColorPickerView extends View {
 			colorWheelCanvas = new Canvas(colorWheel);
 			alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(8));
 		}
+		if (currentColor == null) {
+			currentColor = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+			currentColorCanvas = new Canvas(colorWheel);
+		}
 		drawColorWheel();
 		invalidate();
 	}
@@ -227,6 +232,7 @@ public class ColorPickerView extends View {
 
 				initialColor = selectedColor;
 				setColorToSliders(selectedColor);
+				updateColorWheel();
 				invalidate();
 				break;
 			}
@@ -267,18 +273,24 @@ public class ColorPickerView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		canvas.drawColor(backgroundColor);
-		if (colorWheel != null)
-			canvas.drawBitmap(colorWheel, 0, 0, null);
+
+		float maxRadius = canvas.getWidth() / (1f + ColorWheelRenderer.GAP_PERCENTAGE);
+		float size = maxRadius / density / 2;
 		if (currentColorCircle != null) {
-			float maxRadius = canvas.getWidth() / 2f - STROKE_RATIO * (1f + ColorWheelRenderer.GAP_PERCENTAGE);
-			float size = maxRadius / density / 2;
 			colorWheelFill.setColor(Color.HSVToColor(currentColorCircle.getHsvWithLightness(this.lightness)));
 			colorWheelFill.setAlpha((int) (alpha * 0xff));
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * STROKE_RATIO, selectorStroke1);
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size * (1 + (STROKE_RATIO - 1) / 2), selectorStroke2);
 
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, alphaPatternPaint);
-			canvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, colorWheelFill);
+			// a separate canvas is used to erase an odd artifact caused by the alpha pattern paint
+			currentColorCanvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, alphaPatternPaint);
+			currentColorCanvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size, colorWheelFill);
+
+			selectorStroke = PaintBuilder.newPaint().color(0xffffffff).style(Paint.Style.STROKE).stroke(size * (STROKE_RATIO - 1)).xPerMode(PorterDuff.Mode.CLEAR).build();
+			currentColorCanvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size + (selectorStroke.getStrokeWidth() / 2.2f), selectorStroke);
+			canvas.drawBitmap(currentColor, 0, 0, null);
+		}
+		if (colorWheel != null) {
+			colorWheelCanvas.drawCircle(currentColorCircle.getX(), currentColorCircle.getY(), size + (selectorStroke.getStrokeWidth() / 2.2f), selectorStroke);
+			canvas.drawBitmap(colorWheel, 0, 0, null);
 		}
 	}
 
