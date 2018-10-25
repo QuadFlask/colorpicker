@@ -1,9 +1,8 @@
 package com.flask.colorpicker.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerView;
@@ -17,7 +16,7 @@ public class SampleActivity2 extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sample2);
 
-		ColorPickerView colorPickerView = (ColorPickerView) findViewById(R.id.color_picker_view);
+		ColorPickerView colorPickerView = findViewById(R.id.color_picker_view);
 		colorPickerView.addOnColorChangedListener(new OnColorChangedListener() {
 			@Override public void onColorChanged(int selectedColor) {
 				// Handle on color change
@@ -34,5 +33,4 @@ public class SampleActivity2 extends AppCompatActivity {
 			}
 		});
 	}
-
 }
