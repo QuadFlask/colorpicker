@@ -22,6 +22,7 @@ public abstract class AbsCustomSlider extends View {
 	protected int handleRadius = 20;
 	protected int barHeight = 5;
 	protected float value = 1;
+	protected boolean showBorder = false;
 
 	private boolean inVerticalOrientation = false;
 
@@ -176,6 +177,10 @@ public abstract class AbsCustomSlider extends View {
 
 	protected int getDimension(@DimenRes int id) {
 		return getResources().getDimensionPixelSize(id);
+	}
+
+	public void setShowBorder(boolean showBorder) {
+		this.showBorder = showBorder;
 	}
 
 	public void setOnValueChangedListener(OnValueChangedListener onValueChangedListener) {

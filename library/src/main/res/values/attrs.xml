@@ -3,6 +3,7 @@
 	<declare-styleable name="ColorPickerPreference">
 		<attr name="alphaSlider" format="boolean"/>
 		<attr name="lightnessSlider" format="boolean"/>
+		<attr name="border" format="boolean"/>
 		<attr name="density" format="integer"/>
 		<attr name="initialColor" format="integer"/>
 		<attr name="wheelType" format="enum">
@@ -11,6 +12,7 @@
 		</attr>
 		<attr name="lightnessSliderView" format="reference"/>
 		<attr name="alphaSliderView" format="reference"/>
+		<attr name="pickerColorEdit" format="boolean"/>
 		<attr name="pickerColorEditTextColor" format="integer"/>
 		<attr name="pickerTitle" format="reference|string"/>
 		<attr name="pickerButtonOk" format="reference|string"/>
