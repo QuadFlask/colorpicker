@@ -1,12 +1,14 @@
 package com.flask.colorpicker.sample;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,12 +19,12 @@ import android.widget.TextView;
 public class SampleActivity3 extends AppCompatActivity {
 
 	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
+	 * The {@link PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
 	 * {@link FragmentPagerAdapter} derivative, which will keep every
 	 * loaded fragment in memory. If this becomes too memory intensive, it
 	 * may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+	 * {@link FragmentStatePagerAdapter}.
 	 */
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -36,14 +38,14 @@ public class SampleActivity3 extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sample3);
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.container);
+		mViewPager = findViewById(R.id.container);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 	}
 
@@ -98,7 +100,7 @@ public class SampleActivity3 extends AppCompatActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		                         Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_sample_activity3, container, false);
-			TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+			TextView textView = rootView.findViewById(R.id.section_label);
 			textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 			return rootView;
 		}
