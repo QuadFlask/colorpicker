@@ -33,10 +33,12 @@ public class ColorPickerDialogBuilder {
 
 	private boolean isLightnessSliderEnabled = true;
 	private boolean isAlphaSliderEnabled = true;
+	private boolean isBorderEnabled = true;
 	private boolean isColorEditEnabled = false;
 	private boolean isPreviewEnabled = false;
 	private int pickerCount = 1;
 	private int defaultMargin = 0;
+	private int defaultMarginTop = 0;
 	private Integer[] initialColor = new Integer[]{null, null, null, null, null};
 
 	private ColorPickerDialogBuilder(Context context) {
@@ -45,13 +47,13 @@ public class ColorPickerDialogBuilder {
 
 	private ColorPickerDialogBuilder(Context context, int theme) {
 		defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
-		final int dialogMarginBetweenTitle = getDimensionAsPx(context, R.dimen.default_slider_margin_btw_title);
+		defaultMarginTop = getDimensionAsPx(context, R.dimen.default_margin_top);
 
 		builder = new AlertDialog.Builder(context, theme);
 		pickerContainer = new LinearLayout(context);
 		pickerContainer.setOrientation(LinearLayout.VERTICAL);
 		pickerContainer.setGravity(Gravity.CENTER_HORIZONTAL);
-		pickerContainer.setPadding(defaultMargin, dialogMarginBetweenTitle, defaultMargin, defaultMargin);
+		pickerContainer.setPadding(defaultMargin, defaultMarginTop, defaultMargin, 0);
 
 		LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
 		layoutParamsForColorPickerView.weight = 1;
@@ -84,7 +86,6 @@ public class ColorPickerDialogBuilder {
 		this.initialColor[0] = initialColor;
 		return this;
 	}
-
 
 	public ColorPickerDialogBuilder initialColors(int[] initialColor) {
 		for (int i = 0; i < initialColor.length && i < this.initialColor.length; i++) {
@@ -172,6 +173,11 @@ public class ColorPickerDialogBuilder {
 		return this;
 	}
 
+	public ColorPickerDialogBuilder showBorder(boolean showBorder) {
+		isBorderEnabled = showBorder;
+		return this;
+	}
+
 	public ColorPickerDialogBuilder showColorEdit(boolean showEdit) {
 		isColorEditEnabled = showEdit;
 		return this;
@@ -201,6 +207,7 @@ public class ColorPickerDialogBuilder {
 	public AlertDialog build() {
 		Context context = builder.getContext();
 		colorPickerView.setInitialColors(initialColor, getStartOffset(initialColor));
+		colorPickerView.setShowBorder(isBorderEnabled);
 
 		if (isLightnessSliderEnabled) {
 			LinearLayout.LayoutParams layoutParamsForLightnessBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_slider_height));
@@ -209,6 +216,7 @@ public class ColorPickerDialogBuilder {
 			pickerContainer.addView(lightnessSlider);
 			colorPickerView.setLightnessSlider(lightnessSlider);
 			lightnessSlider.setColor(getStartColor(initialColor));
+			lightnessSlider.setShowBorder(isBorderEnabled);
 		}
 		if (isAlphaSliderEnabled) {
 			LinearLayout.LayoutParams layoutParamsForAlphaBar = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDimensionAsPx(context, R.dimen.default_slider_height));
@@ -217,10 +225,11 @@ public class ColorPickerDialogBuilder {
 			pickerContainer.addView(alphaSlider);
 			colorPickerView.setAlphaSlider(alphaSlider);
 			alphaSlider.setColor(getStartColor(initialColor));
+			alphaSlider.setShowBorder(isBorderEnabled);
 		}
 		if (isColorEditEnabled) {
 			LinearLayout.LayoutParams layoutParamsForColorEdit = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			colorEdit = (EditText) View.inflate(context, R.layout.picker_edit, null);
+			colorEdit = (EditText) View.inflate(context, R.layout.color_edit, null);
 			colorEdit.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 			colorEdit.setSingleLine();
 			colorEdit.setVisibility(View.GONE);

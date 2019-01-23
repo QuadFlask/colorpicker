@@ -2,15 +2,12 @@ package com.flask.colorpicker;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -21,18 +18,19 @@ public class ColorPickerPreference extends Preference {
 
 	protected boolean alphaSlider;
 	protected boolean lightSlider;
+	protected boolean border;
 
 	protected int selectedColor = 0;
 
 	protected ColorPickerView.WHEEL_TYPE wheelType;
 	protected int density;
 
+	private boolean pickerColorEdit;
 	private String pickerTitle;
 	private String pickerButtonCancel;
 	private String pickerButtonOk;
 
 	protected ImageView colorIndicator;
-
 
 	public ColorPickerPreference(Context context) {
 		super(context);
@@ -48,19 +46,20 @@ public class ColorPickerPreference extends Preference {
 		initWith(context, attrs);
 	}
 
-
 	private void initWith(Context context, AttributeSet attrs) {
 		final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPreference);
 
 		try {
 			alphaSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_alphaSlider, false);
 			lightSlider = typedArray.getBoolean(R.styleable.ColorPickerPreference_lightnessSlider, false);
+			border = typedArray.getBoolean(R.styleable.ColorPickerPreference_border, true);
 
-			density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
+			density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 8);
 			wheelType = ColorPickerView.WHEEL_TYPE.indexOf(typedArray.getInt(R.styleable.ColorPickerPreference_wheelType, 0));
 
 			selectedColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
 
+			pickerColorEdit = typedArray.getBoolean(R.styleable.ColorPickerPreference_pickerColorEdit, true);
 			pickerTitle = typedArray.getString(R.styleable.ColorPickerPreference_pickerTitle);
 			if (pickerTitle==null)
 				pickerTitle = "Choose color";
@@ -85,30 +84,19 @@ public class ColorPickerPreference extends Preference {
 	protected void onBindView(@NonNull View view) {
 		super.onBindView(view);
 
-		Resources res = view.getContext().getResources();
-		GradientDrawable colorChoiceDrawable = null;
+		int tmpColor = isEnabled()
+				? selectedColor
+				: darken(selectedColor, .5f);
 
 		colorIndicator = (ImageView) view.findViewById(R.id.color_indicator);
 
+		ColorCircleDrawable colorChoiceDrawable = null;
 		Drawable currentDrawable = colorIndicator.getDrawable();
-		if (currentDrawable!=null && currentDrawable instanceof GradientDrawable)
-			colorChoiceDrawable = (GradientDrawable) currentDrawable;
+		if (currentDrawable != null && currentDrawable instanceof ColorCircleDrawable)
+			colorChoiceDrawable = (ColorCircleDrawable) currentDrawable;
 
-		if (colorChoiceDrawable==null) {
-			colorChoiceDrawable = new GradientDrawable();
-			colorChoiceDrawable.setShape(GradientDrawable.OVAL);
-		}
-
-		int tmpColor = isEnabled()
-			? selectedColor
-			: darken(selectedColor, .5f);
-
-		colorChoiceDrawable.setColor(tmpColor);
-		colorChoiceDrawable.setStroke((int) TypedValue.applyDimension(
-			TypedValue.COMPLEX_UNIT_DIP,
-			1,
-			res.getDisplayMetrics()
-		), darken(tmpColor, .8f));
+		if (colorChoiceDrawable == null)
+			colorChoiceDrawable = new ColorCircleDrawable(tmpColor);
 
 		colorIndicator.setImageDrawable(colorChoiceDrawable);
 	}
@@ -126,15 +114,16 @@ public class ColorPickerPreference extends Preference {
 		setValue(restoreValue ? getPersistedInt(0) : (Integer) defaultValue);
 	}
 
-
 	@Override
 	protected void onClick() {
 		ColorPickerDialogBuilder builder = ColorPickerDialogBuilder
 			.with(getContext())
 			.setTitle(pickerTitle)
 			.initialColor(selectedColor)
+			.showBorder(border)
 			.wheelType(wheelType)
 			.density(density)
+			.showColorEdit(pickerColorEdit)
 			.setPositiveButton(pickerButtonOk, new ColorPickerClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int selectedColorFromPicker, Integer[] allColors) {
@@ -146,7 +135,6 @@ public class ColorPickerPreference extends Preference {
 		if (!alphaSlider && !lightSlider) builder.noSliders();
 		else if (!alphaSlider) builder.lightnessSliderOnly();
 		else if (!lightSlider) builder.alphaSliderOnly();
-
 
 		builder
 			.build()
