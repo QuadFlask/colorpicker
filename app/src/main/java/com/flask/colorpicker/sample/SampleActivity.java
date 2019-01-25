@@ -124,6 +124,13 @@ public class SampleActivity extends AppCompatActivity {
 				startActivity(intent);
 			}
 		});
+		findViewById(R.id.btn_v2).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				final Intent intent = new Intent(SampleActivity.this, SampleActivity4.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void changeBackgroundColor(int selectedColor) {

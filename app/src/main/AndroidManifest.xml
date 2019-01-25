@@ -23,6 +23,7 @@
 			android:label="@string/title_activity_sample3"
 			android:theme="@style/AppTheme">
 		</activity>
+		<activity android:name=".SampleActivity4"/>
 	</application>
 
 </manifest>
