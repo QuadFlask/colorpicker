@@ -13,7 +13,7 @@ import com.github.quadflask.colorpicker.ColorSource;
 import com.github.quadflask.colorpicker.OnColorChangedListener;
 import com.github.quadflask.colorpicker.PaintBuilder;
 
-public class AlphaSliderView extends View implements OnColorChangedListener {
+public class AlphaSliderView extends AbsSliderView implements OnColorChangedListener {
     private static final int TRANSPARENT = 0;
 
     private ColorSource colorSource;
@@ -68,7 +68,8 @@ public class AlphaSliderView extends View implements OnColorChangedListener {
         }
     }
 
-    private void drawBar(Canvas canvas, int color) {
+    @Override
+    protected void drawBar(Canvas canvas, int color) {
         int w = canvas.getWidth();
         int h = canvas.getHeight();
 
@@ -88,7 +89,8 @@ public class AlphaSliderView extends View implements OnColorChangedListener {
         }
     }
 
-    private void drawHandle(Canvas canvas, int color) {
+    @Override
+    protected void drawHandle(Canvas canvas, int color) {
         solid.setColor(color);
         solid.setAlpha(Math.round(value * 255));
 
@@ -96,8 +98,7 @@ public class AlphaSliderView extends View implements OnColorChangedListener {
         float y = height / 2f;
 
         canvas.drawCircle(x, y, handleRadius * 1.33f, clearingStroke);
-        if (value < 1)
-            canvas.drawCircle(x, y, handleRadius, alphaPatternPaint);
+        if (value < 1) canvas.drawCircle(x, y, handleRadius, alphaPatternPaint);
         canvas.drawCircle(x, y, handleRadius, solid);
     }
 
@@ -121,41 +122,5 @@ public class AlphaSliderView extends View implements OnColorChangedListener {
     public void onColorChanged(Color color) {
         dirty = true;
         invalidate();
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        dirty = true;
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        dirty = true;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int width = 0;
-        if (widthMode == MeasureSpec.UNSPECIFIED)
-            width = widthMeasureSpec;
-        else if (widthMode == MeasureSpec.AT_MOST)
-            width = MeasureSpec.getSize(widthMeasureSpec);
-        else if (widthMode == MeasureSpec.EXACTLY)
-            width = MeasureSpec.getSize(widthMeasureSpec);
-
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int height = 0;
-        if (heightMode == MeasureSpec.UNSPECIFIED)
-            height = heightMeasureSpec;
-        else if (heightMode == MeasureSpec.AT_MOST)
-            height = MeasureSpec.getSize(heightMeasureSpec);
-        else if (heightMode == MeasureSpec.EXACTLY)
-            height = MeasureSpec.getSize(heightMeasureSpec);
-
-        setMeasuredDimension(width, height);
     }
 }
