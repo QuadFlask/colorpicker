@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
-	compileSdkVersion 28
-	buildToolsVersion '28.0.3'
+	compileSdkVersion 29
 
 	defaultConfig {
 		applicationId "com.flask.colorpicker.sample"
 		minSdkVersion 14
-		targetSdkVersion 28
+		targetSdkVersion 29
 		versionCode 9
 		versionName "1.0.9"
 
@@ -33,7 +34,13 @@ android {
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation project(":library")
-	implementation 'androidx.appcompat:appcompat:1.0.0'
-	implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
-	implementation 'com.google.android.material:material:1.0.0'
+	implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+	implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+	implementation 'com.google.android.material:material:1.1.0-alpha07'
+	implementation "androidx.legacy:legacy-preference-v14:1.0.0"
+	implementation "androidx.preference:preference:1.0.0"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+	mavenCentral()
 }

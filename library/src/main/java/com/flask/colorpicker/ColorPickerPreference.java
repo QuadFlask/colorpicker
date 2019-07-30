@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.preference.Preference;
-import androidx.annotation.NonNull;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
-
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
@@ -61,15 +58,15 @@ public class ColorPickerPreference extends Preference {
 
 			pickerColorEdit = typedArray.getBoolean(R.styleable.ColorPickerPreference_pickerColorEdit, true);
 			pickerTitle = typedArray.getString(R.styleable.ColorPickerPreference_pickerTitle);
-			if (pickerTitle==null)
+			if (pickerTitle == null)
 				pickerTitle = "Choose color";
 
 			pickerButtonCancel = typedArray.getString(R.styleable.ColorPickerPreference_pickerButtonCancel);
-			if (pickerButtonCancel==null)
+			if (pickerButtonCancel == null)
 				pickerButtonCancel = "cancel";
 
 			pickerButtonOk = typedArray.getString(R.styleable.ColorPickerPreference_pickerButtonOk);
-			if (pickerButtonOk==null)
+			if (pickerButtonOk == null)
 				pickerButtonOk = "ok";
 
 		} finally {
@@ -79,24 +76,15 @@ public class ColorPickerPreference extends Preference {
 		setWidgetLayoutResource(R.layout.color_widget);
 	}
 
-
 	@Override
-	protected void onBindView(@NonNull View view) {
-		super.onBindView(view);
-
+	public void onBindViewHolder(PreferenceViewHolder holder) {
+		super.onBindViewHolder(holder);
 		int tmpColor = isEnabled()
 				? selectedColor
 				: darken(selectedColor, .5f);
 
-		colorIndicator = (ImageView) view.findViewById(R.id.color_indicator);
-
-		ColorCircleDrawable colorChoiceDrawable = null;
-		Drawable currentDrawable = colorIndicator.getDrawable();
-		if (currentDrawable != null && currentDrawable instanceof ColorCircleDrawable)
-			colorChoiceDrawable = (ColorCircleDrawable) currentDrawable;
-
-		if (colorChoiceDrawable == null)
-			colorChoiceDrawable = new ColorCircleDrawable(tmpColor);
+		colorIndicator = holder.itemView.findViewById(R.id.color_indicator);
+		ColorCircleDrawable colorChoiceDrawable = new ColorCircleDrawable(tmpColor);
 
 		colorIndicator.setImageDrawable(colorChoiceDrawable);
 	}
@@ -117,28 +105,28 @@ public class ColorPickerPreference extends Preference {
 	@Override
 	protected void onClick() {
 		ColorPickerDialogBuilder builder = ColorPickerDialogBuilder
-			.with(getContext())
-			.setTitle(pickerTitle)
-			.initialColor(selectedColor)
-			.showBorder(border)
-			.wheelType(wheelType)
-			.density(density)
-			.showColorEdit(pickerColorEdit)
-			.setPositiveButton(pickerButtonOk, new ColorPickerClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int selectedColorFromPicker, Integer[] allColors) {
-					setValue(selectedColorFromPicker);
-				}
-			})
-			.setNegativeButton(pickerButtonCancel, null);
+				.with(getContext())
+				.setTitle(pickerTitle)
+				.initialColor(selectedColor)
+				.showBorder(border)
+				.wheelType(wheelType)
+				.density(density)
+				.showColorEdit(pickerColorEdit)
+				.setPositiveButton(pickerButtonOk, new ColorPickerClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int selectedColorFromPicker, Integer[] allColors) {
+						setValue(selectedColorFromPicker);
+					}
+				})
+				.setNegativeButton(pickerButtonCancel, null);
 
 		if (!alphaSlider && !lightSlider) builder.noSliders();
 		else if (!alphaSlider) builder.lightnessSliderOnly();
 		else if (!lightSlider) builder.alphaSliderOnly();
 
 		builder
-			.build()
-			.show();
+				.build()
+				.show();
 	}
 
 	public static int darken(int color, float factor) {
@@ -148,8 +136,8 @@ public class ColorPickerPreference extends Preference {
 		int b = Color.blue(color);
 
 		return Color.argb(a,
-			Math.max((int)(r * factor), 0),
-			Math.max((int)(g * factor), 0),
-			Math.max((int)(b * factor), 0));
+				Math.max((int) (r * factor), 0),
+				Math.max((int) (g * factor), 0),
+				Math.max((int) (b * factor), 0));
 	}
 }

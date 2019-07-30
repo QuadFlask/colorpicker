@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
-	<PreferenceCategory
+	<androidx.preference.PreferenceCategory
 		android:title="Color">
 		<com.flask.colorpicker.ColorPickerPreference
 			android:key="color_picker_preference"
@@ -31,5 +31,5 @@
 			android:key="color_picker_preference4"
 			android:title="Color"/>
 
-	</PreferenceCategory>
-</PreferenceScreen>
+	</androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>
