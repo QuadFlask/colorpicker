@@ -158,12 +158,12 @@ public class ColorPickerView extends View {
 			width = height;
 		if (width <= 0)
 			return;
-		if (colorWheel == null) {
+		if (colorWheel == null || colorWheel.getWidth() != width) {
 			colorWheel = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
 			colorWheelCanvas = new Canvas(colorWheel);
 			alphaPatternPaint.setShader(PaintBuilder.createAlphaPatternShader(26));
 		}
-		if (currentColor == null) {
+		if (currentColor == null || currentColor.getWidth() != width) {
 			currentColor = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
 			currentColorCanvas = new Canvas(currentColor);
 		}
