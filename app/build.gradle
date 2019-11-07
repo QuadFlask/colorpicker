@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-	compileSdkVersion 28
-	buildToolsVersion '28.0.3'
+	compileSdkVersion 29
+	buildToolsVersion "29.0.0"
 
 	defaultConfig {
 		applicationId "com.flask.colorpicker.sample"
 		minSdkVersion 14
-		targetSdkVersion 28
-		versionCode 9
-		versionName "1.0.9"
+		targetSdkVersion 29
+		versionCode 10
+		versionName "1.0.10"
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
@@ -33,7 +33,7 @@ android {
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation project(":library")
-	implementation 'androidx.appcompat:appcompat:1.0.0'
-	implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+	implementation 'androidx.appcompat:appcompat:1.1.0'
+	implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
 	implementation 'com.google.android.material:material:1.0.0'
 }
