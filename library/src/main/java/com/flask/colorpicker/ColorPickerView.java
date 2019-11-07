@@ -374,16 +374,18 @@ public class ColorPickerView extends View {
 		int lastSelectedColor = getSelectedColor();
 
 		this.lightness = lightness;
-		this.initialColor = Color.HSVToColor(Utils.alphaValueAsInt(this.alpha), currentColorCircle.getHsvWithLightness(lightness));
-		if (this.colorEdit != null)
-			this.colorEdit.setText(Utils.getHexString(this.initialColor, this.alphaSlider != null));
-		if (this.alphaSlider != null && this.initialColor != null)
-			this.alphaSlider.setColor(this.initialColor);
+		if (currentColorCircle != null) {
+            this.initialColor = Color.HSVToColor(Utils.alphaValueAsInt(this.alpha), currentColorCircle.getHsvWithLightness(lightness));
+            if (this.colorEdit != null)
+                this.colorEdit.setText(Utils.getHexString(this.initialColor, this.alphaSlider != null));
+            if (this.alphaSlider != null && this.initialColor != null)
+                this.alphaSlider.setColor(this.initialColor);
 
-		callOnColorChangedListeners(lastSelectedColor, this.initialColor);
+            callOnColorChangedListeners(lastSelectedColor, this.initialColor);
 
-		updateColorWheel();
-		invalidate();
+            updateColorWheel();
+            invalidate();
+        }
 	}
 
 	public void setColor(int color, boolean updateText) {
