@@ -74,7 +74,7 @@ public abstract class AbsCustomSlider extends View {
 			height = getHeight();
 		}
 
-		bar = Bitmap.createBitmap(width - barOffsetX * 2, barHeight, Bitmap.Config.ARGB_8888);
+		bar = Bitmap.createBitmap(Math.max(width - barOffsetX * 2, 1), barHeight, Bitmap.Config.ARGB_8888);
 		barCanvas = new Canvas(bar);
 
 		if (bitmap == null || bitmap.getWidth() != width || bitmap.getHeight() != height) {
