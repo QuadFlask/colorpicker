@@ -43,6 +43,7 @@ public class ColorPickerView extends View {
 	private Integer initialColors[] = new Integer[]{null, null, null, null, null};
 	private int colorSelection = 0;
 	private Integer initialColor;
+	private float minimumWheelLightness;
 	private Integer pickerColorEditTextColor;
 	private Paint colorWheelFill = PaintBuilder.newPaint().color(0).build();
 	private Paint selectorStroke = PaintBuilder.newPaint().color(0).build();
@@ -108,6 +109,7 @@ public class ColorPickerView extends View {
 
 		density = typedArray.getInt(R.styleable.ColorPickerPreference_density, 10);
 		initialColor = typedArray.getInt(R.styleable.ColorPickerPreference_initialColor, 0xffffffff);
+		minimumWheelLightness = typedArray.getFloat(R.styleable.ColorPickerPreference_minimumWheelLightness, 0.0f);
 
 		pickerColorEditTextColor = typedArray.getInt(R.styleable.ColorPickerPreference_pickerColorEditTextColor, 0xffffffff);
 
@@ -188,7 +190,7 @@ public class ColorPickerView extends View {
 		colorWheelRenderOption.cSize = cSize;
 		colorWheelRenderOption.strokeWidth = strokeWidth;
 		colorWheelRenderOption.alpha = alpha;
-		colorWheelRenderOption.lightness = lightness;
+		colorWheelRenderOption.lightness = lightness >= minimumWheelLightness ? lightness : 1.0f;
 		colorWheelRenderOption.targetCanvas = colorWheelCanvas;
 
 		renderer.initWith(colorWheelRenderOption);
@@ -228,6 +230,7 @@ public class ColorPickerView extends View {
 			case MotionEvent.ACTION_MOVE: {
 				int lastSelectedColor = getSelectedColor();
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
+				lightness = Utils.lightnessOfColor(currentColorCircle.getColor());
 				int selectedColor = getSelectedColor();
 
 				callOnColorChangedListeners(lastSelectedColor, selectedColor);

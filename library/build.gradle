@@ -1,12 +1,14 @@
 apply plugin: 'com.android.library'
 
+group='com.github.QuadFlask'
+
 android {
-	compileSdkVersion 29
-	buildToolsVersion "29.0.0"
+	compileSdkVersion 30
+	buildToolsVersion "29.0.2"
 
 	defaultConfig {
 		minSdkVersion 14
-		targetSdkVersion 29
+		targetSdkVersion 30
 		versionCode 17
 		versionName "0.0.15"
 	}
@@ -21,4 +23,7 @@ android {
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation 'androidx.appcompat:appcompat:1.1.0'
+}
+repositories {
+	mavenCentral()
 }
