@@ -230,6 +230,7 @@ public class ColorPickerView extends View {
 			case MotionEvent.ACTION_MOVE: {
 				int lastSelectedColor = getSelectedColor();
 				currentColorCircle = findNearestByPosition(event.getX(), event.getY());
+				lightness = Utils.lightnessOfColor(currentColorCircle.getColor());
 				int selectedColor = getSelectedColor();
 
 				callOnColorChangedListeners(lastSelectedColor, selectedColor);
