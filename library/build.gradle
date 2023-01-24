@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+
+group='com.github.QuadFlask'
 
 android {
 	compileSdkVersion 30
@@ -22,4 +23,7 @@ android {
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation 'androidx.appcompat:appcompat:1.1.0'
+}
+repositories {
+	mavenCentral()
 }
