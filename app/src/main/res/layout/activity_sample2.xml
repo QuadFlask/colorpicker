@@ -12,6 +12,7 @@
 		android:layout_height="wrap_content"
 		app:alphaSlider="true"
 		app:density="12"
+		app:minimumWheelLightness="0.05"
 		app:lightnessSlider="true"
 		app:wheelType="FLOWER"
 		app:lightnessSliderView="@+id/v_lightness_slider"

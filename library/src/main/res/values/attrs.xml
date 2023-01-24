@@ -6,6 +6,7 @@
 		<attr name="border" format="boolean"/>
 		<attr name="density" format="integer"/>
 		<attr name="initialColor" format="integer"/>
+		<attr name="minimumWheelLightness" format="float"/>
 		<attr name="wheelType" format="enum">
 			<enum name="FLOWER" value="0"/>
 			<enum name="CIRCLE" value="1"/>
